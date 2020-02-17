@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import knBoard.model.vo.KnBoard;
-import knBoard.model.vo.Photo;
+import common.model.vo.Photo;
 
 public class KnDAO {
 

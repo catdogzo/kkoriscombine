@@ -18,7 +18,7 @@ import com.sun.xml.internal.ws.api.message.Attachment;
 
 import common.FileRename;
 import knBoard.model.service.KnService;
-import knBoard.model.vo.Photo;
+import common.model.vo.Photo;
 
 
 @WebServlet("/PhotoServlet")

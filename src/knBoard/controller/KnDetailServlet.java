@@ -32,15 +32,14 @@ public class KnDetailServlet extends HttpServlet {
 
 		if(kn != null) {
 			page = "views/board/boardDetailView.jsp";
-			request.setAttribute("board", b);
+			request.setAttribute("board", kn);
 			request.setAttribute("list", list);
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "게시글 조회에 실패했습니다.");
 		}
 		RequestDispatcher view = request.getRequestDispatcher(page);
-		view.forward(request, response);
-						
+		view.forward(request, response);						
 					
 	}
 

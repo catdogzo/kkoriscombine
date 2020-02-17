@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import knBoard.model.dao.KnDAO;
 import knBoard.model.vo.KnBoard;
-import knBoard.model.vo.Photo;
+import common.model.vo.Photo;
 
 public class KnService {
 	
