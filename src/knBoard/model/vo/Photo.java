@@ -1,5 +1,7 @@
 package knBoard.model.vo;
 
+import java.sql.Date;
+
 public class Photo {
 	private int phNum;
 	private String phOrig;
@@ -11,4 +13,5 @@ public class Photo {
 	private int knNum;
 	private String phDel;
 	
+	public Photo() {}
 }
