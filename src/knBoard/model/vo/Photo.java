@@ -100,7 +100,5 @@ public class Photo {
 	public void setPhDel(String phDel) {
 		this.phDel = phDel;
 	}
-	
-	
-	
+
 }
