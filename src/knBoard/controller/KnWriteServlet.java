@@ -21,13 +21,13 @@ public class KnWriteServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession sesson = request.getSession();
-		String knTitle = request.getParameter("title");
-		String knCon = request.getParameter("content");
-		String usNick = ((User)session.getAttribute("loginUser")).getUserId();
-		Date sqlDate = null;
-		
-		KnBoard kn = new KnBoard(knTitle, knCon, usNick, sqlDate);
+//		HttpSession sesson = request.getSession();
+//		String knTitle = request.getParameter("title");
+//		String knCon = request.getParameter("content");
+//		String usNick = ((User)session.getAttribute("loginUser")).getUserId();
+//		Date sqlDate = null;
+//		
+//		KnBoard kn = new KnBoard(knTitle, knCon, usNick, sqlDate);
 	}
 
 

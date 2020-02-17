@@ -80,9 +80,11 @@ input.textMsg{
 }
 
 button#deleteButton{
-	margin-right: 140px;
+	margin-right: 140px	;
 
 }
+
+
 
 
 /* div.tableRow {
@@ -122,7 +124,7 @@ div.tableCol {
 		<div class="tableTitle">
 			<table id="msgArea">
 				<tr>
-				   	<th><div class="tableCol checkBox"><input type="checkbox" onclick="lfCheckAll(this.checked)"></div></th>
+				   	<th><div class="tableCol checkBox"><input type="checkbox" style="width:20px; height: 20px;" onclick="lfCheckAll(this.checked)"></div></th>
 				  	<th><div class="tableCol receiver" style="padding:5px;">수신자</div></th>
 				  	<th><div class="tableCol subject" style="padding:5px;">제목</div></th>
 				  	<th><div class="tableCol sendDate" style="padding:5px;">발신일</div></th>
@@ -130,7 +132,7 @@ div.tableCol {
 				
 				<!-- 이따가 조회 리스트 추가 -->
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지1</td>
 					<td id="currentDate">
@@ -141,7 +143,7 @@ div.tableCol {
 					</td>
 				</tr>	
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지2</td>
 					<td id="currentDate">
@@ -152,7 +154,7 @@ div.tableCol {
 					</td>
 				</tr>	
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지3</td>
 					<td id="currentDate">
@@ -163,7 +165,7 @@ div.tableCol {
 					</td>
 				</tr>	
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지4</td>
 					<td id="currentDate">
@@ -174,7 +176,7 @@ div.tableCol {
 					</td>
 				</tr>	
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지5</td>
 					<td id="currentDate">
@@ -185,7 +187,7 @@ div.tableCol {
 					</td>
 				</tr>	
 				<tr>
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지6</td>
 					<td id="currentDate">
@@ -267,6 +269,22 @@ div.tableCol {
     
 	</div>
 	
+	<script>
+	$(function(){
+		$('tbody td').mouseenter(function(){
+			$(this).parent().css({'background':'#ffe3e4', 'cursor':'pointer'});
+		}).mouseout(function(){
+			$(this).parent().css("background", "none");
+		});			
+		});
+	
+	
+/* 		$('button').mouseenter(function(){
+			$('button').css({'background':'#ffe3e4', 'cursor':'pointer'});
+		}).mouseout(function(){
+			$('button').parent().css("background", "none");
+		}); */
+	</script>
 
 	
 	

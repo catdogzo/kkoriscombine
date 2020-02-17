@@ -78,17 +78,17 @@ public class KnDAO {
 				list = new ArrayList<KnBoard>();
 				
 				while(rset.next()) {
-					KnBoard kn = new KnBoard(rset.getInt("bid"),
-										rset.getInt("btype"),
-										rset.getString("cname"),
-										rset.getString("btitle"),
-										rset.getString("bcontent"),
-										rset.getString("nickName"),
-										rset.getInt("bcount"),
-										rset.getDate("create_date"),
-										rset.getDate("modify_date"),
-										rset.getString("status"));
-					list.add(kn);					
+//					KnBoard kn = new KnBoard(rset.getInt("bid"),
+//										rset.getInt("btype"),
+//										rset.getString("cname"),
+//										rset.getString("btitle"),
+//										rset.getString("bcontent"),
+//										rset.getString("nickName"),
+//										rset.getInt("bcount"),
+//										rset.getDate("create_date"),
+//										rset.getDate("modify_date"),
+//										rset.getString("status"));
+//					list.add(kn);					
 				}
 	
 			} catch (SQLException e) {
