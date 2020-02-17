@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import knBoard.model.vo.KnBoard;
+import knBoard.model.vo.Photo;
 
 public class KnDAO {
 
@@ -98,6 +99,51 @@ public class KnDAO {
 				close(pstmt);
 			}				
 			return list;
+		}
+
+		public int insertBoard(Connection conn, KnDAO knd) {
+			//
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("insertBoard");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, cate);
+				pstmt.setString(2, knd.getbTitle());
+				pstmt.setString(3, knd.getbContent());
+				pstmt.setString(4, knd.getbWriter());
+		
+				result = pstmt.executeUpdate();
+	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+	
+			return result;
+		}
+
+		public int insertPhoto(Connection conn, ArrayList<Photo> fileList) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			
+			String query = prop.getProperty("insertPhoto");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, x);
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
+			return result;
 		}
 		
 		
