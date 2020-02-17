@@ -28,6 +28,79 @@ public class Photo {
 		this.knNum = knNum;
 		this.phDel = phDel;
 	}
+
+	public int getPhNum() {
+		return phNum;
+	}
+
+	public void setPhNum(int phNum) {
+		this.phNum = phNum;
+	}
+
+	public String getPhOrig() {
+		return phOrig;
+	}
+
+	public void setPhOrig(String phOrig) {
+		this.phOrig = phOrig;
+	}
+
+	public String getPhChng() {
+		return phChng;
+	}
+
+	public void setPhChng(String phChng) {
+		this.phChng = phChng;
+	}
+
+	public String getPhPath() {
+		return phPath;
+	}
+
+	public void setPhPath(String phPath) {
+		this.phPath = phPath;
+	}
+
+	public Date getPhUpload() {
+		return phUpload;
+	}
+
+	public void setPhUpload(Date phUpload) {
+		this.phUpload = phUpload;
+	}
+
+	public int getPhFnum() {
+		return phFnum;
+	}
+
+	public void setPhFnum(int phFnum) {
+		this.phFnum = phFnum;
+	}
+
+	public int getRvNum() {
+		return rvNum;
+	}
+
+	public void setRvNum(int rvNum) {
+		this.rvNum = rvNum;
+	}
+
+	public int getKnNum() {
+		return knNum;
+	}
+
+	public void setKnNum(int knNum) {
+		this.knNum = knNum;
+	}
+
+	public String getPhDel() {
+		return phDel;
+	}
+
+	public void setPhDel(String phDel) {
+		this.phDel = phDel;
+	}
+	
 	
 	
 }
