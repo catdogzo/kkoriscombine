@@ -12,6 +12,4 @@ public class Photo {
 	private int rvNum;
 	private int knNum;
 	private String phDel;
-	
-	public Photo() {}
 }
