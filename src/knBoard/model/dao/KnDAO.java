@@ -23,7 +23,7 @@ public class KnDAO {
 		
 		public KnDAO() {
 			// prop 파일 import
-			String fileName = KnDAO.class.getResource("/sql/knBoard/knb-query.properties").getPath();			
+			String fileName = KnDAO.class.getResource("/sql/Knboard/knb-query.properties").getPath();			
 			try {
 				prop.load(new FileReader(fileName));
 			} catch (FileNotFoundException e) {
@@ -132,7 +132,7 @@ public class KnDAO {
 				pstmt.setInt(1, knNum);
 				rset = pstmt.executeQuery();
 				
-				while(rs.next()) {
+				while(rset.next()) {
 					kn = new KnBoard(rset.getInt("knNum"));
 				}
 							

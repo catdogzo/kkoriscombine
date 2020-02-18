@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "java.util.ArrayList, knBoard.*, common.*" %>
+    pageEncoding="UTF-8" 
+    import = "java.util.ArrayList, knBoard.model.vo.KnBoard, common.model.vo.Paging" %>
 <%
 	ArrayList<KnBoard> list = (ArrayList<KnBoard>)request.getAttribute("list");
 	Paging pg = (Paging)request.getAttribute("pg");
-
+	
 	int listCount = pg.getListCount();
 	int currentPage = pg.getCurrentPage();
 	int maxPage = pg.getMaxPage();
@@ -44,53 +45,54 @@
 <body>
 	<%@ include file="../layout.jsp" %>
 		<div class="outer">
-		<br>
-		<!-- <h1>지식 공유게시판</h1> -->
-		
-		<img src="../../images/knb.png" id="blogo">
-		<div class="tableArea">
-			<table id="table">
-				<thead> <!-- 게시판 라벨 부분 -->
-				<tr>
-					<th width="40px">No</th>
-					<th width="320px" class="title">제목</th>
-					<th width="110px">작성자</th>
-					<th width="110px">작성일</th>
-					<th>조회수</th>
-				</tr>
-				</thead>
-				<tbody> <!-- 게시판 내용 부분-->
-				<% if(list.isEmpty()) { %>
-				<tr>
-				</tr>
-				<% } else {
-						for(KnBoard kn : list) {
-				%>
-				<tr>
-					<th><%= kn.getKnNum %></th>
-					<td class="title"><%= kn.getKnTitle%></td>
-					<td><%= kn.getUsNick %></td>
-					<td><%= kn.getKnDate %></td>
-					<td><%= kn.getKnview %></td>
-				</tr>
-           	    <%       }
-               
-                    } %>				
-				</tbody>
-			</table>
-			<input type="submit" id="writeBtn" value="글쓰기">	
-			<br><br>
+			<br>
+			<!-- <h1>지식 공유게시판</h1> -->
 			
+			<img src="<%= request.getContextPath() %>/images/knb.png" id="blogo">
+			<div class="tableArea">
+				<table id="table">
+					<thead> <!-- 게시판 라벨 부분 -->
+					<tr>
+						<th width="40px">No</th>
+						<th width="320px" class="title">제목</th>
+						<th width="110px">작성자</th>
+						<th width="110px">작성일</th>
+						<th>조회수</th>
+					</tr>
+					</thead>
+					<tbody> <!-- 게시판 내용 부분-->
+					<% if(list.isEmpty()) { %>
+					<tr>
+						<td>없음</td>
+					</tr>
+					<% } else {
+							for(KnBoard kn : list) {
+					%>
+					<tr>
+						<th><%= kn.getKnNum() %><input type="hidden" name ="knNum" value='<%= kn.getKnNum() %>'></th>
+						<td class="title"><%= kn.getKnTtitle() %><input type="hidden" name ="title" value='<%= kn.getKnTtitle() %>'></td>
+						<td id="conBtn"><%= kn.getUsNick() %><input type="hidden" name ="nickname" value='<%= kn.getUsNick() %>'></td>
+						<td><%= kn.getKnDate() %><input type="hidden" name ="kndate" value='<%= kn.getKnDate() %>'></td>
+						<td><%= kn.getKnView() %><input type="hidden" name ="knview" value='<%= kn.getKnView() %>'></td>
+					</tr>
+	           	    <%       }
+	               
+	                    } %>				
+					</tbody>
+				</table>
+				<input type="submit" id="writeBtn" value="글쓰기">	
+				<br><br>
+				
       <!-- 페이징 처리  -->
       <div class='pagingArea' align='center'>
          <!-- list가 있을 때만 나타나는 영역이다.  -->
          <% if(!list.isEmpty()){ %>      
          <!-- 맨 처음으로 -->
-         <button onclick ="location.href='<%=request.getContextPath() %>/list.kn?currentPage=1'">&lt;&lt;</button> 
+         <button onclick ="location.href='<%=request.getContextPath() %>/list.bo?currentPage=1'">&lt;&lt;</button> 
          
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='<%=request.getContextPath() %>/list.kn?currentPage=<%= currentPage -1 %>'" id="beforeBtn"> &lt;</button>
+         <button onclick="location.href='<%=request.getContextPath() %>/list.bo?currentPage=<%= currentPage -1 %>'" id="beforeBtn"> &lt;</button>
          <script>
             if(<%= currentPage %> <= 1){
                var before = $('#beforeBtn');
@@ -109,25 +111,29 @@
          <% } %>
          <!-- 다음 페이지 -->
          <button onclick="location.href='<%= request.getContextPath() %>/list.bo?currentPage=<%= currentPage +1 %>'" id="afterBtn">&gt;</button>
-         
          <script>
             if(<%= currentPage %> >= <%= maxPage %>){
                var after = $("#afterBtn");
                after.attr('disabled', 'true');
             }
-         </script>   
-               
-			<div class="searchArea" align="center">
-				<select>
-				<option value="작성자">작성자</option>
-				<option value="제목">제목</option>
-				<option value="내용">내용</option>
-				</select>&nbsp;&nbsp;
-				<span class="search_container">
-         		<input class="search_input" type="text" placeholder="Search">
-     			</span>&nbsp;&nbsp;	      
-     			 <input type="submit" value="검색">			
-			</div>	
+         </script>         
+         
+         <!-- 맨 끝으로 -->
+         <button onclick="location.href='<%= request.getContextPath() %>/list.bo?currentPage=<%= maxPage %>'">&gt;&gt;</button>           
+         <% } %>
+	               
+				<div class="searchArea" align="center">
+					<select>
+					<option value="작성자">작성자</option>
+					<option value="제목">제목</option>
+					<option value="내용">내용</option>
+					</select>&nbsp;&nbsp;
+					<span class="search_container">
+	         		<input class="search_input" type="text" placeholder="Search">
+	     			</span>&nbsp;&nbsp;	      
+	     			 <input type="submit" value="검색">			
+				</div>	
+			</div>
 		</div>
 	</div>
 		<script>
@@ -152,7 +158,8 @@
 		            selector: '#conBtn', 
 		            trigger: 'left',
 		            callback: function(key, options) {
-		                var m = "clicked: " + key;
+		                var m = "clicked: " + options;
+		                console.log(m);
 		            },
 		            items: {
 		                "쪽지 보내기":{name: "쪽지 보내기"},
@@ -162,15 +169,6 @@
 		        });
 		    }); 
 		    
-		    // 페이징 
-			$(function(){
-				$('#listArea td').mouseenter(function(){
-					$(this).parent().css({'background':'darkgray', 'cursor':'pointer'});
-				}).mouseout(function(){
-					$(this).parent().css('background', 'none');
-				}).click(function(){
-					var bId = $(this).parent().children().children('input').val();				
-				}			    
 			
 		</script>
 </body>

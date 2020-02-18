@@ -1,4 +1,4 @@
-package knBoard.model.vo;
+package common.model.vo;
 
 public class Paging {
 	private int currentPage;

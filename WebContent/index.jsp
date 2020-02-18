@@ -16,7 +16,7 @@
 	         	<ul>
 	            	<li><a href="#"><i class="fas fa-map-marker-alt"></i><span>검색</span></a></li>
 	                <li><a href="#"><i class="far fa-check-circle"></i><span>예약</span></a></li>
-	                <li><a href="#"><i class="far fa-comments"></i><span>커뮤니티</span></a></li>
+	                <li><a href="<%= request.getContextPath() %>/list.kn"><i class="far fa-comments"></i><span>커뮤니티</span></a></li>
 	                <li><a href="#"><i class="far fa-calendar-alt"></i><span>일정</span></a></li>   
 	         	</ul>
          	</article>

@@ -98,5 +98,6 @@ public class KnBoard {
 	public void setKnDel(String knDel) {
 		this.knDel = knDel;
 	}
-	
+
+
 }
