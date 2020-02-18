@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>꼬리스컴바인 KKORISCOMBINE</title>
+<title>꼬리스컴바인</title>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 </head>
 <body>

@@ -7,9 +7,9 @@
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/a65bb113b4.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/layout.css"/>
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/contents.css"/>
 </head>
 <body>
 	<header><!-- 헤더 -->
