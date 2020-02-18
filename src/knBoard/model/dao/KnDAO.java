@@ -23,7 +23,7 @@ public class KnDAO {
 		
 		public KnDAO() {
 			// prop 파일 import
-			String fileName = KnDAO.class.getResource("/sql/knBoard/board-query.properties").getPath();			
+			String fileName = KnDAO.class.getResource("/sql/knBoard/knb-query.properties").getPath();			
 			try {
 				prop.load(new FileReader(fileName));
 			} catch (FileNotFoundException e) {
@@ -80,16 +80,14 @@ public class KnDAO {
 				list = new ArrayList<KnBoard>();
 				
 				while(rset.next()) {
-					KnBoard kn = new KnBoard(rset.getInt("bid"),
-										rset.getInt("btype"),
-										rset.getString("cname"),
-										rset.getString("btitle"),
-										rset.getString("bcontent"),
-										rset.getString("nickName"),
-										rset.getInt("bcount"),
-										rset.getDate("create_date"),
-										rset.getDate("modify_date"),
-										rset.getString("status"));
+					KnBoard kn = new KnBoard(rset.getInt("kn_num"),
+										rset.getString("kn_title"),
+										rset.getString("kn_con"),
+										rset.getString("us_nick"),
+										rset.getInt("kn_view"),
+										rset.getDate("kn_date"),
+										rset.getDate("kn_update"),
+										rset.getString("kn_del"));
 					list.add(kn);					
 				}
 	
@@ -100,6 +98,52 @@ public class KnDAO {
 				close(pstmt);
 			}				
 			return list;
+		}
+
+		public int countKn(Connection conn, int knNum) {
+			// 조회수 카운트
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("countKn");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, knNum);
+				
+				result = pstmt.executeUpdate();
+						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+		
+			return result;
+		}
+
+		public KnBoard selectKn(Connection conn, int knNum) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			KnBoard kn = null;
+			String query = prop.getProperty("selectKn");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, knNum);
+				rset = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					kn = new KnBoard(rset.getInt("knNum"));
+				}
+							
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(pstmt);
+			}
+	
+			return kn;
 		}
 
 		public int insertKn(Connection conn, KnDAO knd) {
@@ -146,51 +190,6 @@ public class KnDAO {
 			}
 			
 			return result;
-		}
-
-		public int countKn(Connection conn, int knNum) {
-			PreparedStatement pstmt = null;
-			int result = 0;
-			String query = prop.getProperty("countKn");
-			
-			try {
-				pstmt = conn.prepareStatement(query);
-				pstmt.setInt(1, knNum);
-				
-				result = pstmt.executeUpdate();
-						
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-		
-			return result;
-		}
-
-		public KnBoard selectKn(Connection conn, int knNum) {
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
-			KnBoard kn = null;
-			String query = prop.getProperty("selectKn");
-			
-			try {
-				pstmt = conn.prepareStatement(query);
-				pstmt.setInt(1, knNum);
-				rset = pstmt.executeQuery();
-				
-				while(rs.next()) {
-					kn = new KnBoard(rset.getInt("knNum"));
-				}
-							
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(rset);
-				close(pstmt);
-			}
-	
-			return kn;
 		}
 
 		public int deleteKn(Connection conn, int no) {

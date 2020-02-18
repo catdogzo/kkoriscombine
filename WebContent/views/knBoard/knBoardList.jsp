@@ -32,7 +32,8 @@
 	tbody th{font-weight: 600; background-color: #fff6f6; border-bottom: 1px solid #5d5d5d; text-align: center;}
 	tbody td{border-bottom: 1px solid #5d5d5d; font-family: inherit; text-align: center; font-size: 11pt;}
 	#writeBtn{margin-left: 600px; margin-top: 15px;}
-	#page{margin-left: 300px;}
+	.pagingArea button{border-radius: 15px; background: #D5D5D5;}
+	#numBtn{background: #B2CCFF;}
 	span > #searchBtn{line-height: 30px; text-align: center; background-color: #ffe3e4; color:#ff4e59; border: 1px solid #fcc6c9; border-radius: 5px; width: 80px; height: 35px;  position: fixed;}
 	.searchArea{margin-top: 50px; position: absolute; left: 400px;}
 	select{font-size: 10pt; width: 100px; padding: .7em .5em; font-family: inherit; background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none; border:1px solid #5d5d5d;}
@@ -62,15 +63,15 @@
 				<% if(list.isEmpty()) { %>
 				<tr>
 				</tr>
-				<% } else { %>
+				<% } else {
 						for(KnBoard kn : list) {
 				%>
 				<tr>
-					<th><% %></th>
-					<td class="title"><% %></td>
-					<td><% %></td>
-					<td><% %></td>
-					<td><% %></td>
+					<th><%= kn.getKnNum %></th>
+					<td class="title"><%= kn.getKnTitle%></td>
+					<td><%= kn.getUsNick %></td>
+					<td><%= kn.getKnDate %></td>
+					<td><%= kn.getKnview %></td>
 				</tr>
            	    <%       }
                
@@ -85,11 +86,11 @@
          <!-- list가 있을 때만 나타나는 영역이다.  -->
          <% if(!list.isEmpty()){ %>      
          <!-- 맨 처음으로 -->
-         <button onclick ="location.href='<%=request.getContextPath() %>/list.bo?currentPage=1'">&lt;&lt;</button> 
+         <button onclick ="location.href='<%=request.getContextPath() %>/list.kn?currentPage=1'">&lt;&lt;</button> 
          
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='<%=request.getContextPath() %>/list.bo?currentPage=<%= currentPage -1 %>'" id="beforeBtn"> &lt;</button>
+         <button onclick="location.href='<%=request.getContextPath() %>/list.kn?currentPage=<%= currentPage -1 %>'" id="beforeBtn"> &lt;</button>
          <script>
             if(<%= currentPage %> <= 1){
                var before = $('#beforeBtn');
@@ -161,7 +162,15 @@
 		        });
 		    }); 
 		    
-		    // 상세보기
+		    // 페이징 
+			$(function(){
+				$('#listArea td').mouseenter(function(){
+					$(this).parent().css({'background':'darkgray', 'cursor':'pointer'});
+				}).mouseout(function(){
+					$(this).parent().css('background', 'none');
+				}).click(function(){
+					var bId = $(this).parent().children().children('input').val();				
+				}			    
 			
 		</script>
 </body>

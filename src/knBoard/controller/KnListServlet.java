@@ -15,7 +15,7 @@ import knBoard.model.vo.KnBoard;
 import common.model.vo.Paging;
 
 
-@WebServlet("/KnListServlet")
+@WebServlet("/list.kn")
 public class KnListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,7 +30,7 @@ public class KnListServlet extends HttpServlet {
 		// 페이징 관련
 		int listCount = service.getListCount();
 		int currentPage; // 현재 페이지 표시
-		int limit;		 // 한 페이지에 표시될 페이징 수
+		int limit = 0;		 // 한 페이지에 표시될 페이징 수
 		int maxPage;	 // 전체 페이지 중 가장 마지막 페이지
 		int startPage;   // 페이징 된 페이지 중 시작 페이지
 		int endPage;	 // 페이징 된 페이지 중 마지막 페이지
@@ -56,7 +56,7 @@ public class KnListServlet extends HttpServlet {
 		
 		String page = null;
 		if(list != null) {
-			page = "views/board/boardListView.jsp";
+			page = "views/knBoard/knBoardList.jsp";
 			request.setAttribute("list", list);
 			request.setAttribute("pg", pg);
 		} else {
