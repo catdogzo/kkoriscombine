@@ -1,4 +1,4 @@
-package common;
+package common.filter;
 
 import java.io.IOException;
 import javax.servlet.Filter;

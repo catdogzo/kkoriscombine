@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import knBoard.model.vo.KnBoard;
-import common.model.vo.Photo;
+import knBoard.model.vo.KnReply;
+import photo.model.vo.Photo;
 
 public class KnDAO {
 
@@ -60,7 +61,7 @@ public class KnDAO {
 		}
 
 		public ArrayList<KnBoard> selectList(Connection conn, int currentPage) {
-			// 리스트 선택
+			// list 불러오기
 			PreparedStatement pstmt = null;
 			ResultSet rset = null;
 			ArrayList<KnBoard> list = null;
@@ -101,11 +102,11 @@ public class KnDAO {
 			return list;
 		}
 
-		public int insertBoard(Connection conn, KnDAO knd) {
+		public int insertKn(Connection conn, KnDAO knd) {
 			//
 			PreparedStatement pstmt = null;
 			int result = 0;
-			String query = prop.getProperty("insertBoard");
+			String query = prop.getProperty("insertKn");
 			
 			try {
 				pstmt = conn.prepareStatement(query);
@@ -125,15 +126,16 @@ public class KnDAO {
 			return result;
 		}
 
-		public int insertPhoto(Connection conn, ArrayList<Photo> fileList) {
+		public int updateKn(Connection conn, KnBoard kn) {
 			PreparedStatement pstmt = null;
 			int result = 0;
-			
-			String query = prop.getProperty("insertPhoto");
+			String query = prop.getProperty("updateKn");
 			
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, x);
+				pstmt.setInt(1, x);
+				pstmt.setString(parameterIndex, x);
+				pstmt.setString(parameterIndex, x);
 				
 				result = pstmt.executeUpdate();
 				
@@ -145,7 +147,159 @@ public class KnDAO {
 			
 			return result;
 		}
+
+		public int countKn(Connection conn, int knNum) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("countKn");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, knNum);
+				
+				result = pstmt.executeUpdate();
+						
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
 		
+			return result;
+		}
+
+		public KnBoard selectKn(Connection conn, int knNum) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			KnBoard kn = null;
+			String query = prop.getProperty("selectKn");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, knNum);
+				rset = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					kn = new KnBoard(rset.getInt("knNum"));
+				}
+							
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(pstmt);
+			}
+	
+			return kn;
+		}
+
+		public int deleteKn(Connection conn, int no) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("deleteKn");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, no);
+				
+				result = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
+			return result;
+		}
+
+		public int insertKnr(Connection conn, KnReply knr) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("inserKnr");
+		
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, x);
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+	
+			return result;
+		}
+
+		public ArrayList<KnReply> selectKnr(Connection conn, int no) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			ArrayList<KnReply> list = null;
+			String query = prop.getProperty("selectKnr");
+			
+			try {
+				pstmt = conn.prepareStatement("selectKnr");
+				pstmt.setInt(1, no);
+				rset = pstmt.executeQuery();
+				
+				list = new ArrayList<KnReply>();
+				while(rset.next()) {
+					list.add(new KnReply(rset.getInt("")))
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(pstmt);
+			}
+			
+			return list;
+		}
+
+		public int insertPhoto(Connection conn, int bNum, ArrayList<Photo> fileList) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			Photo p = null;
+			String query = prop.getProperty("insertPhoto");
+			
+			try {
+				for(int i = 0; i < fileList.size(); i++) {
+					p = fileList.get(i);
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, x);
+					
+					result += pstmt.executeUpdate();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}			
+			return result;
+		}
+
+		public int updatePhoto(Connection conn, ArrayList<Photo> fileList) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("updatePhoto");
+			
+			try {
+				for(int i = 0; i < fileList.size(); i++) {
+					p = fileList.get(i);
+					pstmt = conn.prepareStatement(query);
+					pstmt.setString(1, x);
+					
+					result += pstmt.executeUpdate();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}			
+			return result;
+		}
 		
 		
 		

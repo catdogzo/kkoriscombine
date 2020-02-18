@@ -1,6 +1,5 @@
-package knBoard.controller;
+package photo.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -14,29 +13,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.oreilly.servlet.MultipartRequest;
-import com.sun.xml.internal.ws.api.message.Attachment;
 
 import common.FileRename;
 import knBoard.model.service.KnService;
-import common.model.vo.Photo;
+import photo.model.vo.Photo;
 
-
-@WebServlet("/PhotoServlet")
-public class PhotoServlet extends HttpServlet {
+@WebServlet("/PhotoUpdateServlet")
+public class PhotoUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
-    public PhotoServlet() {
+    public PhotoUpdateServlet() {
         super();
     }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(ServletFileUpload.isMultipartContent(request)) { // enctype이 multipart/form-date로 전송되었는지 확인
 			int maxSize = 1024 * 1024 * 10; // 10Mbtyte : 전송파일 용량 제한
 			String root = request.getSession().getServletContext().getRealPath("/"); // 웹 서버 컨테이너 경로 추출
 			String savePath = root + "thumbnail_uploadFiles/"; // 자신을 thumbnail_uploadFiles에 넣어놓기 위함
-			
+	
 			MultipartRequest multipartRequest 
 			= new MultipartRequest(request, savePath, maxSize, "UTF-8", new FileRename());
 		
@@ -54,6 +49,13 @@ public class PhotoServlet extends HttpServlet {
 				originFiles.add(multipartRequest.getOriginalFileName(name));			
 			}			
 		}
+
+		// 가져온 사진 번호
+		int num0 = Integer.parseInt(multipartRequest.getParameter("num0"));
+		int num1 = Integer.parseInt(multipartRequest.getParameter("num1"));
+		int num2 = Integer.parseInt(multipartRequest.getParameter("num2"));
+		int num3 = Integer.parseInt(multipartRequest.getParameter("num3"));
+			
 		
 		ArrayList<Photo> fileList = new ArrayList<Photo>();
 		for(int i = originFiles.size() - 1; i >= 0; i--) {
@@ -67,11 +69,25 @@ public class PhotoServlet extends HttpServlet {
 			} else {
 				ph.setPhFnum(1);
 			}
-			
+			switch(i) {
+			case 0 : ph.setPhNum((num3)); break;
+			case 1 : ph.setPhNum(num2); break;
+			case 2 : ph.setPhNum(num1); break;
+			case 3 : ph.setPhNum(num0); break;
+			}
 			fileList.add(ph);
 		}
 		
-		int result = new KnService().insertPhoto(fileList);
+		int result = 0;
+		// 게시판 구분
+		int bNum = Integer.parseInt(multipartRequest.getParameter("bNum"));
+		
+		if(bNum == 1) {
+			result = new KnService().updatePhoto(fileList);
+		}/*else {
+			result = new RvService().insertPhoto(bNum, fileList);
+		}*/
+	
 		
 		if(result > 0) {
 			response.sendRedirect("list.th");
@@ -80,13 +96,12 @@ public class PhotoServlet extends HttpServlet {
 				File failedFile = new File(savePath + saveFiles.get(i));
 				failedFile.delete();
 			}
-			request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
+			request.setAttribute("msg", "사진 게시판 수정에 실패하였습니다.");
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}
 		
 	}		
-		
-}
+	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

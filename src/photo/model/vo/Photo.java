@@ -1,4 +1,4 @@
-package knBoard.model.vo;
+package photo.model.vo;
 
 import java.sql.Date;
 
@@ -11,12 +11,13 @@ public class Photo {
 	private int phFnum;
 	private int rvNum;
 	private int knNum;
+	private int phBnum;
 	private String phDel;
 	
 	public Photo() {}
 
 	public Photo(int phNum, String phOrig, String phChng, String phPath, Date phUpload, int phFnum, int rvNum,
-			int knNum, String phDel) {
+			int knNum, int phBnum, String phDel) {
 		super();
 		this.phNum = phNum;
 		this.phOrig = phOrig;
@@ -26,6 +27,7 @@ public class Photo {
 		this.phFnum = phFnum;
 		this.rvNum = rvNum;
 		this.knNum = knNum;
+		this.phBnum = phBnum;
 		this.phDel = phDel;
 	}
 
@@ -93,6 +95,14 @@ public class Photo {
 		this.knNum = knNum;
 	}
 
+	public int getPhBnum() {
+		return phBnum;
+	}
+
+	public void setPhBnum(int phBnum) {
+		this.phBnum = phBnum;
+	}
+
 	public String getPhDel() {
 		return phDel;
 	}
@@ -100,6 +110,5 @@ public class Photo {
 	public void setPhDel(String phDel) {
 		this.phDel = phDel;
 	}
-	
-	
+
 }

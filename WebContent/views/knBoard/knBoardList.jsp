@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import = "java.util.ArrayList, knBoard.*, common.*" %>
+<%
+	ArrayList<KnBoard> list = (ArrayList<KnBoard>)request.getAttribute("list");
+	Paging pg = (Paging)request.getAttribute("pg");
+
+	int listCount = pg.getListCount();
+	int currentPage = pg.getCurrentPage();
+	int maxPage = pg.getMaxPage();
+	int startPage = pg.getStartPage();
+	int endPage = pg.getEndPage();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,81 +59,63 @@
 				</tr>
 				</thead>
 				<tbody> <!-- 게시판 내용 부분-->
+				<% if(list.isEmpty()) { %>
 				<tr>
-					<th>9</th>
-					<td class="title">asdasdsdasdasdsad</td>
-					<td><span id="conBtn">kh</span></td>
-					<td>s</td>
-					<td>d</td>
 				</tr>
+				<% } else { %>
+						for(KnBoard kn : list) {
+				%>
 				<tr>
-					<th>8</th>
-					<td class="title">d</td>
-					<td>khkh</td>
-					<td>d</td>
-					<td>d</td>
+					<th><% %></th>
+					<td class="title"><% %></td>
+					<td><% %></td>
+					<td><% %></td>
+					<td><% %></td>
 				</tr>
-				<tr>
-					<th>7</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>6</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>5</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>4</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>3</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>2</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>1</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
-				<tr>
-					<th>0</th>
-					<td class="title">d</td>
-					<td>kh</td>
-					<td>d</td>
-					<td>d</td>
-				</tr>
+           	    <%       }
+               
+                    } %>				
 				</tbody>
 			</table>
 			<input type="submit" id="writeBtn" value="글쓰기">	
 			<br><br>
-			<span id="page">[1] [2] [3] </span>
+			
+      <!-- 페이징 처리  -->
+      <div class='pagingArea' align='center'>
+         <!-- list가 있을 때만 나타나는 영역이다.  -->
+         <% if(!list.isEmpty()){ %>      
+         <!-- 맨 처음으로 -->
+         <button onclick ="location.href='<%=request.getContextPath() %>/list.bo?currentPage=1'">&lt;&lt;</button> 
+         
+         
+         <!-- 이전 페이지로 -->
+         <button onclick="location.href='<%=request.getContextPath() %>/list.bo?currentPage=<%= currentPage -1 %>'" id="beforeBtn"> &lt;</button>
+         <script>
+            if(<%= currentPage %> <= 1){
+               var before = $('#beforeBtn');
+               before.attr('disabled', 'true'); // 첫번째 페이지면 클릭이 안되게 한다. 
+            }
+         
+         </script>
+         
+         <!-- 10개의 페이지 목록 -->
+         <% for(int p = startPage; p <= endPage; p++){ %>
+            <% if(p == currentPage) { %>
+               <button id="choosen" disabled><%= p %></button>
+            <% } else {%>
+               <button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.bo?currentPage=<%= p %>'"><%= p %></button>
+            <% } %>
+         <% } %>
+         <!-- 다음 페이지 -->
+         <button onclick="location.href='<%= request.getContextPath() %>/list.bo?currentPage=<%= currentPage +1 %>'" id="afterBtn">&gt;</button>
+         
+         <script>
+            if(<%= currentPage %> >= <%= maxPage %>){
+               var after = $("#afterBtn");
+               after.attr('disabled', 'true');
+            }
+         </script>   
+               
 			<div class="searchArea" align="center">
 				<select>
 				<option value="작성자">작성자</option>

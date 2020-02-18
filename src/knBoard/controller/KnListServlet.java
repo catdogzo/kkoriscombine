@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import knBoard.model.service.KnService;
 import knBoard.model.vo.KnBoard;
-import knBoard.model.vo.Paging;
+import common.model.vo.Paging;
 
 
 @WebServlet("/KnListServlet")
