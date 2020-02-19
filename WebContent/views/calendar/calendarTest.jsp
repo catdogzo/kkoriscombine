@@ -145,7 +145,7 @@
 
 
 <div id='buildCal'>
-
+<!--달력 -->
 <!-- 달력 실행 -->
 <script language="javascript" type="text/javascript">
    	buildCalendar();
