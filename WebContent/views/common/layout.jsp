@@ -95,7 +95,7 @@ input[type=submit].center {margin: 0 35%;}
 		</div>
 	</div>
 */
-div.container {position: absolute; top:0; left:0; padding-left: 200px; width: 100%; margin: 0 auto; box-sizing: border-box;}
+div.container {position: absolute; top:0; left:0; padding-left: 200px; width: 100%; height: 100%; margin: 0 auto; box-sizing: border-box;}
 div.contents {position:relative; margin: 0 auto;}
 div.contents > h2 {font-weight: 700; font-size: 30px; color: #000; padding: 15px 0; text-align: center;}
 

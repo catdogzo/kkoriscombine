@@ -6,15 +6,16 @@
 <meta charset="UTF-8">
 <title>꼬리스 컴바인 : 아이디 찾기</title>
 <style>
-div.container.search {height: 100%;}
+div.contents.search {width: 50%; max-width: 400px; height: 400px; top: calc(50% - 200px);}
+#searchBtn {width: 30%; margin-top: 20px; margin-left: 35%;}
 </style>
 </head>
 <body>
 	<%@ include file="../common/layout.jsp" %>
-	<div class="container search">
+	<div class="container">
 		<div class="contents search">
 			<h2>아이디 찾기</h2>
-			<form action="" method="post" id="searchId" name="searchId">
+			<form action="<%= request.getContextPath() %>/searchId.au" method="post" id="searchId" name="searchId">
 					<div class="input-container"><label class="input-label">이름</label><input type="text" name="userName" id="userName"></div>
 					<div class="input-container">
 						<label class="input-label">이메일</label><input type="email" name="email" id="email">

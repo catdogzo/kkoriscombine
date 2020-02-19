@@ -121,4 +121,47 @@ public class AllUserDAO {
 		return result;
 	}
 
+	public String searchKind(Connection conn, String inputId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String kind = null;
+		
+		String query = prop.getProperty("searchKind");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, inputId);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				kind = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return kind;
+	}
+
+	public int updatePwd(Connection conn, String userId, String temPwd) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updatePwd");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, temPwd);
+			pstmt.setString(2, userId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }

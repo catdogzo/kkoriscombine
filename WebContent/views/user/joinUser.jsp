@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 회원가입</title>
 <style>
+div.container {height: auto !important;}
 /* 회원가입 - 일반유저 */
 div.contents.join.user {width: 50%; max-width: 650px; margin: 20px auto;}
 form#joinUser {width: 80%; margin: 0 auto;}

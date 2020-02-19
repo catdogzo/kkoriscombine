@@ -5,6 +5,7 @@ public class Hospital {
 	private String hpName;
 	private String hpDName;
 	private String hpPhone;
+	private String hpEmail;
 	private String hpLoc;
 	private String hpIntro;
 	private String hpPhoto;
@@ -14,26 +15,28 @@ public class Hospital {
 	
 	public Hospital() {}
 
-	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpLoc, String hpStart,
-			String hpEnd, String hpLunch) {
+	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpLoc,
+			String hpStart, String hpEnd, String hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
 		this.hpDName = hpDName;
 		this.hpPhone = hpPhone;
+		this.hpEmail = hpEmail;
 		this.hpLoc = hpLoc;
 		this.hpStart = hpStart;
 		this.hpEnd = hpEnd;
 		this.hpLunch = hpLunch;
 	}
 
-	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpLoc, String hpIntro,
-			String hpPhoto, String hpStart, String hpEnd, String hpLunch) {
+	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpLoc,
+			String hpIntro, String hpPhoto, String hpStart, String hpEnd, String hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
 		this.hpDName = hpDName;
 		this.hpPhone = hpPhone;
+		this.hpEmail = hpEmail;
 		this.hpLoc = hpLoc;
 		this.hpIntro = hpIntro;
 		this.hpPhoto = hpPhoto;
@@ -72,6 +75,14 @@ public class Hospital {
 
 	public void setHpPhone(String hpPhone) {
 		this.hpPhone = hpPhone;
+	}
+
+	public String getHpEmail() {
+		return hpEmail;
+	}
+
+	public void setHpEmail(String hpEmail) {
+		this.hpEmail = hpEmail;
 	}
 
 	public String getHpLoc() {
@@ -121,6 +132,5 @@ public class Hospital {
 	public void setHpLunch(String hpLunch) {
 		this.hpLunch = hpLunch;
 	}
-	
 	
 }

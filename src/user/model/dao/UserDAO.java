@@ -108,6 +108,31 @@ public class UserDAO {
 		
 		return user;
 	}
+
+	public String searchId(Connection conn, String userName, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String userId = null;
+		
+		String query = prop.getProperty("searchId");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, email);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				userId = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close(rs);
+			close(pstmt);
+		}
+		return userId;
+	}
 	
 	
 	

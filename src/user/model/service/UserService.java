@@ -41,5 +41,15 @@ public class UserService {
 		close(conn);
 		return user;
 	}
+
+	public String searchId(String userName, String email) {
+		Connection conn = getConnection();
+		
+		String userId = new UserDAO().searchId(conn, userName, email);
+		
+		close(conn);
+		return userId;
+		
+	}
 	
 }

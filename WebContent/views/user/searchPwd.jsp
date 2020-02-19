@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <title>꼬리스 컴바인 : 비밀번호 찾기</title>
 <style>
-div.container.search {height: 100%;}
+div.contents.search {width: 50%; max-width: 400px; height: 400px; top: calc(50% - 200px);}
+#searchBtn {width: 30%; margin-top: 20px; margin-left: 35%;}
 </style>
 </head>
 <body>
@@ -14,7 +15,7 @@ div.container.search {height: 100%;}
 	<div class="container search">
 		<div class="contents search">
 			<h2>비밀번호 찾기</h2>
-			<form action="" method="post" id="searchPwd" name="searchPwd">
+			<form action="<%= request.getContextPath() %>/searchPwd.au" method="post" id="searchPwd" name="searchPwd">
 					<div class="input-container"><label class="input-label">아이디</label><input type="text" name="userId" id="userId"></div>
 					<div class="input-container"><label class="input-label">이름</label><input type="text" name="userName" id="userName"></div>
 					<div class="input-container">

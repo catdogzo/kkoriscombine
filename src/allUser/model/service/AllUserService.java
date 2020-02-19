@@ -53,4 +53,26 @@ public class AllUserService {
 		return result;
 	}
 
+	public String searchKind(String inputId) {
+		Connection conn = getConnection();
+		String kind = new AllUserDAO().searchKind(conn, inputId);
+		
+		close(conn);
+		return kind;
+	}
+
+	public int updatePwd(String userId, String temPwd) {
+		Connection conn = getConnection();
+		int result = new AllUserDAO().updatePwd(conn, userId, temPwd);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return result;
+	}
+
 }

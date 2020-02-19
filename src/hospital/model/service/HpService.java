@@ -32,4 +32,13 @@ public class HpService {
 		return hp;
 	}
 
+	public String searchId(String userName, String email) {
+		Connection conn = getConnection();
+		
+		String hpId = new HpDAO().searchId(conn, userName, email);
+		
+		close(conn);
+		return hpId;
+	}
+
 }

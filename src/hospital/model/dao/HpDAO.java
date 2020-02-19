@@ -41,10 +41,11 @@ public class HpDAO {
 			pstmt.setString(2, hp.getHpName());
 			pstmt.setString(3, hp.getHpDName());
 			pstmt.setString(4, hp.getHpPhone());
-			pstmt.setString(5, hp.getHpLoc());
-			pstmt.setString(6, hp.getHpStart());
-			pstmt.setString(7, hp.getHpEnd());
-			pstmt.setString(8, hp.getHpLunch());
+			pstmt.setString(5, hp.getHpEmail());
+			pstmt.setString(6, hp.getHpLoc());
+			pstmt.setString(7, hp.getHpStart());
+			pstmt.setString(8, hp.getHpEnd());
+			pstmt.setString(9, hp.getHpLunch());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -73,6 +74,7 @@ public class HpDAO {
 								  rs.getString("HP_NAME"),
 								  rs.getString("HP_DNAME"),
 								  rs.getString("HP_PHONE"),
+								  rs.getString("HP_EMAIL"),
 								  rs.getString("HP_LOC"),
 								  rs.getString("HP_INTRO"),
 								  rs.getString("HP_PHOTO"),
@@ -87,6 +89,32 @@ public class HpDAO {
 			close(pstmt);
 		}
 		return hp;
+	}
+
+	public String searchId(Connection conn, String userName, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String hpId = null;
+		
+		String query = prop.getProperty("searchId");
+		
+		try {
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, email);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				hpId = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return hpId;
 	}
 
 }

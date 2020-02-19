@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 회원가입</title>
 <style>
-div.container.join {height: 100%;}
 /* 회원가입 메인 */
 div.contents.join {width: 70%; height: 50%; top: calc(50% - 25%);}
 div.contents.join > div.join-icon {display: flex; justify-content: center; height: 100%; width: 100%; margin: 0 auto;}
@@ -22,7 +21,7 @@ div.contents.join > div.join-icon > a:last-child:hover i::before {content: "병�
 </head>
 <body>
 	<%@ include file="../common/layout.jsp" %>
-	<div class="container join">
+	<div class="container">
 		<div class="contents join">
 			<h2>회원가입</h2>
 			<div class="join-icon">

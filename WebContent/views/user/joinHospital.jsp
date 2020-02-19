@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 회원가입</title>
 <style>
+div.container {height: auto !important;}
 /* 회원가입 - 병원 */
 div.contents.join.user {width: 50%; max-width: 650px; margin: 20px auto;}
 form#joinHospital > div.location > input:nth-of-type(1) {width: 60%;}
@@ -39,6 +40,10 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 				</div>
 				<div class="input-box">
 					<p class="input-label">연락처</p><input type="text" name="phone" id="phone" required>
+				</div>
+				<div class="input-box">
+					<p class="input-label">이메일</p><input type="email" name="email" id="email" required>
+					<p class="input-info">* 아이디/비밀번호를 찾을 때 사용되므로 정확한 이메일을 입력해주세요.</p>
 				</div>
 				<div class="input-box location">
 					<p class="input-label">위치</p>
@@ -131,7 +136,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 	</div>
 	<script>
 		$(function(){
-			var isId, isPwd, isPwd2 = false;
+			var isId, isPwd, isPwd2, isEmail = false;
 			$p = $('<p>');
 			$p.addClass('input-info').addClass('color-red');
 			
@@ -195,6 +200,21 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 				}
 			});
 			
+			$('#email').change(function(){
+			     var emailReg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+			     if($(this).val() == '' || !emailReg.test($(this).val())) {
+			    	$(this).addClass('border-red').focus();
+			   		$p.text('이메일 형식에 맞춰 입력해주세요.');
+			   		$(this).parent().append($p);
+			   		isEmail = false;
+			     }
+			     else {                       
+			    	 $(this).removeClass('border-red');
+			         $(this).next().next().remove();
+			         isEmail = true;
+			     }
+			});
+			
 			var startTime, endTime = null;
 			
 			$('#startTime').click(function(){
@@ -241,7 +261,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 			
 			$('form').submit(function(){
 				var isSubmit = false;
-				if(isId && isPwd && isPwd2){
+				if(isId && isPwd && isPwd2 && isEmail){
 					alert('회원가입이 완료되었습니다.');
 					return true;
 				} else{
@@ -249,6 +269,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					if(!isId) $('#userId').focus();
 					else if(!isPwd) $('#userPwd').focus();
 					else if(!isPwd2) $('#userPwd2').focus();
+					else if(!isEmail) $('#email').focus();
 					
 					return false;
 				}

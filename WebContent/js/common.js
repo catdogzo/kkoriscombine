@@ -1,4 +1,9 @@
 $(function(){
+	// 모든 input 자동완성 off
+	$('input').each(function(){
+		$(this).prop('autocomplete', 'off');
+	});
+	
 	// input 타입1
 	$('div.input-container > input').focus(function(){
 		$(this).parent().addClass('focus on');
