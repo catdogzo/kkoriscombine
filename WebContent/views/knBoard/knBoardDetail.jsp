@@ -14,7 +14,6 @@
 <title>꼬리스컴바인 : 지식 공유 글보기</title>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
@@ -209,9 +208,9 @@
 	        $('#likeC').text(count);
 	        if(count == 1){
 	        	$.ajax({
-	        		url: 'like.kn',
+	        		url: '<%= request.getContextPath() %>/like.kn',
 	        		data: {usId:usId},
-	        		type: 'get'
+	        		type: 'post'
 	        	});
 	        }else{
 	        	

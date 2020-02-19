@@ -30,6 +30,12 @@ public class Photo {
 		this.phBnum = phBnum;
 		this.phDel = phDel;
 	}
+	
+	public Photo(int rvNum, String phChng) {
+		super();
+		this.rvNum = rvNum;
+		this.phChng = phChng;
+	}
 
 	public int getPhNum() {
 		return phNum;
