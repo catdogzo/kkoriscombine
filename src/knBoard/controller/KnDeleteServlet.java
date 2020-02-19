@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import knBoard.model.service.KnService;
 
-@WebServlet("/KnDeleteServlet")
+@WebServlet("/delete.kn")
 public class KnDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -20,13 +20,13 @@ public class KnDeleteServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int no = Integer.parseInt(request.getParameter("knNum"));
+		int no = Integer.parseInt(request.getParameter("no"));
 		
 		int result = new KnService().deleteKn(no);
 		
 		if(result > 0) {
 
-			response.sendRedirect(request.getContextPath() + "/list.bo");
+			response.sendRedirect(request.getContextPath() + "/list.kn");
 			
 		}else {
 

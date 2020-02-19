@@ -1,5 +1,6 @@
 package photo.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -18,7 +19,7 @@ import common.FileRename;
 import knBoard.model.service.KnService;
 import photo.model.vo.Photo;
 
-@WebServlet("/PhotoUpdateServlet")
+@WebServlet("/update.kn, /update.rv")
 public class PhotoUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -83,26 +84,33 @@ public class PhotoUpdateServlet extends HttpServlet {
 		int bNum = Integer.parseInt(multipartRequest.getParameter("bNum"));
 		
 		if(bNum == 1) {
-			result = new KnService().updatePhoto(fileList);
-		}/*else {
-			result = new RvService().insertPhoto(bNum, fileList);
-		}*/
-	
-		
-		if(result > 0) {
-			response.sendRedirect("list.th");
-		} else {
-			for(int i = 0; i < saveFiles.size(); i++) {
-				File failedFile = new File(savePath + saveFiles.get(i));
-				failedFile.delete();
+			result = new KnService().insertPhoto(bNum, fileList);
+			if(result > 0) {
+				response.sendRedirect("detail.kn");
+			} else {
+				for(int i = 0; i < saveFiles.size(); i++) {
+					File failedFile = new File(savePath + saveFiles.get(i));
+					failedFile.delete();
+				}
+				request.setAttribute("msg", "수정에 실패하였습니다.");
+				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 			}
-			request.setAttribute("msg", "사진 게시판 수정에 실패하였습니다.");
-			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-		}
+		}/*else {
+			result = new RvService().insertPhoto(bNum, fileList);*/
+/*			if(result > 0) {
+				response.sendRedirect("detail.rv");
+			} else {
+				for(int i = 0; i < saveFiles.size(); i++) {
+					File failedFile = new File(savePath + saveFiles.get(i));
+					failedFile.delete();
+				}
+				request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
+				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			}
+		}*/
 		
-	}		
+		}
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

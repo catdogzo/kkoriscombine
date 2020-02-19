@@ -2,6 +2,7 @@ package knBoard.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,18 +23,17 @@ public class KnUpdateServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int knNum = Integer.parseInt(request.getParameter("num"));
-		String knTitle = request.getParameter("title");
-		String knCon = request.getParameter("con");
-		
-		KnBoard kn = new KnBoard(num, title, con);
+		int no = Integer.parseInt(request.getParameter("no"));
+		String title = request.getParameter("title");
+		String con = request.getParameter("con");		
+		KnBoard kn = new KnBoard(no, title, con);
 		
 		int result = new KnService().updateKn(kn);
 
 		
 		String page = null;
 		if(result > 0) {
-			page = "/detail.bo?no=" + num;
+			page = "/detail.kn?no=" + no;
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "게시글 수정에 실패하였습니다.");

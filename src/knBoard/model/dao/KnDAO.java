@@ -133,7 +133,12 @@ public class KnDAO {
 				rset = pstmt.executeQuery();
 				
 				while(rset.next()) {
-					kn = new KnBoard(rset.getInt("knNum"));
+					kn = new KnBoard(rset.getInt("kn_num"),
+									rset.getString("kn_title"),
+									rset.getString("kn_con"),
+									rset.getString("us_nick"),
+									rset.getInt("kn_view"),
+									rset.getDate("kn_date"));
 				}
 							
 			} catch (SQLException e) {
@@ -146,7 +151,7 @@ public class KnDAO {
 			return kn;
 		}
 
-		public int insertKn(Connection conn, KnDAO knd) {
+		public int insertKn(Connection conn, KnBoard kn) {
 			//
 			PreparedStatement pstmt = null;
 			int result = 0;
@@ -154,10 +159,9 @@ public class KnDAO {
 			
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setInt(1, cate);
-				pstmt.setString(2, knd.getbTitle());
-				pstmt.setString(3, knd.getbContent());
-				pstmt.setString(4, knd.getbWriter());
+				pstmt.setString(1, kn.getKnTtitle());
+				pstmt.setString(2, kn.getKnCon());
+				pstmt.setString(3, kn.getUsNick());
 		
 				result = pstmt.executeUpdate();
 	
@@ -177,9 +181,9 @@ public class KnDAO {
 			
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setInt(1, x);
-				pstmt.setString(parameterIndex, x);
-				pstmt.setString(parameterIndex, x);
+				pstmt.setString(1, kn.getKnTtitle());
+				pstmt.setString(2, kn.getKnCon());
+				pstmt.setInt(3, kn.getKnNum());
 				
 				result = pstmt.executeUpdate();
 				
@@ -218,7 +222,9 @@ public class KnDAO {
 		
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, x);
+				pstmt.setString(1, knr.getKnrCon());
+				pstmt.setInt(2, knr.getKnNum());
+				pstmt.setString(3, knr.getUsId());
 				
 				result = pstmt.executeUpdate();
 				
@@ -244,7 +250,11 @@ public class KnDAO {
 				
 				list = new ArrayList<KnReply>();
 				while(rset.next()) {
-					list.add(new KnReply(rset.getInt("")))
+					list.add(new KnReply(rset.getInt("knr_num"),
+										rset.getString("knr_con"),
+										rset.getInt("kn_num"),
+										rset.getString("us_id"),
+										rset.getDate("knr_date")));
 				}
 				
 			} catch (SQLException e) {
@@ -261,13 +271,17 @@ public class KnDAO {
 			PreparedStatement pstmt = null;
 			int result = 0;
 			Photo p = null;
-			String query = prop.getProperty("insertPhoto");
+			String query = prop.getProperty("insertKnPhoto");
 			
 			try {
 				for(int i = 0; i < fileList.size(); i++) {
 					p = fileList.get(i);
 					pstmt = conn.prepareStatement(query);
-					pstmt.setString(1, x);
+					pstmt.setString(1, p.getPhOrig());
+					pstmt.setString(2, p.getPhChng());
+					pstmt.setString(3, p.getPhPath());
+					pstmt.setInt(4, p.getPhFnum());
+					pstmt.setInt(5, p.getKnNum());
 					
 					result += pstmt.executeUpdate();
 				}
@@ -282,13 +296,17 @@ public class KnDAO {
 		public int updatePhoto(Connection conn, ArrayList<Photo> fileList) {
 			PreparedStatement pstmt = null;
 			int result = 0;
+			Photo p = null;
 			String query = prop.getProperty("updatePhoto");
 			
 			try {
 				for(int i = 0; i < fileList.size(); i++) {
 					p = fileList.get(i);
 					pstmt = conn.prepareStatement(query);
-					pstmt.setString(1, x);
+					pstmt.setString(1, p.getPhOrig());
+					pstmt.setString(2, p.getPhChng());
+					pstmt.setString(3, p.getPhPath());
+					pstmt.setInt(4, p.getPhNum());
 					
 					result += pstmt.executeUpdate();
 				}
@@ -297,6 +315,55 @@ public class KnDAO {
 			} finally {
 				close(pstmt);
 			}			
+			return result;
+		}
+
+		public ArrayList<Photo> selectPhoto(Connection conn, int no) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			ArrayList<Photo> list = null;
+			String query = prop.getProperty("selectKnPhoto");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, no);
+				list = new ArrayList<Photo>();
+				
+				while(rset.next()) {
+					Photo p = new Photo();
+					p.setPhFnum(rset.getInt("ph_fnum"));
+					p.setPhOrig(rset.getString("ph_orig"));
+					p.setPhChng(rset.getString("ph_chng"));
+					p.setPhPath(rset.getString("ph_path"));
+					p.setPhUpload(rset.getDate("ph_upload"));
+					
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(rset);
+				close(pstmt);
+			}
+	
+			return list;
+		}
+
+		public int insertLike(Connection conn, String usId) {
+			// 좋아요 포인트 추가
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String query = prop.getProperty("insertLike");
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
 			return result;
 		}
 		

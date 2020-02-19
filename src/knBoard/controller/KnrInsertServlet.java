@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 import knBoard.model.service.KnService;
 import knBoard.model.vo.KnReply;
 
-@WebServlet("/KnrInsertServlet")
+@WebServlet("/insertReply.kn")
 public class KnrInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,12 +26,12 @@ public class KnrInsertServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String writer = request.getParameter("writer");
 		String content = request.getParameter("content");
-		int knNum = Integer.parseInt(request.getParameter("no"));
+		int no = Integer.parseInt(request.getParameter("no"));
 		
 		KnReply knr = new KnReply();
 		knr.setUsId(writer);
 		knr.setKnrCon(content);
-		knr.setKnNum(knNum);
+		knr.setKnNum(no);
 		
 		ArrayList<KnReply> list = new KnService().insertKnr(knr);
 		

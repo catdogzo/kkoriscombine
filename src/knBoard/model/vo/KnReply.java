@@ -22,6 +22,10 @@ public class KnReply {
 		this.knrDel = knrDel;
 	}
 
+	public KnReply(int knrNum, String knrCon, int knNum, String usId, Date knrDate) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getKnrNum() {
 		return knrNum;
 	}

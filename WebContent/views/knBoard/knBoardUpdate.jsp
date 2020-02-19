@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, java.sql.Date, photo.model.vo.*"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	int no = Integer.parseInt(request.getParameter("no"));
+	String title = request.getParameter("title");
+	String content = request.getParameter("content");
+	int num0 = Integer.parseInt(request.getParameter("phNum0"));
+	int num1 = Integer.parseInt(request.getParameter("phNum1"));
+	int num2 = Integer.parseInt(request.getParameter("phNum2"));
+	int num3 = Integer.parseInt(request.getParameter("phNum3"));
+%>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,23 +45,23 @@
 			<img src="../../images/knb.png" id="blogo">
 		<br>
 		<!-- <h1>지식 공유게시판 글수정</h1> -->
-		<form action="<%= request.getContextPath() %>/insert.no" method="post">
+		<form action="<%= request.getContextPath() %>/update.kn" method="post">
 			<div class="writeArea">			
 				<table>
 					<tr>
 						<td class="aleft">제목
-							<input type="text" size="50" name="title" class="input">
 						</td>				
 					</tr>
 					<tr>
-						<td></td>
-					</tr>					
+						<td><input type="text" size="50" name="title" class="input" value=<%=title %>></td>
+					</tr>				
+					<!-- 
 					<tr>
 						<td class="aleft" width= "380px">글쓴이
 						</td>
 						<td class="aleft">날짜
 						</td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td></td>
 					</tr>
@@ -60,13 +70,13 @@
 					</tr>
 					<tr>
 						<td colspan="4">
-							<textarea name="content" cols="75" rows="15" style="resize:none;"></textarea>
+							<textarea name="content" cols="75" rows="15" style="resize:none;"><%=content %></textarea>
 						</td>
 					</tr>
 					<tr>
 						<th colspan="4" class="knb_photo">
 							<input type="submit" id="writeBtn" value="수정">
-							<input type="submit" id="cancleBtn" value="취소">
+							<input type="button" id="cancleBtn" value="취소">
 						</th>
 					</tr>
 				</table>				
@@ -104,6 +114,12 @@
 					<input type="file" id="thumbnailImg4" multiple="multiple" name="thumbnailImg4" onchange="LoadImg(this,4)">
 				</div>
 			</div>
+				<!-- 보낼 값 -->
+				<input type="hidden" name="num0" value="<%= num0 %>">
+				<input type="hidden" name="num1" value="<%= num1 %>">
+				<input type="hidden" name="num2" value="<%= num2 %>">
+				<input type="hidden" name="num3" value="<%= num3 %>">
+				<input type="hidden" name="no" value="<%= no %>">
 		</form>			
 	</div>
 	<script>

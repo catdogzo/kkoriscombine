@@ -32,12 +32,12 @@ public class KnWriteServlet extends HttpServlet {
 		String usNick = session.getAttribute("loginUser").getUserId;
 		Date sqlDate = null;
 		
-		KnBoard kn = new KnBoard(knTitle, knCon, usNick, sqlDate);
+		KnBoard kn = new KnBoard(knTitle, knCon, usNick);
 		
 		int result = new KnService().insertKn(kn);
 		
 		if(result > 0) {
-			response.sendRedirect(request.getContextPath() + "/list.bo");		
+			response.sendRedirect(request.getContextPath() + "/list.kn");		
 		}else {
 			request.setAttribute("msg", "게시글 등록에 실패하였습니다.");
 			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");

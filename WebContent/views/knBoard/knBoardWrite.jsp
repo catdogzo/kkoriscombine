@@ -39,22 +39,18 @@
 			<div class="writeArea">			
 				<table>
 					<tr>
-						<td class="aleft">제목
-							<input type="text" size="50" name="title" class="input">
+						<td class="aleft" rownum="2">제목
 						</td>				
 					</tr>
 					<tr>
-						<td></td>
+						<td><input type="text" size="50" name="title" class="input"></td>
 					</tr>					
-					<tr>
+<!-- 					<tr>
 						<td class="aleft" width= "380px">글쓴이
 						</td>
 						<td class="aleft">날짜
 						</td>
-					</tr>
-					<tr>
-						<td></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td class="aleft">내용</td>
 					</tr>

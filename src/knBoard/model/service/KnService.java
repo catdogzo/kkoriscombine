@@ -16,6 +16,7 @@ import photo.model.vo.Photo;
 public class KnService {
 	
 	public int getListCount() {
+		// 리스트 수 		
 		Connection conn = getConnection();
 		
 		int result = new KnDAO().getListCount(conn);
@@ -24,6 +25,7 @@ public class KnService {
 	}
 
 	public ArrayList<KnBoard> selectList(int currentPage) {
+		// 리스트 불러오기		
 		Connection conn = getConnection();
 		ArrayList<KnBoard> list = new KnDAO().selectList(conn, currentPage);
 		close(conn);
@@ -33,10 +35,11 @@ public class KnService {
 	
 	
 	public int insertKn(KnBoard kn) {
+		// 게시글 작성		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
-		int result = knd.insertKn(conn, knd);
+		int result = knd.insertKn(conn, kn);
 		
 		if(result > 0) {
 			commit(conn);
@@ -47,6 +50,7 @@ public class KnService {
 	}		
 
 	public int updateKn(KnBoard kn) {
+		// 게시글 수정		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
@@ -64,6 +68,7 @@ public class KnService {
 	}
 
 	public KnBoard selectKn(int knNum) {
+		// 게시글 보기		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
@@ -87,6 +92,7 @@ public class KnService {
 	}
 
 	public int deleteKn(int no) {
+		// 게시글 삭제		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
@@ -104,6 +110,7 @@ public class KnService {
 
 
 	public ArrayList<KnReply> insertKnr(KnReply knr) {
+		// 댓글 달기		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
@@ -121,6 +128,7 @@ public class KnService {
 	
 
 	public ArrayList<KnReply> selectKnr(int no) {
+		// 댓글 선택		
 		Connection conn = getConnection();		
 		ArrayList<KnReply> list = new KnDAO().selectKnr(conn, no);
 
@@ -129,6 +137,7 @@ public class KnService {
 
 	
 	public int insertPhoto(int bNum, ArrayList<Photo> fileList) {
+		// 사진 올리기
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 
@@ -144,6 +153,7 @@ public class KnService {
 	}
 
 	public int updatePhoto(ArrayList<Photo> fileList) {
+		//사진 수정
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
@@ -156,6 +166,21 @@ public class KnService {
 		}
 		
 		return result;
+	}
+
+	public ArrayList<Photo> selectPhoto(int no) {
+		// 사진 불러오기
+		Connection conn = getConnection();
+		ArrayList<Photo> list = new KnDAO().selectPhoto(conn, no);
+		
+		return list;
+	}
+
+	public int insertLike(String usId) {
+		Connection conn = getConnection();
+		int result = new KnDAO().insertLike(conn, usId);
+		
+		return 0;
 	}	
 	
 }

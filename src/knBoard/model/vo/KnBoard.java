@@ -35,6 +35,18 @@ public class KnBoard {
 		this.knUpdate = knUpdate;
 	}
 
+	public KnBoard(String knTitle, String knCon, String usNick) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public KnBoard(int knNum, String knTitle, String knCon, String usNick, int knView, Date knDate) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public KnBoard(int knNum, String knTitle, String knCon) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getKnNum() {
 		return knNum;
 	}

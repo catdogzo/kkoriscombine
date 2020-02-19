@@ -21,7 +21,7 @@ import knBoard.model.service.KnService;
 import photo.model.vo.Photo;
 
 
-@WebServlet("/PhotoServlet")
+@WebServlet("/write.kn, /write.rv")
 public class PhotoInsertServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -76,8 +76,28 @@ public class PhotoInsertServlet extends HttpServlet {
 		
 		if(bNum == 1) {
 			result = new KnService().insertPhoto(bNum, fileList);
+			if(result > 0) {
+				response.sendRedirect("detail.kn");
+			} else {
+				for(int i = 0; i < saveFiles.size(); i++) {
+					File failedFile = new File(savePath + saveFiles.get(i));
+					failedFile.delete();
+				}
+				request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
+				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			}
 		}else {
 /*			result = new RvService().insertPhoto(bNum, fileList);*/
+/*			if(result > 0) {
+				response.sendRedirect("detail.rv");
+			} else {
+				for(int i = 0; i < saveFiles.size(); i++) {
+					File failedFile = new File(savePath + saveFiles.get(i));
+					failedFile.delete();
+				}
+				request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
+				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+			}*/
 		}
 		
 		if(result > 0) {
