@@ -3,10 +3,14 @@
 
 <%@ page import = "java.util.ArrayList, message.model.vo.*" %>    
 <%
-	/* ArrayList<message> msg = (ArrayList<message>)request.getAttribute("msg");
-	PageInfo pi = (PageInfo)request.getAttribute("pi"); */
+	ArrayList<Message> mList = (ArrayList<Message>)request.getAttribute("mList");
+	PageInfo pi = (PageInfo)request.getAttribute("pi"); 
 
-	
+	int listCount = pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 %>
 <!DOCTYPE html>
 <html>
@@ -114,9 +118,9 @@ div.tableCol {
 	
 	<div class="outer">
 	<div class="messageOuter">
-		<div class="inContentTitle"><img src="readMsg.png" weight="100px" height="200px"><!-- <img src="WebContent/images/sendMsg.png"> --></div>
+		<div class="inContentTitle"><!-- <img src="readMsg.png" weight="100px" height="200px"> --><img src="WebContent/images/sendMsg.png" weight="100px" height="200px"></div>
 		<form method="get"> 
-			<div style="width:100% ; text-align:right ;">
+			<div style="marge-right: 200px; text-align:right ;">
 			   	<input type="text" class="textMsg" size="20" name="msgNum" value="">
 			   	<input type="submit" id="searchButton" class="button" value="검색">
 			   	<input type="button" value="보낸쪽지 목록" id="receiveMsgButton" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
@@ -131,7 +135,26 @@ div.tableCol {
 				</tr>
 				
 				<!-- 이따가 조회 리스트 추가 -->
+				<% if(mList.isEmpty()){%>
+				
 				<tr>
+					<td colspan="4">조회된 리스트가 없습니다.</td>
+				</tr>
+				<% } else { 
+						for(Message m : mList) {
+				%>
+				<tr>
+					<td><%= m.getRsgId() %><input type="hidden" value='<%= m.getRsgId() %>'> </td>
+					<td><%= m.getMsgTitle() %><input type="hidden" value='<%= m.getMsgTitle() %>'></td>
+					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
+				</tr>
+				
+				<% 		}
+					
+					}%>
+				
+				<!--  -->
+<!-- 				<tr>
 					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
 					<td>kh</td>
 					<td>쪽지1</td>
@@ -196,7 +219,7 @@ div.tableCol {
 						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
 						</script>
 					</td>
-				</tr>	
+				</tr>	 -->
 
 				
 			</table>
@@ -208,47 +231,44 @@ div.tableCol {
 		
 			<!-- 하단에 페이징 번호 -->
 		<div class="pagingArea" align="center">
-			<%-- <% if(!list.isEmpty()){ %> --%>	
-			<button onclick = "">&lt;&lt;</button>
+			<% if(!mList.isEmpty()){ %>	
+			<button onclick ="location.href='<%=request.getContextPath() %>/list.ms?currentPage=1'">&lt;&lt;</button>
 		
 		
 			<!-- 이전 페이지 -->
-		<button onclick="">&lt;</button>
+		<button onclick="location.href='<%=request.getContextPath() %>/list.ms?currentPage=<%= currentPage -1 %>'" id="beforeBtn">&lt;</button>
 		<!-- 이전 페이지 갈 작동 함수 필요 -->
 				<script>
-					<%-- if(<%= currentPage %> <= 1){
+					if(<%= currentPage %> <= 1){
 						var before = $('#beforeBtn');
 						before.attr('disabled', 'true'); // 첫번째 페이지면 클릭이 안되게 한다. 
-					} --%>
+					}
 				
 				</script>
 				
 				<!-- 10개의 페이지 목록 -->
-				<%-- <% for(int p = startPage; p <= endPage; p++){ %>
+				<% for(int p = startPage; p <= endPage; p++){ %>
 					<% if(p == currentPage) { %>
 						<button id="choosen" disabled><%= p %></button>
 					<% } else {%>
-						<button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.bo?currentPage=<%= p %>'"><%= p %></button>
+						<button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%= p %>'"><%= p %></button>
 					<% } %>
-				<% } %> --%>
+				<% } %>
 				<!-- 다음 페이지 -->
 				<button onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%-- <%= currentPage +1 %> --%>'" id="afterBtn">&gt;</button>
 				<script>
-					<%-- if(<%= currentPage %> >= <%= maxPage %>){
+					if(<%= currentPage %> >= <%= maxPage %>){
 						var after = $("#afterBtn");
 						after.attr('disabled', 'true');
-					} --%>
+					}
 				</script>			
 				
 				<!-- 맨 끝으로 -->
-				<button onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%-- <%= maxPage %> --%>'">&gt;&gt;</button>			
-				<%-- <% } %> --%>
+				<button onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%= maxPage %>'">&gt;&gt;</button>			
+				<% } %>
 		</div>	
 
 	</div>
-
-	
-
 
 	<form name="frm" action="location.href='<%= request.getContextPath() %>/delete.ms" method="post"> <!-- 메세지 삭제 누르면 실행 -->
 		<input type="hidden" name="action" value="ssgId">
@@ -258,11 +278,11 @@ div.tableCol {
 	</form>
 	
 	<!-- 버튼 위치 -->
-	<div style="width:100% ; text-align:right"> </div>
+	<div style="text-align:right"> </div>
     <!-- 페이징 쪽 번호 생기는 곳 -->
     
     <!-- 삭제버튼  -->
-    <div style="width:100% ; clear:both ; padding:10px 0 0 0 ; text-align:right">
+    <div style="clear:both; padding:10px 0 0 0 ; text-align:right">
     <button id="deleteButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">선택쪽지 삭제</span>
     </button>
 	</div>

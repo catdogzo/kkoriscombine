@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+ //System.out.println("에러니?");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,9 +52,10 @@
 		         		<li><a href="#">예약 조회</a></li>
 		         		<li><a href="#">포인트샵</a></li>
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
+		         		<li><a href="<%= request.getContextPath() %>/list.ms">내 쪽지함</a></li>
 	         		</ul>
 	         	</li>
-	      	</ul>
+	      	</ul>	
 			<dl>
 		    	<dt class="blind">sns</dt>
 		        <dd><a href="#"><i class="fab fa-facebook-f"></i></a></dd>

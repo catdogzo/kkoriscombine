@@ -53,15 +53,35 @@ public class JDBCTemplate {
 		}
 	}
 	
-	public static void commit(ResultSet rset) {
+	public static void commit(Connection conn) {
 		try {
-			if(rset != null && !rset.isClosed()) {
-				
+			if(conn != null && !conn.isClosed()) {
+				conn.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	 
+	}
+		
+	public static void rollback(Connection conn) {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.rollback();
+			} 
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void close(ResultSet rset) {
+		try {
+			if(rset != null && !rset.isClosed()) {
+				rset.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void close(Statement stmt) {

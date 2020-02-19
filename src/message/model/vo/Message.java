@@ -6,6 +6,7 @@ public class Message {
 	private int msgNum;
 	private String msgTitle;
 	private Date msgDate;
+	private String msgCon;
 	private String ssgId;
 	private String rsgId;
 	private String ssgDel;
@@ -14,12 +15,13 @@ public class Message {
 	
 	public Message() {}
 
-	public Message(int msgNum, String msgTitle, Date msgDate, String ssgId, String rsgId, String ssgDel, String rsgDel,
+	public Message(int msgNum, String msgTitle, Date msgDate, String msgCon, String ssgId, String rsgId, String ssgDel, String rsgDel,
 			String status) {
 		super();
 		this.msgNum = msgNum;
 		this.msgTitle = msgTitle;
 		this.msgDate = msgDate;
+		this.msgCon = msgCon;
 		this.ssgId = ssgId;
 		this.rsgId = rsgId;
 		this.ssgDel = ssgDel;
@@ -49,6 +51,14 @@ public class Message {
 
 	public void setMsgDate(Date msgDate) {
 		this.msgDate = msgDate;
+	}
+	
+	public String getMsgCon() {
+		return msgCon;
+	}
+	
+	public void setMsgCon(String msgCon) {
+		this.msgCon = msgCon;
 	}
 
 	public String getSsgId() {
