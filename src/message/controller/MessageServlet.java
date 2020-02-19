@@ -73,7 +73,7 @@ public class MessageServlet extends HttpServlet {
 		String page = null;
 		
 		if(mList != null) {
-			page = "views/message/messageList.view.jsp";
+			page = "views/message/messageListView.jsp";
 			request.setAttribute("mList", mList);
 			request.setAttribute("pi", pi);
 		} else {

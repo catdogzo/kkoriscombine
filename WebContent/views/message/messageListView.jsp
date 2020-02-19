@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<script src="<%= request.getContextPath()%>/js/jquery-3.4.1.min.js"></script>
 <style>
 .header{
 	top:0px;}	
@@ -27,7 +27,7 @@ div.tableTitle {
 	   margin-right: 50px;
 	   border-top: solid 1px;
 	   border-bottom:solid 2px;
-	   height:32px ;
+	   height:35px ;
 	   clear:both ;
 	   background-color:#fb929e ;
 	   font-weight:bold ;
@@ -70,9 +70,17 @@ div.tableCol.sendDate{
 }
 
 input#receiveMsgButton {
-	margin-right: 140px;
+	position: fixed;
+	margin-right: 200px;
 	margin-bottom: 20px;
+	margin-left: 30px;
+	
 }
+
+div.input-button {display: block; text-align: center; padding: 20px;}
+input[type="button"]{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
+input[type="button"]:hover {background: #fb929e; color: #fff;}
+
 input#searchButton {
 	margin-bottom: 20px;
 
@@ -84,10 +92,22 @@ input.textMsg{
 }
 
 button#deleteButton{
-	margin-right: 140px	;
+	margin-left: 1000px;
+	margin-right: 200px;
+	margin-bottom: 20px;
 
 }
 
+button.delBtn{display: block; text-align: center; padding: 20px; margin-right: 140px;}
+button.delBtn{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
+button.delBtn{background: #fb929e; color: #fff;}
+
+
+div.messageControll{
+	align-content: center;
+	margin-right: 200px; 
+	text-align:right ;
+}
 
 
 
@@ -106,6 +126,7 @@ div.tableCol {
 } */
 	
 
+
 </style>
 <meta charset="UTF-8">
 <title>메세지 보관함</title>
@@ -118,17 +139,17 @@ div.tableCol {
 	
 	<div class="outer">
 	<div class="messageOuter">
-		<div class="inContentTitle"><!-- <img src="readMsg.png" weight="100px" height="200px"> --><img src="WebContent/images/sendMsg.png" weight="100px" height="200px"></div>
+		<div class="inContentTitle"><img src="WebContent/images/sendMsg.png" weight="100px" height="200px"></div>
 		<form method="get"> 
-			<div style="marge-right: 200px; text-align:right ;">
+			<div class="messageControll">
 			   	<input type="text" class="textMsg" size="20" name="msgNum" value="">
 			   	<input type="submit" id="searchButton" class="button" value="검색">
-			   	<input type="button" value="보낸쪽지 목록" id="receiveMsgButton" class="ui-button ui-widget ui-state-default ui-corner-all" role="button" aria-disabled="false">
-
+			   	<input type="button" value=" 보낸쪽지 목록 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
+			</div>
 		<div class="tableTitle">
 			<table id="msgArea">
 				<tr>
-				   	<th><div class="tableCol checkBox"><input type="checkbox" style="width:20px; height: 20px;" onclick="lfCheckAll(this.checked)"></div></th>
+				   	<th><div class="tableCol checkBox"><input type="checkbox" name="check" id="aCheck" style="width:20px; height: 20px;" onclick="allCheck(this);"></div></th>
 				  	<th><div class="tableCol receiver" style="padding:5px;">수신자</div></th>
 				  	<th><div class="tableCol subject" style="padding:5px;">제목</div></th>
 				  	<th><div class="tableCol sendDate" style="padding:5px;">발신일</div></th>
@@ -144,6 +165,7 @@ div.tableCol {
 						for(Message m : mList) {
 				%>
 				<tr>
+					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;"></td>
 					<td><%= m.getRsgId() %><input type="hidden" value='<%= m.getRsgId() %>'> </td>
 					<td><%= m.getMsgTitle() %><input type="hidden" value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
@@ -152,82 +174,10 @@ div.tableCol {
 				<% 		}
 					
 					}%>
-				
-				<!--  -->
-<!-- 				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지1</td>
-					<td id="currentDate">
-						<script language="JavaScript"> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지2</td>
-					<td id="currentDate">
-						<script language="JavaScript"> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지3</td>
-					<td id="currentDate">
-						<script language="JavaScript"> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지4</td>
-					<td id="currentDate">
-						<script language="JavaScript"> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지5</td>
-					<td id="currentDate">
-						<script language="JavaScript"> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	
-				<tr>
-					<td><input type="checkbox" class="checkBox" style="width:20px; height: 20px;"></td>
-					<td>kh</td>
-					<td>쪽지6</td>
-					<td id="currentDate">
-						<script> 
-						var today = new Date( ); 
-						document.getElementById("currentDate").value = document.write(today.getMonth( )+1 , "월 " , today.getDate( ) , "일");
-						</script>
-					</td>
-				</tr>	 -->
-
-				
 			</table>
 		</div>
 			</div>
 		</form>
-		
-
 		
 			<!-- 하단에 페이징 번호 -->
 		<div class="pagingArea" align="center">
@@ -282,12 +232,11 @@ div.tableCol {
     <!-- 페이징 쪽 번호 생기는 곳 -->
     
     <!-- 삭제버튼  -->
-    <div style="clear:both; padding:10px 0 0 0 ; text-align:right">
-    <button id="deleteButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">선택쪽지 삭제</span>
-    </button>
+    <div class="delBtn" style="text-align:right">
+    <button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" onclick=>선택쪽지 삭제</button>
 	</div>
     
-	</div>
+	
 	
 	<script>
 	$(function(){
@@ -304,6 +253,27 @@ div.tableCol {
 		}).mouseout(function(){
 			$('button').parent().css("background", "none");
 		}); */
+		
+		
+		 function allCheck() {
+
+			 var check = document.getElementsByName("check");
+			 
+		 	for(var i=0; i < check.length; i++) {
+			 	 if(check[0].checked == true) {
+			 		check[i].checked = true;
+				 } else {
+					 check[i].checked = false;
+				   } 
+				 
+			 }
+			 
+		 }
+		
+		
+		$(".check").click(function(){
+			$('#aCheck').prop("checked", false);
+		})
 	</script>
 
 	

@@ -89,9 +89,9 @@ public class MessageDAO {
 										rs.getString("msg_con"),
 										rs.getString("rsg_id"),
 										rs.getString("ssg_id"),
-										rs.getString("ssgDel"),
-										rs.getString("rsgDel"),
-										rs.getString("status"));
+										rs.getString("rsg_del"),
+										rs.getString("ssg_del"),
+										rs.getString("msg_status"));
 				mList.add(m);
 				System.out.println("에러니?8");
 
