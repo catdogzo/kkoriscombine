@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -53,6 +54,39 @@ public class HpDAO {
 		}
 		
 		return result;
+	}
+
+	public Hospital selectHp(Connection conn, String auId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Hospital hp = null;
+		
+		String query = prop.getProperty("selectHp");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, auId);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				hp = new Hospital(rs.getString("HP_ID"),
+								  rs.getString("HP_NAME"),
+								  rs.getString("HP_DNAME"),
+								  rs.getString("HP_PHONE"),
+								  rs.getString("HP_LOC"),
+								  rs.getString("HP_INTRO"),
+								  rs.getString("HP_PHOTO"),
+								  rs.getString("HP_START"),
+								  rs.getString("HP_END"),
+								  rs.getString("HP_LUNCH"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return hp;
 	}
 
 }

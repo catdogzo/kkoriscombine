@@ -1,4 +1,3 @@
-@charset "UTF-8";
 * {margin: 0; padding: 0; font-family: 'Noto Sans KR', sans-serif;}
 *, *:before, *:after {box-sizing: border-box;}
 html, body {width: 100%; height: 100%;}
@@ -55,8 +54,11 @@ div.input-submit {display: block; text-align: center; padding: 15px;}
 input[type="submit"] {width: 30%; min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
 input[type="submit"]:hover {background: #fb929e; color: #fff;}
 
-/* select 옵션  */
-div > select {font-size: 10pt; width: 100px; padding: .7em .5em; font-family: inherit; background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none; border:1px solid #5d5d5d;}
+/* select-box */
+div.select-box {position: relative; width: 30%; max-width: 200px; display: inline-block;}
+div.select-box::before, div.select-box::after {content: ''; display: block; width: 7px; height: 1px; background: #5d5d5d; position: absolute; top: 50%; right: 15px; -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-transition: transform .3s ease-out; transition: transform .3s ease-out;}
+div.select-box::after {right: 10px; -webkit-transform: rotate(-45deg); transform: rotate(-45deg);}
+div.select-box > select {width: 100%; padding: .7em .5em; font-size: 14px; background: none; outline: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; cursor: pointer; border:1px solid #5d5d5d;}
 
 /* input 검색 (class="search_input") */
 div > span > input.search_input{width: 250px;  padding: 12px 24px; font-size: 14px; line-height: 18px; color: #575756; background-size: 18px 18px; border-radius: 50px; border: 1px solid #5d5d5d; backface-visibility: hidden; right:20px; outline:none;}
@@ -79,12 +81,19 @@ h1.logo {
 	text-indent: -9999px; overflow: hidden; width: 180px; height: 180px;
 	margin: 10px auto; /* auto는 중앙에 놓음 */ 
 	background: url(../images/logo.png) no-repeat; background-size: contain; /*contain = h1 사이즈에 맞춤*/
-} 
+}
 nav > div.login {display: flex; justify-content:space-around; font-size: 15px;}
 				/*블락요소로 가로 정렬 함*/
 nav > div.login > div {width: 75px; height: 30px;} /* 위 아래 마진, 좌 우 마진*/
 nav > div.login > div > a {display: block; width: 100%; height: 100%; line-height: 30px; text-align: center; border: 1px solid #5d5d5d; border-radius: 5px;}
-nav > div.login > div > a:hover {color: #fb929e; border: none; background: #fff6f6; font-weight: 600}
+nav > div.login > div > a:hover {color: #fb929e; border: none; background: #fff6f6; font-weight: 600; border: 1px solid #fff6f6;}
+
+nav > div.loginOk {text-align: center;}
+nav > div.loginOk > div.loginName {font-size: 18px; font-weight: 600; margin: 5px 0;}
+nav > div.loginOk > div.logoutBtn {margin: 0 30%;}
+nav > div.loginOk > div > a {display: block; width: 100%; height: 100%; line-height: 25px; text-align: center; font-size: 14px; border: 1px solid #5d5d5d; border-radius: 5px;}
+nav > div.loginOk > div > a:hover {font-size: 14px; color: #fb929e; border: none; background: #fff6f6; font-weight: 600; border: 1px solid #fff6f6;}
+
 
 /* 메뉴 */
 nav {margin-top: 20px;}

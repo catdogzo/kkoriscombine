@@ -5,9 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>꼬리스 컴바인 : 비밀번호 찾기</title>
+<style>
+div.container.search {height: 100%;}
+</style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 	<div class="container search">
 		<div class="contents search">
 			<h2>비밀번호 찾기</h2>

@@ -5,9 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 회원가입</title>
+<style>
+/* 회원가입 - 병원 */
+div.contents.join.user {width: 50%; max-width: 650px; margin: 20px auto;}
+form#joinHospital > div.location > input:nth-of-type(1) {width: 60%;}
+form#joinHospital > div.location > input {margin: 5px 0;}
+form#joinHospital > div.location > .postcodify_searchBtn {width: 39%; border: 1px solid #000; font-size: 13px; padding: 12px;}
+form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #aedefc; background: #aedefc; color: #fff;}
+</style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 	<div class="container">
 		<div class="contents join user">
 			<h2>회원가입</h2>
@@ -123,10 +131,11 @@
 	</div>
 	<script>
 		$(function(){
+			var isId, isPwd, isPwd2 = false;
 			$p = $('<p>');
 			$p.addClass('input-info').addClass('color-red');
 			
-			$('#userId').blur(function(){
+			$('#userId').change(function(){
 				var userId = $(this);
 				var userIdVal = $(this).val();
 				var userIdReg = /[a-z0-9]{5,15}/g;
@@ -147,9 +156,8 @@
 								userId.next().removeClass('color-red');
 								isId = true;
 							} else{
-								userId.addClass('border-red');
+								userId.addClass('border-red').focus();
 								$p.text('이미 사용중인 아이디입니다.');
-								userId.focus();
 								userId.parent().append($p);
 								isId = false;
 							}
@@ -158,7 +166,7 @@
 				}
 			});
 			
-			$('#userPwd').blur(function(){
+			$('#userPwd').change(function(){
 				var userPwdVal = $(this).val().trim();
 				var userPwdReg = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&*?]).{8,16}$/;
 				if(userPwdVal == '' || !userPwdReg.test(userPwdVal)){
@@ -172,7 +180,7 @@
 				}
 			});
 			
-			$('#userPwdChk').blur(function(){
+			$('#userPwdChk').change(function(){
 				var userPwdVal = $('#userPwd').val().trim();
 				var userPwdChkVal = $(this).val();
 				if(userPwdVal != '' && (userPwdChkVal == '' || userPwdVal != userPwdChkVal)){
@@ -228,6 +236,21 @@
 						
 						$('#breakTime').append($option);
 					}
+				}
+			});
+			
+			$('form').submit(function(){
+				var isSubmit = false;
+				if(isId && isPwd && isPwd2){
+					alert('회원가입이 완료되었습니다.');
+					return true;
+				} else{
+					alert('회원가입 양식에 맞춰 입력해주세요.');
+					if(!isId) $('#userId').focus();
+					else if(!isPwd) $('#userPwd').focus();
+					else if(!isPwd2) $('#userPwd2').focus();
+					
+					return false;
 				}
 			});
 		});

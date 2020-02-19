@@ -1,6 +1,7 @@
 package user.model.dao;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -73,6 +74,39 @@ public class UserDAO {
 			close(pstmt);
 		}
 		return result;
+	}
+
+	public User selectUser(Connection conn, String auId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		User user = null;
+		
+		String query = prop.getProperty("selectUser");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, auId);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				user = new User(rs.getString("US_ID"),
+								rs.getString("US_NAME"),
+								rs.getString("US_PHONE"),
+								rs.getString("US_NICK"),
+								rs.getString("US_EMAIL"),
+								rs.getDate("US_BIRTH"),
+								rs.getString("US_GEN"),
+								rs.getString("US_PHOTO"),
+								rs.getString("US_INTRO"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return user;
 	}
 	
 	

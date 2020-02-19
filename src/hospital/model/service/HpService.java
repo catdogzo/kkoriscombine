@@ -23,4 +23,13 @@ public class HpService {
 		return result;
 	}
 
+	public Hospital selectHp(String auId) {
+		Connection conn = getConnection();
+		
+		Hospital hp = new HpDAO().selectHp(conn, auId);
+		
+		close(conn);
+		return hp;
+	}
+
 }

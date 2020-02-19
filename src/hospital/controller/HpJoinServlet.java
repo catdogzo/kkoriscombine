@@ -16,7 +16,7 @@ import hospital.model.vo.Hospital;
 /**
  * Servlet implementation class HpJoinServlet
  */
-@WebServlet("/joinHp.hp")
+@WebServlet(name="HpJoinServlet", urlPatterns="/joinHp.hp")
 public class HpJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

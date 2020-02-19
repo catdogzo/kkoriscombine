@@ -2,16 +2,6 @@
 /* one-page */
 div.container.login, div.container.join, div.container.search {height: 100%;}
 
-input[type=submit].center {margin: 0 35%;}
-.border-red {border-color: #f00 !important;}
-.color-red {color: #f00 !important;}
-
-/* select-box */
-div.select-box {position: relative; width: 30%; max-width: 200px; display: inline-block;}
-div.select-box::before, div.select-box::after {content: ''; display: block; width: 7px; height: 1px; background: #5d5d5d; position: absolute; top: 50%; right: 15px; -webkit-transform: rotate(45deg); transform: rotate(45deg); -webkit-transition: transform .3s ease-out; transition: transform .3s ease-out;}
-div.select-box::after {right: 10px; -webkit-transform: rotate(-45deg); transform: rotate(-45deg);}
-div.select-box > select {width: 100%; padding: .7em .5em; font-size: 14px; background: none; outline: none; cursor: pointer; border:1px solid #5d5d5d;}
-
 /* 로그인 */
 div.contents.login,
 div.contents.search {width: 50%; max-width: 400px; height: 400px; top: calc(50% - 200px);}

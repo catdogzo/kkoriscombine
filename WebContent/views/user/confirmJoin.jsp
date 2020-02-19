@@ -7,6 +7,6 @@
 <title>꼬리스컴바인 : 회원가입 완료</title>
 </head>
 <body>
-	
+	<%@ include file="../common/layout.jsp" %>
 </body>
 </html>
