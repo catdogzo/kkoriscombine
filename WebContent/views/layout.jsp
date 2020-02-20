@@ -43,7 +43,7 @@
          			</ul>
 	         	</li>
 	         	<li id="nav-calendar">
-	         		<a href="#"><span>캘린더</span></a>
+	         		<a href="<%=request.getContextPath() %>/cal.li"><span>캘린더</span></a>
 	         	</li>
 	         	<li id="nav-mypage">
 	         		<span>마이페이지</span>
