@@ -7,6 +7,7 @@ import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import hospital.model.dao.HpDAO;
 import hospital.model.vo.Hospital;
@@ -44,6 +45,14 @@ public class HpService {
 		
 		close(conn);
 		return hpIdList;
+	}
+	
+	public ArrayList<Hospital> selectList(HashMap<String, String> dataMap) {
+		Connection conn = getConnection();
+		
+		ArrayList<Hospital> list = new HpDAO().selectList(conn, dataMap);
+		
+		return list;
 	}
 
 }

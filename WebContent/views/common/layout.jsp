@@ -13,7 +13,6 @@
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/a65bb113b4.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.4.1.min.js"></script>
-<meta http-equiv="content-script-type" content="text/javascript">
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 <%-- <link rel="stylesheet" type="text/html" href="<%= request.getContextPath() %>/css/layout.css"/> --%>
 <style>
@@ -23,7 +22,6 @@ html, body {width: 100%; height: 100%;}
 table{border-collapse: collapse;}
 img,fieldset{border: none;}
 ol,ul{list-style: none;}
-h1,h2,h3,h4,h5,h6{font-weight: normal; font-size: 100%;}
 q:after,q:before{content: "";}
 abbr,acronym{border:none;} /* 축약어 */
 img,input,select{vertical-align: middle;}
@@ -104,7 +102,7 @@ div.contents > h2 {font-weight: 700; font-size: 30px; color: #000; padding: 15px
 h1.logo {
 	text-indent: -9999px; overflow: hidden; width: 180px; height: 180px;
 	margin: 10px auto; /* auto는 중앙에 놓음 */ 
-	background: url(../../images/logo.png) no-repeat; background-size: contain; /*contain = h1 사이즈에 맞춤*/
+	background: url(<%= request.getContextPath() %>/images/logo.png) no-repeat; background-size: contain; /*contain = h1 사이즈에 맞춤*/
 }
  
 nav > div.login {display: flex; justify-content:space-around; font-size: 15px;}
@@ -172,7 +170,7 @@ footer {position: fixed; bottom: 10px;}
 	         	<li id="nav-hospital">
 	         		<span>병원 예약</span>
          			<ul class="nav2-hospital" id="nav2-hospital">
-         				<li><a href="#">병원 검색</a></li>
+         				<li><a href="<%= request.getContextPath()%>/views/hospital/searchHp.jsp">병원 검색</a></li>
 	         			<li><a href="#">예약 확인</a></li>
 	         			<li><a href="#">병원 후기</a></li>
          			</ul>

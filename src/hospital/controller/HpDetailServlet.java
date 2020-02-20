@@ -9,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import allUser.model.service.AllUserService;
 import hospital.model.service.HpService;
 import hospital.model.vo.Hospital;
 
 /**
- * Servlet implementation class HpJoinServlet
+ * Servlet implementation class HpDetailServlet
  */
-@WebServlet(name="HpJoinServlet", urlPatterns="/joinHp.hp")
-public class HpJoinServlet extends HttpServlet {
+@WebServlet("/detail.hp")
+public class HpDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HpJoinServlet() {
+    public HpDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,33 +31,15 @@ public class HpJoinServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("userId");
-		String userPwd = request.getParameter("userPwd");
-		String hpName = request.getParameter("hpName");
-		String hpDName = request.getParameter("hpDName");
-		String phone = request.getParameter("phone");
-		String email = request.getParameter("email");
-		String zipcode = request.getParameter("zipcode");
-		String location1 = request.getParameter("location1");
-		String location2 = request.getParameter("location2");
-		String start = request.getParameter("startTime");
-		String end = request.getParameter("endTime");
-		String lunch = request.getParameter("breakTime");
-		
-		Hospital hp = new Hospital(userId, hpName, hpDName, phone, email, zipcode, location1, location2, start, end, lunch);
-		
-		int result1 = new AllUserService().joinHp(userId, userPwd);
+		String hpId = request.getParameter("hpId");
+		Hospital hp = new HpService().selectHp(hpId);
 		
 		String page = null;
-		if(result1 > 0) {
-			int result2 = new HpService().joinHp(hp);
-			
-			if(result2 > 0) {
-				request.setAttribute("hp", hp);
-				page = "views/user/confirmJoin.jsp";
-			}
+		if(hp != null) {
+			request.setAttribute("hp", hp);
+			page = "views/hospital/detailHp.jsp";
 		} else {
-			request.setAttribute("msg", "병원 회원가입 실패");
+			request.setAttribute("msg", "병원 조회 실패");
 			page = "views/common/errorPage.jsp";
 		}
 		

@@ -6,7 +6,9 @@ public class Hospital {
 	private String hpDName;
 	private String hpPhone;
 	private String hpEmail;
-	private String hpLoc;
+	private String hpZip;
+	private String hpLoc1;
+	private String hpLoc2;
 	private String hpIntro;
 	private String hpPhoto;
 	private String hpStart;
@@ -15,29 +17,42 @@ public class Hospital {
 	
 	public Hospital() {}
 
-	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpLoc,
-			String hpStart, String hpEnd, String hpLunch) {
+	public Hospital(String hpId, String hpName, String hpPhone, String hpLoc1) {
+		super();
+		this.hpId = hpId;
+		this.hpName = hpName;
+		this.hpPhone = hpPhone;
+		this.hpLoc1 = hpLoc1;
+	}
+
+	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpZip,
+			String hpLoc1, String hpLoc2, String hpStart, String hpEnd, String hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
 		this.hpDName = hpDName;
 		this.hpPhone = hpPhone;
 		this.hpEmail = hpEmail;
-		this.hpLoc = hpLoc;
+		this.hpZip = hpZip;
+		this.hpLoc1 = hpLoc1;
+		this.hpLoc2 = hpLoc2;
 		this.hpStart = hpStart;
 		this.hpEnd = hpEnd;
 		this.hpLunch = hpLunch;
 	}
 
-	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpLoc,
-			String hpIntro, String hpPhoto, String hpStart, String hpEnd, String hpLunch) {
+	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpZip,
+			String hpLoc1, String hpLoc2, String hpIntro, String hpPhoto, String hpStart, String hpEnd,
+			String hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
 		this.hpDName = hpDName;
 		this.hpPhone = hpPhone;
 		this.hpEmail = hpEmail;
-		this.hpLoc = hpLoc;
+		this.hpZip = hpZip;
+		this.hpLoc1 = hpLoc1;
+		this.hpLoc2 = hpLoc2;
 		this.hpIntro = hpIntro;
 		this.hpPhoto = hpPhoto;
 		this.hpStart = hpStart;
@@ -85,12 +100,28 @@ public class Hospital {
 		this.hpEmail = hpEmail;
 	}
 
-	public String getHpLoc() {
-		return hpLoc;
+	public String getHpZip() {
+		return hpZip;
 	}
 
-	public void setHpLoc(String hpLoc) {
-		this.hpLoc = hpLoc;
+	public void setHpZip(String hpZip) {
+		this.hpZip = hpZip;
+	}
+
+	public String getHpLoc1() {
+		return hpLoc1;
+	}
+
+	public void setHpLoc1(String hpLoc1) {
+		this.hpLoc1 = hpLoc1;
+	}
+
+	public String getHpLoc2() {
+		return hpLoc2;
+	}
+
+	public void setHpLoc2(String hpLoc2) {
+		this.hpLoc2 = hpLoc2;
 	}
 
 	public String getHpIntro() {
@@ -132,5 +163,6 @@ public class Hospital {
 	public void setHpLunch(String hpLunch) {
 		this.hpLunch = hpLunch;
 	}
+
 	
 }

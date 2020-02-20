@@ -33,7 +33,7 @@ public class UserSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		/*HttpSession session = request.getSession();
 		AllUser au = (AllUser)session.getAttribute("loginAu");		
 		User user = new UserService().selectUser(au.getAuId());
 		if(user != null) {
@@ -43,7 +43,7 @@ public class UserSelectServlet extends HttpServlet {
 			request.setAttribute("msg", "회원 정보 조회 실패");
 			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");
 			view.forward(request, response);
-		}
+		}*/
 	}
 
 	/**

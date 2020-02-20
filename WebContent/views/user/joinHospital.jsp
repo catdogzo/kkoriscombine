@@ -11,7 +11,7 @@ div.container {height: auto !important;}
 div.contents.join.user {width: 50%; max-width: 650px; margin: 20px auto;}
 form#joinHospital > div.location > input:nth-of-type(1) {width: 60%;}
 form#joinHospital > div.location > input {margin: 5px 0;}
-form#joinHospital > div.location > .postcodify_searchBtn {width: 39%; border: 1px solid #000; font-size: 13px; padding: 12px;}
+form#joinHospital > div.location > .postcodify_searchBtn {width: 39%; border: 1px solid #000; font-size: 13px; padding: 12px; cursor: pointer;}
 form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #aedefc; background: #aedefc; color: #fff;}
 </style>
 </head>
@@ -47,9 +47,9 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 				</div>
 				<div class="input-box location">
 					<p class="input-label">위치</p>
-					<input type="text" name="zipcode" class="postcodify_postcode5" placeholder="우편번호" required>
-					<button id="postcodify_searchBtn" class="postcodify_searchBtn">주소검색</button>
-					<input type="text" name="location1" class="postcodify_address" placeholder="기본주소" required>
+					<input type="text" name="zipcode" class="postcodify_postcode5" placeholder="우편번호" readonly required>
+					<input type="button" id="postcodify_searchBtn" class="postcodify_searchBtn" value="주소검색">
+					<input type="text" name="location1" class="postcodify_address" placeholder="기본주소" readonly required>
 					<input type="text" name="location2" class="postcodify_details" placeholder="상세주소">
 				</div>
 				<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
@@ -139,6 +139,10 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 			var isId, isPwd, isPwd2, isEmail = false;
 			$p = $('<p>');
 			$p.addClass('input-info').addClass('color-red');
+			
+			$('input').each(function(){
+				$(this).prop('autocomplete', 'off');
+			});
 			
 			$('#userId').change(function(){
 				var userId = $(this);

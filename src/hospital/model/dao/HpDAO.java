@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import hospital.model.vo.Hospital;
@@ -43,10 +44,12 @@ public class HpDAO {
 			pstmt.setString(3, hp.getHpDName());
 			pstmt.setString(4, hp.getHpPhone());
 			pstmt.setString(5, hp.getHpEmail());
-			pstmt.setString(6, hp.getHpLoc());
-			pstmt.setString(7, hp.getHpStart());
-			pstmt.setString(8, hp.getHpEnd());
-			pstmt.setString(9, hp.getHpLunch());
+			pstmt.setString(6, hp.getHpZip());
+			pstmt.setString(7, hp.getHpLoc1());
+			pstmt.setString(8, hp.getHpLoc2());
+			pstmt.setString(9, hp.getHpStart());
+			pstmt.setString(10, hp.getHpEnd());
+			pstmt.setString(11, hp.getHpLunch());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -76,7 +79,9 @@ public class HpDAO {
 								  rs.getString("HP_DNAME"),
 								  rs.getString("HP_PHONE"),
 								  rs.getString("HP_EMAIL"),
-								  rs.getString("HP_LOC"),
+								  rs.getString("HP_ZIP"),
+								  rs.getString("HP_LOC1"),
+								  rs.getString("HP_LOC2"),
 								  rs.getString("HP_INTRO"),
 								  rs.getString("HP_PHOTO"),
 								  rs.getString("HP_START"),
@@ -119,4 +124,34 @@ public class HpDAO {
 		return hpIdList;
 	}
 
+	public ArrayList<Hospital> selectList(Connection conn, HashMap<String, String> dataMap) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Hospital> list = null;
+		
+		String query = prop.getProperty("searchHp");
+		//selectHospital=SELECT * FROM HOSPITAL WHERE HP_LOC LIKE ?
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dataMap.get("loc"));
+			pstmt.setString(2, dataMap.get("medical"));
+			pstmt.setString(3, dataMap.get("hName"));
+			
+			rs = pstmt.executeQuery();
+			list = new ArrayList<Hospital>();
+			while(rs.next()) {
+				 list.add(new Hospital(rs.getString("HP_ID"),
+						 			   rs.getString("HP_NAME"),
+						 			   rs.getString("HP_PHONE"),
+						 			   rs.getString("HP_LOC1")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
+	}
 }
