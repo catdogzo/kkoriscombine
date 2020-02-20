@@ -1,6 +1,7 @@
 package allUser.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -24,7 +25,7 @@ import user.model.service.UserService;
 /**
  * Servlet implementation class PwdSearchServlet
  */
-@WebServlet("/searchPwd.au")
+@WebServlet(name="PwdSearchServlet", urlPatterns="/searchPwd.au")
 public class PwdSearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -40,9 +41,11 @@ public class PwdSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String inputId = request.getParameter("userId");
+		String inputId = request.getParameter("userId").toLowerCase();
 		String userName = request.getParameter("userName");
-		String email = request.getParameter("email"); // 받는 사람
+		String email = request.getParameter("email").toLowerCase(); // 받는 사람
+		String temPwd = request.getParameter("temPwd"); // 임시 비밀번호 (암호화x)
+		String newPwd = request.getParameter("newPwd"); // 임시 비밀번호 (암호화o)
 		
 		AllUserService aus = new AllUserService();
 		String kind = aus.searchKind(inputId);
@@ -56,18 +59,16 @@ public class PwdSearchServlet extends HttpServlet {
 		}
 		
 		if(inputId.equals(userId)){
-			char[] charArr = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+			/*char[] charArr = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 			String temPwd = "";
 			for(int i = 0; i < 6; i++) {
 				int idx = (int)(charArr.length * Math.random());
 				temPwd += charArr[idx];
-			}
+			}*/
 			
-			int result = aus.updatePwd(userId, temPwd);
-			
+			int result = aus.updatePwd(userId, newPwd);
+			PrintWriter out = response.getWriter();
 			if(result > 0) {
-				request.setAttribute("temPwd", temPwd);
-				
 				// 임시비밀번호 메일 발송
 				final String sender = "kkoriscombine@naver.com"; // 보내는 사람 ID (Ex: @naver.com 까지..)
 				final String senderPwd = "kkoris123!"; // 보내는 사람 Password			
@@ -107,12 +108,19 @@ public class PwdSearchServlet extends HttpServlet {
 					Transport.send(message);
 					System.out.println("전송 완료!!!!");
 					
-					response.sendRedirect("index.jsp");
+//					response.sendRedirect("index.jsp");
+					
+					out.print("success");
 				} catch (MessagingException e) {
 					System.out.println("전송 실패!! ㅠㅠ");
 					e.printStackTrace();
 				}
-			}
+			} else {
+				out.print("fail");
+			}	
+		
+			out.flush();
+			out.close();
 		} else {
 			request.setAttribute("msg", "비밀번호 찾기 실패");
 			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");

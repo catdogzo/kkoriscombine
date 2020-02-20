@@ -1,6 +1,6 @@
 package hospital.model.dao;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import hospital.model.vo.Hospital;
@@ -91,10 +92,10 @@ public class HpDAO {
 		return hp;
 	}
 
-	public String searchId(Connection conn, String userName, String email) {
+	public ArrayList<String> searchId(Connection conn, String userName, String email) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String hpId = null;
+		ArrayList<String> hpIdList = null;
 		
 		String query = prop.getProperty("searchId");
 		
@@ -105,8 +106,9 @@ public class HpDAO {
 			pstmt.setString(2, email);
 			
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				hpId = rs.getString(1);
+			hpIdList = new ArrayList<String>();
+			while(rs.next()) {
+				hpIdList.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -114,7 +116,7 @@ public class HpDAO {
 			close(rs);
 			close(pstmt);
 		}
-		return hpId;
+		return hpIdList;
 	}
 
 }

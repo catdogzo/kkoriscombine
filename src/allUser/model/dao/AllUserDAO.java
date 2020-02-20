@@ -145,7 +145,7 @@ public class AllUserDAO {
 		return kind;
 	}
 
-	public int updatePwd(Connection conn, String userId, String temPwd) {
+	public int updatePwd(Connection conn, String userId, String newPwd) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -153,7 +153,7 @@ public class AllUserDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, temPwd);
+			pstmt.setString(1, newPwd);
 			pstmt.setString(2, userId);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {

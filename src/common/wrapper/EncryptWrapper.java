@@ -18,8 +18,8 @@ public class EncryptWrapper extends HttpServletRequestWrapper{
 	public String getParameter(String key) {
 		String value = "";
 		
-		// request객체에 담긴 파라미터 이름(key)이 userPwd, newPwd, temPwd인 경우 암호화
-		if(key != null && (key.equals("userPwd") || key.equals("newPwd") || key.equals("temPwd"))) {
+		// request객체에 담긴 파라미터 이름(key)이 userPwd, newPwd인 경우 암호화
+		if(key != null && (key.equals("userPwd") || key.equals("newPwd"))) {
 			value = getSha512(super.getParameter(key));
 		} else {
 			value = super.getParameter(key);

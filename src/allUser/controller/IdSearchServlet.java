@@ -1,6 +1,7 @@
 package allUser.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,15 +35,15 @@ public class IdSearchServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String email = request.getParameter("email");
 		
-		String userId = new UserService().searchId(userName, email);
-		String hpId = new HpService().searchId(userName, email);
+		ArrayList<String> usIdList = new UserService().searchId(userName, email);
+		ArrayList<String> hpIdList = new HpService().searchId(userName, email);
 		
 		String page = null;
-		if(userId != null) {
-			request.setAttribute("findId", userId);
+		if(usIdList != null) {
+			request.setAttribute("idList", usIdList);
 			page = "views/user/findId.jsp";
-		} else if(hpId != null){
-			request.setAttribute("findId", hpId);
+		} else if(hpIdList != null){
+			request.setAttribute("idList", hpIdList);
 			page = "views/user/findId.jsp";
 		} else {
 			request.setAttribute("msg", "아이디 찾기 실패");

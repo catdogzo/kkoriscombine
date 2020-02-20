@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import user.model.vo.User;
@@ -109,10 +110,10 @@ public class UserDAO {
 		return user;
 	}
 
-	public String searchId(Connection conn, String userName, String email) {
+	public ArrayList<String> searchId(Connection conn, String userName, String email) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String userId = null;
+		ArrayList<String> usIdList = null;
 		
 		String query = prop.getProperty("searchId");
 		
@@ -122,8 +123,9 @@ public class UserDAO {
 			pstmt.setString(2, email);
 			
 			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				userId = rs.getString(1);
+			usIdList = new ArrayList<String>();
+			while(rs.next()) {
+				usIdList.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -131,7 +133,7 @@ public class UserDAO {
 			close(rs);
 			close(pstmt);
 		}
-		return userId;
+		return usIdList;
 	}
 	
 	

@@ -61,9 +61,9 @@ public class AllUserService {
 		return kind;
 	}
 
-	public int updatePwd(String userId, String temPwd) {
+	public int updatePwd(String userId, String newPwd) {
 		Connection conn = getConnection();
-		int result = new AllUserDAO().updatePwd(conn, userId, temPwd);
+		int result = new AllUserDAO().updatePwd(conn, userId, newPwd);
 		
 		if(result > 0) {
 			commit(conn);

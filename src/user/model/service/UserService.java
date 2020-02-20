@@ -1,8 +1,12 @@
 package user.model.service;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
+import static common.JDBCTemplate.commit;
+import static common.JDBCTemplate.getConnection;
+import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import user.model.dao.UserDAO;
 import user.model.vo.User;
@@ -42,13 +46,13 @@ public class UserService {
 		return user;
 	}
 
-	public String searchId(String userName, String email) {
+	public ArrayList<String> searchId(String userName, String email) {
 		Connection conn = getConnection();
 		
-		String userId = new UserDAO().searchId(conn, userName, email);
+		ArrayList<String> usIdList = new UserDAO().searchId(conn, userName, email);
 		
 		close(conn);
-		return userId;
+		return usIdList;
 		
 	}
 	
