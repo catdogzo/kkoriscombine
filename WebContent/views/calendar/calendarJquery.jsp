@@ -24,13 +24,44 @@
     	 maxDate: "+1Y" */
 	  });
 	 });
+ 
 </script>
 
+<script>
+	/* 일정입력 함수 */
+	function insert(){
+		console.log(11);
+		var eventText = $('.eventInput').val();
+		console.log(eventText);
+		$('.insertCal').text(eventText);
+		
+	}
+
+/* 	console.log("11");
+$('#insert1').click(function(){
+	console.log("11");
+
+	var eventText = $('.eventInput').val();
+	console.log(eventText);
+$('.insertCal').text(eventText);
+}); */
+
+</script>
 </head>
 <body>
- <p>
-  날짜 입력:  <input type="text" id="alternate" size="30"><div id="datepicker"></div>
- </p>
- 
+	<%-- <%@ include file="../layout.jsp" %> --%>
+
+	<div class="calendar">
+ 	<p>
+ 		날짜 입력: <input type="text" id="alternate" size="15">&nbsp;&nbsp;&nbsp;
+ 		일정 입력: <input type="text" name="eventInput" class="eventInput"> 
+ 		<button  class="insert" onclick="insert();">입력</button>
+ 		<div id="datepicker"></div>
+ 	</p>
+ 	</div>
+ 	<div class="insertCal"></div>
+ 	
+ 	
+ 	
 </body>
 </html>
