@@ -1,7 +1,9 @@
 package rvBoard.model.service;
 
 import static common.CommonTemplate.close;
+import static common.CommonTemplate.commit;
 import static common.CommonTemplate.getConnection;
+import static common.CommonTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -34,4 +36,108 @@ public class RvService {
 				
 		return plist;
 	}
+
+
+	public int insertRv(RvBoard rv) {
+		// 게시글 작성
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		int result = rvd.insertRv(conn, rv);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}		
+		return result;		
+	}
+	
+	
+	public int insertPhoto(int bNum, ArrayList<Photo> fileList) {
+		// 사진 올리기
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		int result = rvd.insertPhoto(conn, bNum, fileList);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);		
+		}
+
+		return result;
+	}
+
+	public RvBoard selectRv(int no) {
+		// 게시글 보기
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		RvBoard rv = null;
+		
+		rv = rvd.selectRv(conn, no);
+		
+		if(rv != null) {
+			commit(conn);			
+		} else {
+			rollback(conn);
+		}		
+		return rv;
+	}
+
+	public ArrayList<Photo> selectPhoto(int no) {
+		// 사진 불러오기
+		Connection conn = getConnection();
+		ArrayList<Photo> list = new RvDAO().selectPhoto(conn, no);		
+		
+		return list;
+	}
+
+	public int updateRv(RvBoard rv) {
+		// 게시글 수정
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		int result = rvd.updateRv(conn, rv);
+				
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);	
+		
+		return result;
+	}
+
+	public int updatePhoto(int bNum, ArrayList<Photo> fileList) {
+		// 사진 수정
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		
+		int result = rvd.updatePhoto(conn, fileList);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		return result;
+	}
+
+	public int deleteRv(int no) {
+		// 게시글 삭제
+		Connection conn = getConnection();
+		RvDAO rvd = new RvDAO();
+		
+		int result = rvd.deleteRv(conn, no);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		return result;
+	}	
 }

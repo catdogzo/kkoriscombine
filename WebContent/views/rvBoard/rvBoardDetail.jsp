@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+	import="rvBoard.model.vo.*, java.util.ArrayList, java.sql.Date, photo.model.vo.*"  %>
+<%
+	RvBoard rv = (RvBoard)request.getAttribute("rv");
+	ArrayList<Photo> pList = (ArrayList<Photo>)request.getAttribute("pList");
+	Photo titleImg = pList.get(0);
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,21 +44,24 @@
 			<img src="../../images/rvb.png" id="blogo">
 		<br>
 		<!-- <h1>후기 게시판 글보기</h1> -->
-		<form action="<%= request.getContextPath() %>/insert.th" method="post" encType="multipart/form-data">
+		<form action="<%= request.getContextPath() %>/rvBoard/rvBoardUpdate.jsp" method="post" encType="multipart/form-data">
 			<div class="writeArea">	
 					<table>
 						<tr>
-							<th colspan="3">제목
-								<input type="text" size="50" name="title" class="input" style="visibility: hidden">
+							<th colspan="2">제목
+								<input type="text" size="50" name="title" class="input" style="visibility: hidden"><%=rv.getRvTitle() %>
 							</th>			
+							<td><%= rv.getUsId() %></td>
 						</tr>
 						<tr>
 						<td></td>
 						</tr>
 						<tr>
 							<td class="aleft">병원명
+								<%= rv.getHpId() %>
 							</td>
 							<td colspan="2" class="aleft">날짜
+								<%= rv.getRvDate() %>
 							</td>
 							<td class="aleft">
 								 <div id="star" ></div> <!-- 별점 -->
@@ -62,26 +72,42 @@
 						</tr>
 						<tr>
 							<td colspan="4">
-								<textarea name="content" cols="75" rows="15" style="resize:none;"></textarea>
+								<textarea name="content" cols="75" rows="15" style="resize:none;"><%= rv.getRvCon() %>
+									<img id="titleImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= titleImg.getPhChng() %>">
+									<% for(int i = 1; i < pList.size(); i++){ %>
+										<img id="detailImg" class="detailImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= pList.get(i).getPhChng() %>">
+										<input type="hidden" value="<%= pList.get(1).getPhNum() %>" name="phNum1">
+										<input type="hidden" value="<%= pList.get(2).getPhNum() %>" name="phNum2">
+										<input type="hidden" value="<%= pList.get(3).getPhNum() %>" name="phNum3">
+									<% } %>																
+								</textarea>
 							</td>
 						</tr>
 						<tfoot>
 						<tr>
-							<th colspan="4" class="knb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="수정">
-								<input type="submit" id="cancleBtn" value="삭제">
+							<th colspan="4" class="rvb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="수정">
+								<input type="submit" onclick="deleteRv();" id="cancleBtn" value="삭제">
 							</th>
 							<td>							
 							</td>
 						</tr>
 						</tfoot>
-					</table>							
+					</table>	
+				<!--  넘길 값 -->				
+				<input type="hidden" value="<%= rv.getRvNum() %>" name="no">
+				<input type="hidden" value="<%= rv.getRvTitle() %>" name="title">		
+				<input type="hidden" value="<%= rv.getRvCon() %>" name="content">	
+				<input type="hidden" value="<%= rv.getHpId() %>" name="hpName">
+				<input type="hidden" value="<%= rv.getUsId() %>" name="writer">		
+				<input type="hidden" value="<%= titleImg.getPhNum() %>" name="phNum0">	
+				<input type="hidden" value="<%= rv.getRvStar() %>" name="star">		
+				<input type="hidden" value="<%= rv.getRvDate() %>" name="date">									
 				</div>
 			</form>		
 		</div>
 		<script>
 		// 별점 부분
 			var i = jQuery.noConflict();
-			var star = null;
 			i(document).ready(function() {
 	            $('div#star').raty({
 	                path : "<%= request.getContextPath() %>/images",
@@ -89,12 +115,18 @@
 	                half: false,
 	                halfShow: true,
 	                readOnly: true,
-	                click: function(score, evt) {
-	                	console.log(score);
-	                }              
+	                start : <%= rv.getRvStar() %>
 	            });
 	        });
-		        
+			
+	    	// 삭제
+		      function deleteRv(){
+		         var bool = confirm('정말로 삭제하시겠습니까?');
+		         if(bool){
+		            $('#detailForm').attr('action', '<%= request.getContextPath() %>/delete.rv');
+		            $('#detailForm').submit();
+		         }
+		      }   		        
 		</script>
 </body>
 </html>

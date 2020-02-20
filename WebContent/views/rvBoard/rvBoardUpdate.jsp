@@ -1,5 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import="rvBoard.model.vo.*, java.util.ArrayList, java.sql.Date, photo.model.vo.*" %>
+<%
+	request.setCharacterEncoding("UTF-8");
+	int no = Integer.parseInt(request.getParameter("no"));
+	String title = request.getParameter("title");
+	String content = request.getParameter("content");
+	String hpName = request.getParameter("hpName");
+	String writer = request.getParameter("writer");
+	int star = Integer.parseInt(request.getParameter("star"));
+	int num0 = Integer.parseInt(request.getParameter("phNum0"));
+	int num1 = Integer.parseInt(request.getParameter("phNum1"));
+	int num2 = Integer.parseInt(request.getParameter("phNum2"));
+	int num3 = Integer.parseInt(request.getParameter("phNum3"));
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,41 +51,42 @@
 			<img src="../../images/rvb.png" id="blogo">
 		<br>
 		<!-- <h1>후기 게시판 글수정</h1> -->
-		<form action="<%= request.getContextPath() %>/insert.th" method="post" encType="multipart/form-data">
+		<form action="<%= request.getContextPath() %>/update.rv" method="post" encType="multipart/form-data">
 			<div class="writeArea">	
 					<table>
 						<tr>
 							<th colspan="3">제목
-								<input type="text" size="50" name="title" class="input">
+								<input type="text" size="50" name="title" class="input" value="<%= title %>">
 							</th>			
 						</tr>
 						<tr>
-						<td></td>
+							<td></td>
 						</tr>
 						<tr>
 							<td class="aleft">병원명
+								<%= hpName %>
 							</td>
-							<td colspan="2" class="aleft">날짜
+							<td colspan="2" class="aleft">
 							</td>
 							<td class="aleft">
 								 <div id="star" ></div> <!-- 별점 -->
 							</td>							
 						</tr>
 						<tr>
-							<td class="aleft">내용</td>					
+							<td class="aleft">내용</td>				
 						</tr>
 						<tr>
 							<td colspan="4">
-								<textarea name="content" cols="75" rows="15" style="resize:none;"></textarea>
+								<textarea name="content" cols="75" rows="15" style="resize:none;">
+									<%= content %>
+								</textarea>
 							</td>
 						</tr>
 						<tfoot>
 						<tr>
-							<th colspan="4" class="knb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="수정">
+							<th colspan="4" class="rv_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="수정">
 								<input type="submit" id="cancleBtn" value="취소">
 							</th>
-							<td>							
-							</td>
 						</tr>
 						</tfoot>
 					</table>				
@@ -159,7 +174,6 @@
 			
 			// 별점 부분
 			var i = jQuery.noConflict();
-			var star = null;
 			i(document).ready(function() {
 	            $('div#star').raty({
 	                path : "<%= request.getContextPath() %>/images",
@@ -167,9 +181,7 @@
 	                half: false,
 	                halfShow: true,
 	                readOnly: true,
-	                click: function(score, evt) {
-	                	console.log(score);
-	                }              
+	                start : <%= star %>
 	            });
 	        });
 		        

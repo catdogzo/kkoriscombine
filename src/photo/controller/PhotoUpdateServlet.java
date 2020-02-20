@@ -18,6 +18,7 @@ import com.oreilly.servlet.MultipartRequest;
 import common.FileRename;
 import knBoard.model.service.KnService;
 import photo.model.vo.Photo;
+import rvBoard.model.service.RvService;
 
 @WebServlet("/update.kn, /update.rv")
 public class PhotoUpdateServlet extends HttpServlet {
@@ -36,78 +37,78 @@ public class PhotoUpdateServlet extends HttpServlet {
 			MultipartRequest multipartRequest 
 			= new MultipartRequest(request, savePath, maxSize, "UTF-8", new FileRename());
 		
-		ArrayList<String> saveFiles = new ArrayList<String>(); // 바뀐 파일의 이름을 저장할 ArrayList
-		ArrayList<String> originFiles = new ArrayList<String>(); // 원본 파일의 이름을 저장할 ArrayList
+			ArrayList<String> saveFiles = new ArrayList<String>(); // 바뀐 파일의 이름을 저장할 ArrayList
+			ArrayList<String> originFiles = new ArrayList<String>(); // 원본 파일의 이름을 저장할 ArrayList
+		
+			Enumeration<String> files = multipartRequest.getFileNames();	
+			
+			while(files.hasMoreElements()) {
+				String name = files.nextElement();// 전송 순서의 역순으로 파일을 가져옴
+				
+				if(multipartRequest.getFilesystemName(name) != null) {
+					// getFilesystemName(name) : MyFileRenamePolicy의 rename메소드에서 작성한 대로 rename된 파일명
+					saveFiles.add(multipartRequest.getFilesystemName(name));
+					originFiles.add(multipartRequest.getOriginalFileName(name));			
+				}			
+			}
 	
-		Enumeration<String> files = multipartRequest.getFileNames();	
-		
-		while(files.hasMoreElements()) {
-			String name = files.nextElement();// 전송 순서의 역순으로 파일을 가져옴
+			// 가져온 사진 번호
+			int num0 = Integer.parseInt(multipartRequest.getParameter("num0"));
+			int num1 = Integer.parseInt(multipartRequest.getParameter("num1"));
+			int num2 = Integer.parseInt(multipartRequest.getParameter("num2"));
+			int num3 = Integer.parseInt(multipartRequest.getParameter("num3"));
+				
 			
-			if(multipartRequest.getFilesystemName(name) != null) {
-				// getFilesystemName(name) : MyFileRenamePolicy의 rename메소드에서 작성한 대로 rename된 파일명
-				saveFiles.add(multipartRequest.getFilesystemName(name));
-				originFiles.add(multipartRequest.getOriginalFileName(name));			
-			}			
-		}
-
-		// 가져온 사진 번호
-		int num0 = Integer.parseInt(multipartRequest.getParameter("num0"));
-		int num1 = Integer.parseInt(multipartRequest.getParameter("num1"));
-		int num2 = Integer.parseInt(multipartRequest.getParameter("num2"));
-		int num3 = Integer.parseInt(multipartRequest.getParameter("num3"));
-			
-		
-		ArrayList<Photo> fileList = new ArrayList<Photo>();
-		for(int i = originFiles.size() - 1; i >= 0; i--) {
-			Photo ph = new Photo();
-			ph.setPhPath(savePath);	
-			ph.setPhOrig(originFiles.get(i));
-			ph.setPhChng(saveFiles.get(i));
-			
-			if(i == originFiles.size() - 1) {
-				ph.setPhFnum(0);
-			} else {
-				ph.setPhFnum(1);
-			}
-			switch(i) {
-			case 0 : ph.setPhNum((num3)); break;
-			case 1 : ph.setPhNum(num2); break;
-			case 2 : ph.setPhNum(num1); break;
-			case 3 : ph.setPhNum(num0); break;
-			}
-			fileList.add(ph);
-		}
-		
-		int result = 0;
-		// 게시판 구분
-		int bNum = Integer.parseInt(multipartRequest.getParameter("bNum"));
-		
-		if(bNum == 1) {
-			result = new KnService().insertPhoto(bNum, fileList);
-			if(result > 0) {
-				response.sendRedirect("detail.kn");
-			} else {
-				for(int i = 0; i < saveFiles.size(); i++) {
-					File failedFile = new File(savePath + saveFiles.get(i));
-					failedFile.delete();
+			ArrayList<Photo> fileList = new ArrayList<Photo>();
+			for(int i = originFiles.size() - 1; i >= 0; i--) {
+				Photo ph = new Photo();
+				ph.setPhPath(savePath);	
+				ph.setPhOrig(originFiles.get(i));
+				ph.setPhChng(saveFiles.get(i));
+				
+				if(i == originFiles.size() - 1) {
+					ph.setPhFnum(0);
+				} else {
+					ph.setPhFnum(1);
 				}
-				request.setAttribute("msg", "수정에 실패하였습니다.");
-				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-			}
-		}/*else {
-			result = new RvService().insertPhoto(bNum, fileList);*/
-/*			if(result > 0) {
-				response.sendRedirect("detail.rv");
-			} else {
-				for(int i = 0; i < saveFiles.size(); i++) {
-					File failedFile = new File(savePath + saveFiles.get(i));
-					failedFile.delete();
+				switch(i) {
+				case 0 : ph.setPhNum((num3)); break;
+				case 1 : ph.setPhNum(num2); break;
+				case 2 : ph.setPhNum(num1); break;
+				case 3 : ph.setPhNum(num0); break;
 				}
-				request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
-				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+				fileList.add(ph);
 			}
-		}*/
+			
+			int result = 0;
+			// 게시판 구분
+			int bNum = Integer.parseInt(multipartRequest.getParameter("bNum"));
+			
+			if(bNum == 1) {
+				result = new KnService().insertPhoto(bNum, fileList);
+				if(result > 0) {
+					response.sendRedirect("detail.kn");
+				} else {
+					for(int i = 0; i < saveFiles.size(); i++) {
+						File failedFile = new File(savePath + saveFiles.get(i));
+						failedFile.delete();
+					}
+					request.setAttribute("msg", "수정에 실패하였습니다.");
+					request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+				}
+			} else {
+				result = new RvService().updatePhoto(bNum, fileList);
+				if(result > 0) {
+					response.sendRedirect("detail.rv");
+				} else {
+					for(int i = 0; i < saveFiles.size(); i++) {
+						File failedFile = new File(savePath + saveFiles.get(i));
+						failedFile.delete();
+					}
+					request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
+					request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+				}
+			}
 		
 		}
 	}

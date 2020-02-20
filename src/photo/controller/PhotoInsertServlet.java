@@ -19,6 +19,7 @@ import com.sun.xml.internal.ws.api.message.Attachment;
 import common.FileRename;
 import knBoard.model.service.KnService;
 import photo.model.vo.Photo;
+import rvBoard.model.service.RvService;
 
 
 @WebServlet("/write.kn, /write.rv")
@@ -87,8 +88,8 @@ public class PhotoInsertServlet extends HttpServlet {
 				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 			}
 		}else {
-/*			result = new RvService().insertPhoto(bNum, fileList);*/
-/*			if(result > 0) {
+			result = new RvService().insertPhoto(bNum, fileList);
+			if(result > 0) {
 				response.sendRedirect("detail.rv");
 			} else {
 				for(int i = 0; i < saveFiles.size(); i++) {
@@ -97,20 +98,10 @@ public class PhotoInsertServlet extends HttpServlet {
 				}
 				request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
 				request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
-			}*/
-		}
-		
-		if(result > 0) {
-			response.sendRedirect("list.th");
-		} else {
-			for(int i = 0; i < saveFiles.size(); i++) {
-				File failedFile = new File(savePath + saveFiles.get(i));
-				failedFile.delete();
+
 			}
-			request.setAttribute("msg", "사진 게시판 등록에 실패하였습니다.");
-			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+	
 		}
-		
 	}		
 		
 }

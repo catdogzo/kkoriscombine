@@ -109,6 +109,8 @@
 						</div>
 					</div>				
 				</div>
+				<!--  보낼 값 -->
+				<input type="hidden" name="bNum" value=2>
 			</form>		
 		</div>
 		<script>

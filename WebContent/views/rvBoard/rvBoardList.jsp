@@ -167,11 +167,11 @@
          <!-- list가 있을 때만 나타나는 영역이다.  -->
          <% if(!rList.isEmpty()){ %>      
          <!-- 맨 처음으로 -->
-         <button onclick ="location.href='<%=request.getContextPath() %>/list.kn?currentPage=1'" class="pBtn">&laquo;</button> 
+         <button onclick ="location.href='<%=request.getContextPath() %>/list.rv?currentPage=1'" class="pBtn">&laquo;</button> 
          
          
          <!-- 이전 페이지로 -->
-         <button onclick="location.href='<%=request.getContextPath() %>/list.kn?currentPage=<%= currentPage -1 %>'" id="beforeBtn" class="pBtn"> &lt;</button>
+         <button onclick="location.href='<%=request.getContextPath() %>/list.rv?currentPage=<%= currentPage -1 %>'" id="beforeBtn" class="pBtn"> &lt;</button>
          <script>
             if(<%= currentPage %> <= 1){
                var before = $('#beforeBtn');
@@ -185,11 +185,11 @@
             <% if(p == currentPage) { %>
                <button id="choosen" disabled class="pBtn"><%= p %></button>
             <% } else {%>
-               <button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= p %>'" class="pBtn"><%= p %></button>
+               <button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.rv?currentPage=<%= p %>'" class="pBtn"><%= p %></button>
             <% } %>
          <% } %>
          <!-- 다음 페이지 -->
-         <button onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= currentPage +1 %>'" id="afterBtn" class="pBtn">></button>
+         <button onclick="location.href='<%= request.getContextPath() %>/list.rv?currentPage=<%= currentPage +1 %>'" id="afterBtn" class="pBtn">></button>
          <script>
             if(<%= currentPage %> >= <%= maxPage %>){
                var after = $("#afterBtn");
@@ -198,7 +198,7 @@
          </script>         
          
          <!-- 맨 끝으로 -->
-         <button onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= maxPage %>'">&raquo;</button>           
+         <button onclick="location.href='<%= request.getContextPath() %>/list.rv?currentPage=<%= maxPage %>'">&raquo;</button>           
          <% } %>
 	               
 				<div class="searchArea" align="center">
@@ -213,16 +213,6 @@
 	     			 <input type="submit" value="검색">			
 				</div>	
 			</div>
-				<div class="searchArea" align="center">
-					<select>
-					<option value="제목">제목</option>
-					<option value="내용">내용</option>
-					</select>&nbsp;&nbsp;
-					<span class="search_container">
-	         		<input class="search_input" type="text" placeholder="Search">
-	     			</span>&nbsp;&nbsp;	      
-	     			 <input type="submit" id="searchBtn" value="검색">			
-				</div>	
 		</div>
 	</div>
 		<script>
@@ -231,9 +221,11 @@
 					$(this).parent().css({'background':'#AEDEFC', 'cursor':'pointer'});
 				}).mouseout(function(){
 					$(this).parent().css("background", "none");
-				});			
+				}).click(function(){
+					var no = $(this).children().children().eq(0).val();
+					location.href='<%= request.getContextPath() %>/detail.rv?no=' + no;
+				});
 			});
-
 			
 		</script>
 </body>

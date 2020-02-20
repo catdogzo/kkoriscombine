@@ -48,13 +48,12 @@
 			<img src="../../images/knb.png" id="blogo">
 		<br>
 		<!-- <h1>지식 공유게시판 글보기</h1> -->
-		<form action="<%= request.getContextPath() %>/knBoard/knBoardUpdate.jsp" id="detailForm" method="post">
+		<form action="<%= request.getContextPath() %>/knBoard/knBoardUpdate.jsp" id="detailForm" method="post" encType="multipart/form-data">
 			<div class="writeArea">			
 				<table>
 					<tr>	
 						<td class="aleft">제목
-							<input type="text" size="50" name="title" class="input"><%= kn.getKnTtitle() %>
-							
+							<input type="text" size="50" name="title" class="input" style="visibility: hidden"><%= kn.getKnTtitle() %>							
 						</td>				
 					</tr>
 					<tr>
@@ -80,9 +79,9 @@
 								<img id="titleImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= titleImg.getPhChng() %>">
 								<% for(int i = 1; i < pList.size(); i++){ %>
 									<img id="detailImg" class="detailImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= pList.get(i).getPhChng() %>">
-									<input type="hidden" value="<%= pList.get(i).getPhNum() %>" name="phNum1">
-									<input type="hidden" value="<%= pList.get(i).getPhNum() %>" name="phNum2">
-									<input type="hidden" value="<%= pList.get(i).getPhNum() %>" name="phNum3">
+									<input type="hidden" value="<%= pList.get(1).getPhNum() %>" name="phNum1">
+									<input type="hidden" value="<%= pList.get(2).getPhNum() %>" name="phNum2">
+									<input type="hidden" value="<%= pList.get(3).getPhNum() %>" name="phNum3">
 								<% } %>
 							</textarea>
 						</td>

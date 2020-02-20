@@ -29,6 +29,7 @@ public class KnListServlet extends HttpServlet {
 		
 		// 페이징 관련
 		int listCount = service.getListCount();
+	    int posts;          //현재 페이지에 표시될 게시글 개수
 		int currentPage; // 현재 페이지 표시
 		int limit = 0;		 // 한 페이지에 표시될 페이징 수
 		int maxPage;	 // 전체 페이지 중 가장 마지막 페이지
@@ -42,31 +43,41 @@ public class KnListServlet extends HttpServlet {
 			// 페이지 전환 시 전달 받은 페이지로 currentPage 적용				
 		}
 		
+		limit = 10;
+		posts = 15;
 		maxPage = (int)((double)listCount/limit+ 0.9); 
 		startPage = (((int)((double)currentPage/limit + 0.9)) - 1) * limit + 1; // currentPage
 		endPage = startPage + limit - 1;
 		
-		if(maxPage < endPage) {
-			endPage = maxPage;
-		}
-		
-		Paging pg = new Paging(currentPage, listCount, limit, maxPage, startPage, endPage);
-
-		ArrayList<KnBoard> list = service.selectList(currentPage);
-		
-		String page = null;
-		if(list != null) {
-			page = "views/knBoard/knBoardList.jsp";
-			request.setAttribute("list", list);
-			request.setAttribute("pg", pg);
+		if(listCount%posts != 0) {
+		    maxPage = (int)((double)listCount/posts) + 1;
 		} else {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "게시판 조회에 실패하였습니다.");
+		  	maxPage = (int)((double)listCount/posts);
 		}
-		RequestDispatcher view = request.getRequestDispatcher(page);
-		view.forward(request, response);
-		
-	}
+  
+		  startPage = (((int)((double)currentPage/limit + 0.9)) - 1) * limit + 1;
+		  endPage = startPage + limit -1;
+		  if(maxPage < endPage) {
+		      endPage = maxPage;
+		   }
+		  
+			Paging pg = new Paging(currentPage, listCount, limit, maxPage, startPage, endPage);
+	
+			ArrayList<KnBoard> list = service.selectList(currentPage);
+			
+			String page = null;
+			if(list != null) {
+				page = "views/knBoard/knBoardList.jsp";
+				request.setAttribute("list", list);
+				request.setAttribute("pg", pg);
+			} else {
+				page = "views/common/errorPage.jsp";
+				request.setAttribute("msg", "게시판 조회에 실패하였습니다.");
+			}
+			RequestDispatcher view = request.getRequestDispatcher(page);
+			view.forward(request, response);
+			
+		}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

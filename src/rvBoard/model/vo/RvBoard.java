@@ -41,6 +41,23 @@ public class RvBoard {
 		this.usId = usId;
 	}	
 	
+	public RvBoard(int rvNum, String rvTitle, String rvCon) {
+		super();
+		this.rvNum = rvNum;
+		this.rvTitle = rvTitle;
+		this.rvCon = rvCon;
+	}	
+	
+	public RvBoard(String rvTitle, String rvCon, String hpId, String usId, int rvStar) {
+		super();
+		this.rvTitle = rvTitle;
+		this.rvStar = rvStar;
+		this.rvCon = rvCon;
+		this.hpId = hpId;
+		this.usId = usId;
+	}	
+	
+	
 	public int getRvNum() {
 		return rvNum;
 	}

@@ -8,46 +8,37 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import rvBoard.model.service.RvService;
-import rvBoard.model.vo.RvBoard;
 
-
-@WebServlet("/write.rv")
-public class RvWriteServlet extends HttpServlet {
+@WebServlet("/delete.rv")
+public class RvDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public RvWriteServlet() {
+       
+    public RvDeleteServlet() {
         super();
     }
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int star = Integer.parseInt(request.getParameter("score"));
-		HttpSession session = request.getSession();
-		String rvTitle = request.getParameter("title");
-		String rvCon = request.getParameter("content");
-		String usNick = session.getAttribute("loginUser").getUserId;
-		String hpName = request.getParameter("hpName");
+		int no = Integer.parseInt(request.getParameter("no"));
 		
-		RvBoard rv = new RvBoard(rvTitle, rvCon, hpName, usNick, star);
-		
-		int result = new RvService().insertRv(rv);
+		int result = new RvService().deleteRv(no);
 		
 		if(result > 0) {
-			response.sendRedirect(request.getContextPath() + "/list.rv");		
+
+			response.sendRedirect(request.getContextPath() + "/list.rv");
+			
 		}else {
-			request.setAttribute("msg", "게시글 등록에 실패하였습니다.");
+
+			request.setAttribute("msg", "게시글 삭제에 실패하였습니다.");
 			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");
 			view.forward(request, response);
-		}
-	
+		}		
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		doGet(request, response);
 	}
 
