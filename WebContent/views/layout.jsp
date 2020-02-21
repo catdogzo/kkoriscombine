@@ -34,9 +34,9 @@
 	         	<li id="nav-community">
 	         		<span>커뮤니티</span>
          			<ul class="nav2-community" id="nav2-community">
-	         			<li><a href="#">공지사항</a></li>
-	         			<li><a href="#">후기 모아보기</a></li>
-	         			<li><a href="#">지식 공유</a></li>
+	         			<li><a href="<%=request.getContextPath() %>/noticeList.bo">">공지사항</a></li>
+	         			<li><a href="<%= request.getContextPath() %>/list.rv">후기 모아보기</a></li>
+	         			<li><a href="<%= request.getContextPath() %>/list.kn">지식 공유</a></li>
          			</ul>
 	         	</li>
 	         	<li id="nav-calendar">

@@ -159,7 +159,7 @@ public class KnDAO {
 			
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, kn.getKnTtitle());
+				pstmt.setString(1, kn.getknTitle());
 				pstmt.setString(2, kn.getKnCon());
 				pstmt.setString(3, kn.getUsNick());
 		
@@ -181,7 +181,7 @@ public class KnDAO {
 			
 			try {
 				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, kn.getKnTtitle());
+				pstmt.setString(1, kn.getknTitle());
 				pstmt.setString(2, kn.getKnCon());
 				pstmt.setInt(3, kn.getKnNum());
 				
@@ -244,7 +244,7 @@ public class KnDAO {
 			String query = prop.getProperty("selectKnr");
 			
 			try {
-				pstmt = conn.prepareStatement("selectKnr");
+				pstmt = conn.prepareStatement(query);
 				pstmt.setInt(1, no);
 				rset = pstmt.executeQuery();
 				
@@ -252,11 +252,10 @@ public class KnDAO {
 				while(rset.next()) {
 					list.add(new KnReply(rset.getInt("knr_num"),
 										rset.getString("knr_con"),
+										rset.getDate("knr_date"),
 										rset.getInt("kn_num"),
-										rset.getString("us_id"),
-										rset.getDate("knr_date")));
+										rset.getString("us_nick")));
 				}
-				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
@@ -267,7 +266,7 @@ public class KnDAO {
 			return list;
 		}
 
-		public int insertPhoto(Connection conn, int bNum, ArrayList<Photo> fileList) {
+		public int insertPhoto(Connection conn, ArrayList<Photo> fileList) {
 			PreparedStatement pstmt = null;
 			int result = 0;
 			Photo p = null;
@@ -281,7 +280,7 @@ public class KnDAO {
 					pstmt.setString(2, p.getPhChng());
 					pstmt.setString(3, p.getPhPath());
 					pstmt.setInt(4, p.getPhFnum());
-					pstmt.setInt(5, p.getKnNum());
+
 					
 					result += pstmt.executeUpdate();
 				}
@@ -321,23 +320,27 @@ public class KnDAO {
 		public ArrayList<Photo> selectPhoto(Connection conn, int no) {
 			PreparedStatement pstmt = null;
 			ResultSet rset = null;
-			ArrayList<Photo> list = null;
+			ArrayList<Photo> pList = null;
 			String query = prop.getProperty("selectKnPhoto");
 			
 			try {
 				pstmt = conn.prepareStatement(query);
 				pstmt.setInt(1, no);
-				list = new ArrayList<Photo>();
-				
-				while(rset.next()) {
-					Photo p = new Photo();
-					p.setPhFnum(rset.getInt("ph_fnum"));
-					p.setPhOrig(rset.getString("ph_orig"));
-					p.setPhChng(rset.getString("ph_chng"));
-					p.setPhPath(rset.getString("ph_path"));
-					p.setPhUpload(rset.getDate("ph_upload"));
-					
-				}
+				rset = pstmt.executeQuery();
+				pList = new ArrayList<Photo>();
+				if(rset != null) {
+					while(rset.next()) {
+						Photo p = new Photo();
+						p.setPhNum(rset.getInt("ph_num"));
+						p.setPhFnum(rset.getInt("ph_fnum"));
+						p.setPhOrig(rset.getString("ph_orig"));
+						p.setPhChng(rset.getString("ph_chng"));
+						p.setPhPath(rset.getString("ph_path"));
+						p.setPhUpload(rset.getDate("ph_upload"));
+						
+						pList.add(p);
+					}
+				}		
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -346,7 +349,7 @@ public class KnDAO {
 				close(pstmt);
 			}
 	
-			return list;
+			return pList;
 		}
 
 		public int insertLike(Connection conn, String usId) {

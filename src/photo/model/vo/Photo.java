@@ -30,6 +30,17 @@ public class Photo {
 		this.phBnum = phBnum;
 		this.phDel = phDel;
 	}
+
+	public Photo(int phNum, int phFnum, String phOrig, String phChng, String phPath, Date phUpload) {
+		super();
+		this.phNum = phNum;
+		this.phOrig = phOrig;
+		this.phChng = phChng;
+		this.phPath = phPath;
+		this.phUpload = phUpload;
+		this.phFnum = phFnum;
+	}
+		
 	
 	public Photo(int rvNum, String phChng) {
 		super();

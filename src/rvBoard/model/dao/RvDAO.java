@@ -194,7 +194,7 @@ public class RvDAO {
 		return result;
 	}
 
-	public int insertPhoto(Connection conn, int bNum, ArrayList<Photo> fileList) {
+	public int insertPhoto(Connection conn, ArrayList<Photo> fileList) {
 		// 사진 첨부
 		PreparedStatement pstmt = null;
 		int result = 0;

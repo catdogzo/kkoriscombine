@@ -38,35 +38,27 @@ public class RvService {
 	}
 
 
-	public int insertRv(RvBoard rv) {
+	public int insertRv(RvBoard rv, ArrayList<Photo> fileList) {
 		// 게시글 작성
 		Connection conn = getConnection();
 		RvDAO rvd = new RvDAO();
-		int result = rvd.insertRv(conn, rv);
+		int result1 = rvd.insertRv(conn, rv);
 		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}		
-		return result;		
-	}
-	
-	
-	public int insertPhoto(int bNum, ArrayList<Photo> fileList) {
-		// 사진 올리기
-		Connection conn = getConnection();
-		RvDAO rvd = new RvDAO();
-		int result = rvd.insertPhoto(conn, bNum, fileList);
+		if(result1 > 0) {
+			int result2 = rvd.insertPhoto(conn, fileList);
+			if (result2 > 0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+			}
+		}else {
 		
-		if(result > 0) {
-			commit(conn);
-		} else {
 			rollback(conn);		
 		}
 
-		return result;
+		return result1;	
 	}
+	
 
 	public RvBoard selectRv(int no) {
 		// 게시글 보기
@@ -92,38 +84,22 @@ public class RvService {
 		return list;
 	}
 
-	public int updateRv(RvBoard rv) {
+	public int updateRv(RvBoard rv, ArrayList<Photo> fileList) {
 		// 게시글 수정
 		Connection conn = getConnection();
 		RvDAO rvd = new RvDAO();
-		int result = rvd.updateRv(conn, rv);
-				
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}
-		
-		close(conn);	
-		
-		return result;
-	}
+		int result1 = rvd.updateRv(conn, rv);			
+		int result2 = rvd.updatePhoto(conn, fileList);
 
-	public int updatePhoto(int bNum, ArrayList<Photo> fileList) {
-		// 사진 수정
-		Connection conn = getConnection();
-		RvDAO rvd = new RvDAO();
-		
-		int result = rvd.updatePhoto(conn, fileList);
-		
-		if(result > 0) {
+		if(result1 > 0) {
 			commit(conn);
 		}else {
 			rollback(conn);
 		}
 		
-		return result;
+		return result1;
 	}
+
 
 	public int deleteRv(int no) {
 		// 게시글 삭제

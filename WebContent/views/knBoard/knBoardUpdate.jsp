@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.ArrayList, java.sql.Date, photo.model.vo.*"%>
 <%
-	request.setCharacterEncoding("UTF-8");
-	int no = Integer.parseInt(request.getParameter("no"));
 	String title = request.getParameter("title");
-	String content = request.getParameter("content");
-	int num0 = Integer.parseInt(request.getParameter("phNum0"));
-	int num1 = Integer.parseInt(request.getParameter("phNum1"));
-	int num2 = Integer.parseInt(request.getParameter("phNum2"));
-	int num3 = Integer.parseInt(request.getParameter("phNum3"));
-%>   
+	String con = request.getParameter("content");
+	String nick = request.getParameter("knNick");
+	System.out.println(Integer.parseInt(request.getParameter("no")));
+	int no = Integer.parseInt(request.getParameter("no"));
+	ArrayList<String> images = new ArrayList<String>();
+	for(int i = 1; i < 4; i++){
+		images.add(request.getParameter("detailImg" + i) == null ? "" : "src=" + request.getContextPath() + "/thumbnail_uploadFiles/" + request.getParameter("detailImg" + i));
+	}
+	
+%>
+
+<%@ include file="../common/layout.jsp" %>   
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,9 +22,9 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 	<style>
-		#blogo{margin-left:300px; margin-top: 50px;}
-		.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 150px; margin-right: auto; margin-top: auto;}
-		.writeArea{width: 650px; height: 600px; margin-top: 30px; margin-left: 150px; margin-right: auto; padding: 10px; border: 1px solid #fcc6c9;}
+		#blogo{margin-left:350px; margin-top: 50px;}
+		.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 400px; margin-right: auto; margin-top: auto;}
+		.writeArea{width: 650px; height: 600px; margin-top: 80px; margin-left: 150px; margin-right: auto; padding: 10px; border: 1px solid #fcc6c9;}
 		table{margin-left: 30px; margin-top: 3px; min-height: 550px;}
 		table, th, td{word-spacing: 3px; padding: 3px;}
 		table > tfoot > th, td{padding-top: 5px;}
@@ -31,7 +35,7 @@
 		.aleft{font-weight: 800;}
 		#writeBtn{font-size: 15px; margin-left: 50px;  text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
 		#cancleBtn{font-size: 15px; text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
-		div#photo{position: absolute; left: 224pt; margin-top: 10px;}
+		div#photo{position: absolute; left: 400pt; margin-top: 10px;}
 		#titleImgArea {width:180px; height:180px; border:1px dashed #fcc6c9; text-align:center; display:table-cell; vertical-align:middle; }
 		#titleImgArea:hover, #contentImgArea1:hover, #contentImgArea2:hover, #contentImgArea3:hover {cursor:pointer;}
 		#contentImgArea1, #contentImgArea2, #contentImgArea3 {width:180px; height:180px; border:1px dashed #fcc6c9; text-align:center; display:table-cell; vertical-align:middle;}
@@ -40,48 +44,45 @@
 	</style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
 		<div class="outer">
 			<img src="../../images/knb.png" id="blogo">
 		<br>
-		<!-- <h1>지식 공유게시판 글수정</h1> -->
-		<form action="<%= request.getContextPath() %>/update.kn" method="post">
+		<!-- 지식 공유게시판 글수정 -->
+
+		<form action="<%= request.getContextPath() %>/update.kn" method="post" encType="multipart/form-data">
 			<div class="writeArea">			
 				<table>
 					<tr>
-						<td class="aleft">제목
+						<td class="aleft" rownum="2">제목
 						</td>				
 					</tr>
 					<tr>
-						<td><input type="text" size="50" name="title" class="input" value=<%=title %>></td>
-					</tr>				
-					<!-- 
-					<tr>
+						<td><input type="text" size="50" name="title" class="input" value="<%= title %>"></td>
+					</tr>					
+<!-- 					<tr>
 						<td class="aleft" width= "380px">글쓴이
 						</td>
 						<td class="aleft">날짜
 						</td>
 					</tr> -->
 					<tr>
-						<td></td>
-					</tr>
-					<tr>
 						<td class="aleft">내용</td>
 					</tr>
 					<tr>
 						<td colspan="4">
-							<textarea name="content" cols="75" rows="15" style="resize:none;"><%=content %></textarea>
+							<textarea name="content" cols="75" rows="15" style="resize:none;"><%= con %></textarea>
 						</td>
 					</tr>
 					<tr>
 						<th colspan="4" class="knb_photo">
 							<input type="submit" id="writeBtn" value="수정">
-							<input type="button" id="cancleBtn" value="취소">
+							<input type="button" onclick="location.href='<%= request.getContextPath() %>/list.kn'" id="cancleBtn" value="취소">
 						</th>
 					</tr>
 				</table>				
 				<br><br><br>			
 			</div>	
+			<input type="hidden" name="bNum" value="1">
 			<div id = "photo">
 				<div id="titleImgArea">
 					<figure>
@@ -115,11 +116,9 @@
 				</div>
 			</div>
 				<!-- 보낼 값 -->
-				<input type="hidden" name="num0" value="<%= num0 %>">
-				<input type="hidden" name="num1" value="<%= num1 %>">
-				<input type="hidden" name="num2" value="<%= num2 %>">
-				<input type="hidden" name="num3" value="<%= num3 %>">
 				<input type="hidden" name="no" value="<%= no %>">
+				<input type="hidden" name="title" value="<%= title %>">
+				<input type="hidden" name="con" value="<%= con %>">
 		</form>			
 	</div>
 	<script>

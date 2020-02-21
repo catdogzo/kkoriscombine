@@ -28,34 +28,30 @@ public class KnDetailServlet extends HttpServlet {
 		int no = Integer.parseInt(request.getParameter("no"));
 		KnBoard kn = new KnService().selectKn(no);
 		
-		// 댓글 같이 불러오기
-		ArrayList<KnReply> list = new KnService().selectKnr(no);
-		
 		// 사진 불러오기
 		ArrayList<Photo> pList = new KnService().selectPhoto(no);
-		
+		// 댓글 같이 불러오기
+		ArrayList<KnReply> list = new KnService().selectKnr(no);
 		String page = null;
-
-		if(kn != null && list != null && pList != null) {
+		
+		if(kn != null) {
 			page = "views/knBoard/knBoardDetail.jsp";
 			request.setAttribute("board", kn);
-			request.setAttribute("list", list);
-			request.setAttribute("plist", pList);
-		} else if(kn != null && list == null && pList != null) {
-			page = "views/knBoard/knBoardDetail.jsp";
+			request.setAttribute("list", list); // 댓글
+			request.setAttribute("pList", pList); // 사진
+			/*		} else if(kn != null && list.size() < 0 && pList.size() > 0){
 			request.setAttribute("board", kn);
-			request.setAttribute("plist", pList);
-		} else if(kn != null && list != null && pList == null) {
-			page = "views/knBoard/knBoardDetail.jsp";
+			request.setAttribute("pList", pList);
+		} else if(kn != null && list.size() > 0 && pList.size() < 0) {
 			request.setAttribute("board", kn);
-			request.setAttribute("plist", list);			
+			request.setAttribute("list", list);			
+		} else if(kn != null && list.size() < 0 && pList.size() < 0) {
+			request.setAttribute("board", kn);*/
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "게시글 조회에 실패했습니다.");
 		}
-		RequestDispatcher view = request.getRequestDispatcher(page);
-		view.forward(request, response);						
-					
+		request.getRequestDispatcher(page).forward(request, response);							
 	}
 
 

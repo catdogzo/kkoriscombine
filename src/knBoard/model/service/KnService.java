@@ -34,38 +34,29 @@ public class KnService {
 	}
 	
 	
-	public int insertKn(KnBoard kn) {
+	public int insertKn(KnBoard kn, ArrayList<Photo> fileList) {
 		// 게시글 작성		
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
 		
-		int result = knd.insertKn(conn, kn);
+		int result1 = knd.insertKn(conn, kn);
+		if(result1 > 0){
+			
+			int result2 = knd.insertPhoto(conn, fileList);
+			if (result2 > 0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+			}
+		}else {
 		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}		
-		return result;
-	}		
-
-	public int updateKn(KnBoard kn) {
-		// 게시글 수정		
-		Connection conn = getConnection();
-		KnDAO knd = new KnDAO();
-		
-		int result = knd.updateKn(conn, kn);
-		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
+			rollback(conn);		
 		}
-		
-		close(conn);	
-		
-		return result;
+
+		return result1;
 	}
+	
+
 
 	public KnBoard selectKn(int knNum) {
 		// 게시글 보기		
@@ -91,6 +82,61 @@ public class KnService {
 		return kn;
 	}
 
+	public int updateKn(KnBoard kn) {
+		Connection conn = getConnection();
+		KnDAO knd = new KnDAO();
+		 
+		int result = knd.updateKn(conn, kn);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result;
+	}
+
+	public int updateKn(KnBoard kn, ArrayList<Photo> changeFile) {
+		Connection conn = getConnection();
+		KnDAO knd = new KnDAO();
+		
+		int result1 = knd.updateKn(conn, kn);
+		int result2 = 0;
+		if(changeFile.get(0).getPhNum() == 0) {
+			result2 = knd.insertPhoto(conn, changeFile);
+		} else {
+			result2 = knd.updatePhoto(conn, changeFile);
+		}
+		
+		if(result1 > 0 && result2 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result1;
+
+	}
+
+	public int updateKn(KnBoard kn, ArrayList<Photo> changeFile, ArrayList<Photo> newInsertFile) {
+		Connection conn = getConnection();
+		KnDAO knd = new KnDAO();
+		
+		int result1 = knd.updateKn(conn, kn);
+		int result2 = knd.updatePhoto(conn, changeFile);
+		int result3 = knd.insertPhoto(conn, newInsertFile);
+		
+		if(result1 > 0 && result2 > 0 && result3 > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result1;
+	}	
+	
+	
 	public int deleteKn(int no) {
 		// 게시글 삭제		
 		Connection conn = getConnection();
@@ -131,56 +177,27 @@ public class KnService {
 		// 댓글 선택		
 		Connection conn = getConnection();		
 		ArrayList<KnReply> list = new KnDAO().selectKnr(conn, no);
-
 		return list;
 	}	
 
-	
-	public int insertPhoto(int bNum, ArrayList<Photo> fileList) {
-		// 사진 올리기
-		Connection conn = getConnection();
-		KnDAO knd = new KnDAO();
-
-		int result = knd.insertPhoto(conn, bNum, fileList);
-		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);		
-		}
-
-		return result;
-	}
-
-	public int updatePhoto(ArrayList<Photo> fileList) {
-		//사진 수정
-		Connection conn = getConnection();
-		KnDAO knd = new KnDAO();
-		
-		int result = knd.updatePhoto(conn, fileList);
-		
-		if(result > 0) {
-			commit(conn);
-		}else {
-			rollback(conn);
-		}
-		
-		return result;
-	}
-
-	public ArrayList<Photo> selectPhoto(int no) {
-		// 사진 불러오기
-		Connection conn = getConnection();
-		ArrayList<Photo> list = new KnDAO().selectPhoto(conn, no);
-		
-		return list;
-	}
 
 	public int insertLike(String usId) {
 		Connection conn = getConnection();
 		int result = new KnDAO().insertLike(conn, usId);
 		
 		return 0;
-	}	
+	}
+
+
+	public ArrayList<Photo> selectPhoto(int no) {
+		// 사진 불러오기
+		Connection conn = getConnection();
+		ArrayList<Photo> pList = new KnDAO().selectPhoto(conn, no);
+		
+		return pList;
+	}
+
+
+
 	
 }
