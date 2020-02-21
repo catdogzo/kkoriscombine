@@ -17,7 +17,6 @@ public class AllUser {
 		this.auId = auId;
 		this.auPwd = auPwd;
 	}
-
 	
 	public AllUser(String auId, String auPwd, String auKind) {
 		super();
@@ -82,6 +81,6 @@ public class AllUser {
 
 	public void setAuDel(String auDel) {
 		this.auDel = auDel;
-	}	
-
+	}
+	
 }

@@ -2,6 +2,7 @@ package allUser.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -41,24 +42,36 @@ public class PwdSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String inputId = request.getParameter("userId").toLowerCase();
+		String userId = request.getParameter("userId").toLowerCase();
 		String userName = request.getParameter("userName");
 		String email = request.getParameter("email").toLowerCase(); // 받는 사람
 		String temPwd = request.getParameter("temPwd"); // 임시 비밀번호 (암호화x)
 		String newPwd = request.getParameter("newPwd"); // 임시 비밀번호 (암호화o)
 		
 		AllUserService aus = new AllUserService();
-		String kind = aus.searchKind(inputId);
+		String kind = aus.searchKind(userId);
 		
-		String userId = null;
+		boolean confirmId = false; // 입력한 정보와 일치한 아이디인지
 		
 		if(kind.equals("USER")) {
-			userId = new UserService().searchId(userName, email);
+			ArrayList<String> idList = new UserService().searchId(userName, email);
+			for(String id : idList) {
+				if(id.equals(userId)) {
+					confirmId = true;
+					break;
+				}
+			}
 		} else if(kind.equals("HP")) {
-			userId = new HpService().searchId(userName, email);
+			ArrayList<String> idList = new HpService().searchId(userName, email);
+			for(String id : idList) {
+				if(id.equals(userId)) {
+					confirmId = true;
+					break;
+				}
+			}
 		}
 		
-		if(inputId.equals(userId)){
+		if(confirmId){
 			/*char[] charArr = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 			String temPwd = "";
 			for(int i = 0; i < 6; i++) {

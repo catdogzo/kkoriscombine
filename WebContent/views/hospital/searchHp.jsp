@@ -102,22 +102,22 @@
 				<div class="select-box">
 					<select id="medical">
 						<option disabled>--진료과목--</option>
-						<option value="HT1">내과</option>
-						<option value="HT2">외과</option>
-						<option value="HT3">안과</option>
-						<option value="HT4">치과</option>
-						<option value="HT5">피부과</option>
-						<option value="HT6">기타</option>
+						<option value="HC1">내과</option>
+						<option value="HC2">외과</option>
+						<option value="HC3">안과</option>
+						<option value="HC4">치과</option>
+						<option value="HC5">피부과</option>
+						<option value="HC6">기타</option>
+						<option disabled>--검사--</option>
+						<option value="HI1">기초 혈액검사</option>
+						<option value="HI2">심장사상충 검사</option>
+						<option value="HI3">혈액형 검사</option>
+						<option value="HI4">항체가 검사</option>
+						<option value="HI5">내시경</option>
+						<option value="HI6">초음파</option>
 						<option disabled>--건강검진--</option>
 						<option value="HS1">기초 종합검진</option>
 						<option value="HS2">복합 종합검진</option>
-						<option disabled>--검사--</option>
-						<option value="HC1">기초 혈액검사</option>
-						<option value="HC2">심장사상충 검사</option>
-						<option value="HC3">혈액형 검사</option>
-						<option value="HC4">항체가검사</option>
-						<option value="HC5">내시경</option>
-						<option value="HC6">초음파</option>
 						<option disabled>--예방접종--</option>
 						<option value="HV1">코로나</option>
 						<option value="HV2">켄넬로프</option>
@@ -126,10 +126,10 @@
 						<option value="HV5">반려견 종합백신</option>
 						<option value="HV6">반려묘 종합백신</option>
 						<option disabled>--중성화 수술--</option>
-						<option value="HN1">수컷</option>
-						<option value="HN2">암컷</option>
-						<option value="HN3">잠복고환</option>
-						<option value="HN4">기타</option>
+						<option value="HZ1">수컷</option>
+						<option value="HZ2">암컷</option>
+						<option value="HZ3">잠복고환</option>
+						<option value="HZ4">기타</option>
 					</select>
 				</div>
 			</div>
@@ -148,7 +148,6 @@
 					</tr>
 				</thead>
 				<tbody>
-				
 				</tbody>
 			</table>
 		</div>
@@ -287,7 +286,7 @@
 	
 					var resultStr="";
 					for(var i in data){
-						var href = '"<%= request.getContextPath() %>/views/hospital/detail.hp?hpId=' + data[i].hpId + '"';
+						var href = '"<%= request.getContextPath() %>/detail.hp?hpId=' + data[i].hpId + '"';
 						resultStr += "<tr onmouseenter=address(this); onclick='location.href=" + href + "';>"
 									+ "<th>" + data[i].hpName + "</th>"
 									+ "<td>" + data[i].hpPhone +"</td>"

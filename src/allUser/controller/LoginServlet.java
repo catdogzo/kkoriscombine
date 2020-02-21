@@ -1,6 +1,7 @@
 package allUser.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,7 +40,6 @@ public class LoginServlet extends HttpServlet {
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
 		AllUser au = new AllUser(userId, userPwd);
-		System.out.println(userPwd);
 		AllUser loginAu = new AllUserService().loginUser(au);
 		
 		if(loginAu != null) {

@@ -53,9 +53,9 @@ public class AllUserService {
 		return result;
 	}
 
-	public String searchKind(String inputId) {
+	public String searchKind(String userId) {
 		Connection conn = getConnection();
-		String kind = new AllUserDAO().searchKind(conn, inputId);
+		String kind = new AllUserDAO().searchKind(conn, userId);
 		
 		close(conn);
 		return kind;

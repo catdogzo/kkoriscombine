@@ -1,6 +1,6 @@
 package allUser.model.dao;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -121,7 +121,7 @@ public class AllUserDAO {
 		return result;
 	}
 
-	public String searchKind(Connection conn, String inputId) {
+	public String searchKind(Connection conn, String userId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String kind = null;
@@ -130,7 +130,7 @@ public class AllUserDAO {
 		
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, inputId);
+			pstmt.setString(1, userId);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {

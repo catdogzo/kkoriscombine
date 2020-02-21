@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import hospital.model.dao.HpDAO;
 import hospital.model.vo.Hospital;
+import hospital.model.vo.HpMedical;
 
 public class HpService {
 
@@ -52,6 +53,16 @@ public class HpService {
 		
 		ArrayList<Hospital> list = new HpDAO().selectList(conn, dataMap);
 		
+		close(conn);
+		return list;
+	}
+
+	public ArrayList<HpMedical> selectHm(String hpId) {
+		Connection conn = getConnection();
+		
+		ArrayList<HpMedical> list = new HpDAO().selectHm(conn, hpId);
+		
+		close(conn);
 		return list;
 	}
 

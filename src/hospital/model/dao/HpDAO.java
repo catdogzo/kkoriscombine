@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import hospital.model.vo.Hospital;
+import hospital.model.vo.HpMedical;
 
 public class HpDAO {
 
@@ -130,7 +131,6 @@ public class HpDAO {
 		ArrayList<Hospital> list = null;
 		
 		String query = prop.getProperty("searchHp");
-		//selectHospital=SELECT * FROM HOSPITAL WHERE HP_LOC LIKE ?
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -145,6 +145,33 @@ public class HpDAO {
 						 			   rs.getString("HP_NAME"),
 						 			   rs.getString("HP_PHONE"),
 						 			   rs.getString("HP_LOC1")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
+	}
+
+	public ArrayList<HpMedical> selectHm(Connection conn, String hpId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<HpMedical> list = null;
+		
+		String query = prop.getProperty("selectHm");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, hpId);
+			
+			rs = pstmt.executeQuery();
+			list = new ArrayList<HpMedical>();
+			while(rs.next()) {
+				list.add(new HpMedical(rs.getString("HM_CATE"),
+									   rs.getInt("HM_MIN"),
+									   rs.getInt("HM_MAX")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
