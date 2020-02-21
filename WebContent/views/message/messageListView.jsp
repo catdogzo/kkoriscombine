@@ -83,6 +83,8 @@ input[type="button"]:hover {background: #fb929e; color: #fff;}
 
 input#searchButton {
 	margin-bottom: 20px;
+	width: 20px;
+	
 
 }
 
@@ -107,7 +109,7 @@ div.messageControll{
 	align-content: center;
 	margin-right: 200px; 
 	text-align:right ;
-}
+}	
 
 
 
@@ -133,18 +135,18 @@ div.tableCol {
 </head>
 <body>
 	<!-- 공유css -->	
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 	
 	<!-- 검색, 목록 -->
 	
 	<div class="outer">
 	<div class="messageOuter">
-		<div class="inContentTitle"><img src="WebContent/images/sendMsg.png" weight="100px" height="200px"></div>
+		<div class="inContentTitle"><img src="WebContent/images/sendMsg.png" width="100px" height="200px"></div>
 		<form method="get"> 
 			<div class="messageControll">
 			   	<input type="text" class="textMsg" size="20" name="msgNum" value="">
 			   	<input type="submit" id="searchButton" class="button" value="검색">
-			   	<input type="button" value=" 보낸쪽지 목록 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
+			   	<input type="button" value=" 받은쪽지 목록 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
 			</div>
 		<div class="tableTitle">
 			<table id="msgArea">
@@ -176,8 +178,8 @@ div.tableCol {
 					}%>
 			</table>
 		</div>
-			</div>
 		</form>
+			</div>
 		
 			<!-- 하단에 페이징 번호 -->
 		<div class="pagingArea" align="center">

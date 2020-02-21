@@ -108,4 +108,10 @@ public class MessageDAO {
 		return mList;
 	}
 
+	public Message selectMessage(Connection conn, int msgNum) {
+		
+		
+		return null;
+	}
+
 }

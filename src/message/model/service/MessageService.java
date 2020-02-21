@@ -2,7 +2,6 @@ package message.model.service;
 import static common.JDBCTemplate.close;
 import static common.JDBCTemplate.getConnection;
 
-//import static common.JDBCTemplate.rollback;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -29,6 +28,16 @@ public class MessageService {
 		close(conn);
 		System.out.println(mList);
 		return mList;
+	}
+
+	public Message selectMessage(int msgNum) {
+		Connection conn = getConnection();
+		MessageDAO mDao = new MessageDAO();
+		
+		Message message =  mDao.selectMessage(conn, msgNum);
+		close(conn);
+		
+		return message;
 	}
 
 }
