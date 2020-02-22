@@ -39,7 +39,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					<p class="input-label">병원장명</p><input type="text" name="hpDName" required>
 				</div>
 				<div class="input-box">
-					<p class="input-label">연락처</p><input type="text" name="phone" id="phone" required>
+					<p class="input-label">연락처</p><input type="text" name="phone" id="phone" onkeyup="inputNumber(this);" required>
 				</div>
 				<div class="input-box">
 					<p class="input-label">이메일</p><input type="email" name="email" id="email" required>
@@ -62,7 +62,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					<p class="input-label">진료 시간</p>
 					<div class="select-box">
 						<select name="startTime" id="startTime">
-							<option value="not">진료 시작</option>
+							<option value="100">진료 시작</option>
 							<option value="00">00:00</option>
 							<option value="01">01:00</option>
 							<option value="02">02:00</option>
@@ -93,7 +93,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					&nbsp;-&nbsp;
 					<div class="select-box">
 						<select name="endTime" id="endTime">
-							<option value="not">진료 종료</option>
+							<option value="100">진료 종료</option>
 							<option value="00">00:00</option>
 							<option value="01">01:00</option>
 							<option value="02">02:00</option>
@@ -124,8 +124,8 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					&nbsp;/&nbsp;
 					<div class="select-box">
 						<select name="breakTime" id="breakTime">
-							<option value="not">점심 시간</option>
-							<option value="noTime">선택 안함</option>
+							<option value="100">점심 시간</option>
+							<option value="404">선택 안함</option>
 						</select>
 					</div>
 					<p class="input-info">* 점심시간 기준은 선택한 시간부터 1시간입니다. (점심시간이 13:00-14:00일 경우, 13:00 선택)</p>
@@ -135,6 +135,10 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 		</div>
 	</div>
 	<script>
+		function inputNumber(e){
+			$(e).val($(e).val().replace(/[^0-9]/g,""));
+		}
+		
 		$(function(){
 			var isId, isPwd, isPwd2, isEmail = false;
 			$p = $('<p>');
@@ -223,7 +227,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 			
 			$('#startTime').click(function(){
 				startTime = (Number)($(this).val());
-				$('#endTime').val('not');
+				$('#endTime').val('100');
 			});
 			
 			$('#endTime').click(function(){
@@ -233,7 +237,7 @@ form#joinHospital > div.location > .postcodify_searchBtn:hover {border-color: #a
 					alert('진료 시작 시간을 먼저 선택해주세요.');
 				} else if(startTime == endTime){
 					alert('24시 진료일 경우, 00:00-24:00로 선택해주세요.');
-					$(this).val('not');
+					$(this).val('100');
 				}
 				
 				// 선택된 진료 시간에 따라 점심시간 옵션목록 제어

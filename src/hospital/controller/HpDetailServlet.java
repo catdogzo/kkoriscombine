@@ -49,11 +49,11 @@ public class HpDetailServlet extends HttpServlet {
 		cateMap.put("HC6", "기타");
 		// 검사
 		cateMap.put("HI1", "기초 혈액검사");
-		cateMap.put("HI2", "외과");
-		cateMap.put("HI3", "안과");
-		cateMap.put("HI4", "치과");
-		cateMap.put("HI5", "피부과");
-		cateMap.put("HI6", "기타");
+		cateMap.put("HI2", "심장사사충 검사");
+		cateMap.put("HI3", "혈액형 검사");
+		cateMap.put("HI4", "항체가 검사");
+		cateMap.put("HI5", "내시경");
+		cateMap.put("HI6", "초음파");
 		// 건강검진
 		cateMap.put("HS1", "기초 종합검진");
 		cateMap.put("HS2", "복합 종합검진");

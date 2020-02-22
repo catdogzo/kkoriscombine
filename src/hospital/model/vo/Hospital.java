@@ -11,9 +11,9 @@ public class Hospital {
 	private String hpLoc2;
 	private String hpIntro;
 	private String hpPhoto;
-	private String hpStart;
-	private String hpEnd;
-	private String hpLunch;
+	private int hpStart;
+	private int hpEnd;
+	private int hpLunch;
 	
 	public Hospital() {}
 
@@ -26,7 +26,7 @@ public class Hospital {
 	}
 
 	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpZip,
-			String hpLoc1, String hpLoc2, String hpStart, String hpEnd, String hpLunch) {
+			String hpLoc1, String hpLoc2, int hpStart, int hpEnd, int hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
@@ -42,8 +42,7 @@ public class Hospital {
 	}
 
 	public Hospital(String hpId, String hpName, String hpDName, String hpPhone, String hpEmail, String hpZip,
-			String hpLoc1, String hpLoc2, String hpIntro, String hpPhoto, String hpStart, String hpEnd,
-			String hpLunch) {
+			String hpLoc1, String hpLoc2, String hpIntro, String hpPhoto, int hpStart, int hpEnd, int hpLunch) {
 		super();
 		this.hpId = hpId;
 		this.hpName = hpName;
@@ -140,29 +139,28 @@ public class Hospital {
 		this.hpPhoto = hpPhoto;
 	}
 
-	public String getHpStart() {
+	public int getHpStart() {
 		return hpStart;
 	}
 
-	public void setHpStart(String hpStart) {
+	public void setHpStart(int hpStart) {
 		this.hpStart = hpStart;
 	}
 
-	public String getHpEnd() {
+	public int getHpEnd() {
 		return hpEnd;
 	}
 
-	public void setHpEnd(String hpEnd) {
+	public void setHpEnd(int hpEnd) {
 		this.hpEnd = hpEnd;
 	}
 
-	public String getHpLunch() {
+	public int getHpLunch() {
 		return hpLunch;
 	}
 
-	public void setHpLunch(String hpLunch) {
+	public void setHpLunch(int hpLunch) {
 		this.hpLunch = hpLunch;
 	}
-
 	
 }

@@ -114,8 +114,8 @@
 					<p><i class="fas fa-phone-alt"></i> <%= hp.getHpPhone() %></p>
 					<p>
 						진료시간: <%= hp.getHpStart() %>:00 ~ <%= hp.getHpEnd() %>:00
-						<% if(!hp.getHpLunch().equals("noTime")){ %>
-						<br>점심시간: <%= hp.getHpLunch() %>:00 ~ <%= Integer.parseInt(hp.getHpLunch())+1 %>:00
+						<% if(hp.getHpLunch() != 404){ %>
+						<br>점심시간: <%= hp.getHpLunch() %>:00 ~ <%= hp.getHpLunch()+1 %>:00
 						<% } %>
 					</p>
 					<% if(hp.getHpIntro() != null){ %>
@@ -225,7 +225,18 @@
 						<span>내원 시간</span>
 						<div class="select-box">
 							<select name="rsTime" id="rsTime">
+							<%
+								int start = hp.getHpStart();
+								int end = hp.getHpEnd() - 1; // 진료종료시간에 예약할 수 없으니 -1
+								int lunch = hp.getHpLunch();
 								
+								if(start > end){
+									end = 24;
+								}
+							%>
+							<% for(int i = start; i < end; i++){ %>
+								<option value=<%= i %>><%= i %>:00</option>
+							<% } %>
 							</select>
 						</div>
 						<span>진료 선택</span>

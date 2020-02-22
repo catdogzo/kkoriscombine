@@ -48,9 +48,9 @@ public class HpDAO {
 			pstmt.setString(6, hp.getHpZip());
 			pstmt.setString(7, hp.getHpLoc1());
 			pstmt.setString(8, hp.getHpLoc2());
-			pstmt.setString(9, hp.getHpStart());
-			pstmt.setString(10, hp.getHpEnd());
-			pstmt.setString(11, hp.getHpLunch());
+			pstmt.setInt(9, hp.getHpStart());
+			pstmt.setInt(10, hp.getHpEnd());
+			pstmt.setInt(11, hp.getHpLunch());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -85,9 +85,9 @@ public class HpDAO {
 								  rs.getString("HP_LOC2"),
 								  rs.getString("HP_INTRO"),
 								  rs.getString("HP_PHOTO"),
-								  rs.getString("HP_START"),
-								  rs.getString("HP_END"),
-								  rs.getString("HP_LUNCH"));
+								  rs.getInt("HP_START"),
+								  rs.getInt("HP_END"),
+								  rs.getInt("HP_LUNCH"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -41,9 +41,9 @@ public class HpJoinServlet extends HttpServlet {
 		String zipcode = request.getParameter("zipcode");
 		String location1 = request.getParameter("location1");
 		String location2 = request.getParameter("location2");
-		String start = request.getParameter("startTime");
-		String end = request.getParameter("endTime");
-		String lunch = request.getParameter("breakTime");
+		int start = Integer.parseInt(request.getParameter("startTime"));
+		int end = Integer.parseInt(request.getParameter("endTime"));
+		int lunch = Integer.parseInt(request.getParameter("breakTime"));
 		
 		Hospital hp = new Hospital(userId, hpName, hpDName, phone, email, zipcode, location1, location2, start, end, lunch);
 		
