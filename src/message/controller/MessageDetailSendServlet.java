@@ -15,14 +15,14 @@ import message.model.vo.Message;
 /**
  * Servlet implementation class MessageDetailServlet
  */
-@WebServlet("/detail.ms")
-public class MessageDetailServlet extends HttpServlet {
+@WebServlet("/detailSend.ms")
+public class MessageDetailSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MessageDetailServlet() {
+    public MessageDetailSendServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,13 +32,13 @@ public class MessageDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int mNum = Integer.parseInt(request.getParameter("mNum"));
-		Message message = new MessageService().selectMessage(mNum);
+		int mNums = Integer.parseInt(request.getParameter("mNums"));
+		Message messages = new MessageService().selectSendMessage(mNums);
 	
 		String page = null;
-		if(message != null) {
-			page = "views/message/messageDetailView.jsp";
-			request.setAttribute("message", message);
+		if(messages != null) {
+			page = "views/message/messageDetailSendView.jsp";
+			request.setAttribute("messages", messages);
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "쪽지 보기 실패");

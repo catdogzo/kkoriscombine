@@ -33,7 +33,8 @@ public class MessageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("에러니1");
+		//String rsgId = request.getParameter("rsgId");
+		
 		
 		MessageService mService = new MessageService();
 		//쪽지에서 가져 올 것. 리스트 개수
@@ -50,9 +51,7 @@ public class MessageServlet extends HttpServlet {
 
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-			System.out.println("여기 메시지 나오면 성공?");
 		} else {
-			System.out.println(currentPage);
 			System.out.println("여기 메시지 나오면 실패 null");
 			
 		}

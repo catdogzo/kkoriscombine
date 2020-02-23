@@ -40,7 +40,9 @@ div.messageOuter{
 
 div.inContentTitle{
 	margin-left: 300px;
+
 }
+
 
 div.pagingArea {
 	margin-top: 400px;	
@@ -77,6 +79,7 @@ input#receiveMsgButton {
 	
 }
 
+
 div.input-button {display: block; text-align: center; padding: 20px;}
 input[type="button"]{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
 input[type="button"]:hover {background: #fb929e; color: #fff;}
@@ -94,23 +97,39 @@ input.textMsg{
 }
 
 button#deleteButton{
-	margin-left: 1000px;
+	margin-left: 700px;
 	margin-right: 200px;
 	margin-bottom: 20px;
+	min-width: 60px; 
+	height: 30px; 
+	cursor: pointer; 
+	background: #aedefc; color: #5d5d5d; 
+	font-size: 14px; 
+	font-weight: 600; 
+	border: none; 
+	border-radius: 5px;
 
 }
 
-button.delBtn{display: block; text-align: center; padding: 20px; margin-right: 140px;}
-button.delBtn{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
-button.delBtn{background: #fb929e; color: #fff;}
-
-
+button#deleteButton:hover{background: #0774b7; color:white; }
 div.messageControll{
 	align-content: center;
 	margin-right: 200px; 
 	text-align:right ;
 }	
 
+div.pagingArea{margin-left: 70px;}
+div.pagingArea button {
+	min-width: 60px; 
+	height: 30px; 
+	cursor: pointer; 
+	background: #ffdfdf; color: #5d5d5d; 
+	font-size: 14px; 
+	font-weight: 600; 
+	border: none; 
+	border-radius: 5px;
+}
+div.pagingArea button:hover {background: #fb929e; color: #fff;}
 
 
 /* div.tableRow {
@@ -141,18 +160,18 @@ div.tableCol {
 	
 	<div class="outer">
 	<div class="messageOuter">
-		<div class="inContentTitle"><img src="WebContent/images/sendMsg.png" width="100px" height="200px"></div>
+		<div class="inContentTitle"><img src="WebContent/images/readMsg.png" width="190px" height="200px"></div>
 		<form method="get"> 
 			<div class="messageControll">
-			   	<input type="text" class="textMsg" size="20" name="msgNum" value="">
-			   	<input type="submit" id="searchButton" class="button" value="검색">
-			   	<input type="button" value=" 받은쪽지 목록 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
+			   	<!-- <input type="text" class="textMsg" size="20">
+			   	<input type="submit" id="searchButton" class="button" value="검색"> -->
+			   	<input type="button" onclick="location.href='<%= request.getContextPath() %>/listSend.ms'"  value=" 보낸쪽지함 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
 			</div>
 		<div class="tableTitle">
 			<table id="msgArea">
 				<tr>
 				   	<th><div class="tableCol checkBox"><input type="checkbox" name="check" id="aCheck" style="width:20px; height: 20px;" onclick="allCheck(this);"></div></th>
-				  	<th><div class="tableCol receiver" style="padding:5px;">수신자</div></th>
+				  	<th><div class="tableCol receiver" style="padding:5px;">발신자</div></th>
 				  	<th><div class="tableCol subject" style="padding:5px;">제목</div></th>
 				  	<th><div class="tableCol sendDate" style="padding:5px;">발신일</div></th>
 				</tr>
@@ -168,8 +187,8 @@ div.tableCol {
 				%>
 				<tr>
 					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;"></td>
-					<td><%= m.getRsgId() %><input type="hidden" value='<%= m.getRsgId() %>'> </td>
-					<td><%= m.getMsgTitle() %><input type="hidden" value='<%= m.getMsgTitle() %>'></td>
+					<td class="rId"><input type="hidden" class="mNum" name="mNum" value='<%= m.getMsgNum() %>'><%= m.getSsgId() %><input type="hidden" value='<%= m.getSsgId() %>'> </td>
+					<td class="mTitle"><%= m.getMsgTitle() %><input type="hidden"  value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
 				</tr>
 				
@@ -207,7 +226,7 @@ div.tableCol {
 					<% } %>
 				<% } %>
 				<!-- 다음 페이지 -->
-				<button onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%-- <%= currentPage +1 %> --%>'" id="afterBtn">&gt;</button>
+				<button onclick="location.href='<%= request.getContextPath() %>/list.ms?currentPage=<%= currentPage +1 %>'" id="afterBtn">&gt;</button>
 				<script>
 					if(<%= currentPage %> >= <%= maxPage %>){
 						var after = $("#afterBtn");
@@ -235,7 +254,7 @@ div.tableCol {
     
     <!-- 삭제버튼  -->
     <div class="delBtn" style="text-align:right">
-    <button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" onclick=>선택쪽지 삭제</button>
+    <button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" on`click=> &nbsp;선택쪽지 삭제&nbsp; </button>
 	</div>
     
 	
@@ -275,7 +294,27 @@ div.tableCol {
 		
 		$(".check").click(function(){
 			$('#aCheck').prop("checked", false);
-		})
+		});
+		
+		
+		/* 쪽지 가져오기 */
+		$("td.mTitle").click(function(){
+			var mNum = $(this).parent().children().children('.mNum').val();
+					
+			
+			console.log(mNum);
+
+			<% if(loginUser != null) { %>
+				location.href='<%= request.getContextPath() %>/detail.ms?mNum=' + mNum;
+			<% } else { %>
+			 alert("로그인 후에 이용해주세요.");
+			 
+			 location.href='<%= request.getContextPath() %>/index.jsp';
+			<% } %>
+			
+		});
+		
+		
 	</script>
 
 	

@@ -19,7 +19,6 @@ public class MessageDAO {
 	private Properties prop = new Properties();
 	
 	public MessageDAO () {
-		System.out.println("에러니4-1");
 		String fileName = MessageDAO.class.getResource("/sql/message/message.properties").getPath();
 		try {
 			prop.load(new FileReader(fileName));
@@ -29,12 +28,10 @@ public class MessageDAO {
 			e.printStackTrace();
 		}
 		
-		System.out.println("에러니?4");
  		
 	}
 
 	public int getListCount(Connection conn) {
-		System.out.println("에러니?5-1");
 		Statement stmt = null;
 		ResultSet rset = null;
 		int result = 0;
@@ -44,11 +41,9 @@ public class MessageDAO {
 		try {
 			stmt = conn.createStatement();
 			rset = stmt.executeQuery(query);
-			System.out.println("에러니?5");
 
 			if(rset.next()) {
 				result = rset.getInt(1);
-				System.out.println("에러니?6");
 			}
 			
 		} catch (SQLException e) {
@@ -67,7 +62,6 @@ public class MessageDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Message> mList = null;
-		System.out.println("에러니?7");
 
 		int posts = 10; 
 		int startRow = (currentPage -1) * posts + 1; 
@@ -79,7 +73,7 @@ public class MessageDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, endRow);
-			
+			//pstmt.setString(3, rsgId);
 			rs = pstmt.executeQuery();
 			mList = new ArrayList<Message>();
 			while(rs.next()) {
@@ -87,13 +81,12 @@ public class MessageDAO {
 										rs.getString("msg_title"),
 										rs.getDate("msg_date"),
 										rs.getString("msg_con"),
-										rs.getString("rsg_id"),
 										rs.getString("ssg_id"),
+										rs.getString("rsg_id"),
 										rs.getString("rsg_del"),
 										rs.getString("ssg_del"),
 										rs.getString("msg_status"));
 				mList.add(m);
-				System.out.println("에러니?8");
 
 			}
 			
@@ -108,10 +101,164 @@ public class MessageDAO {
 		return mList;
 	}
 
-	public Message selectMessage(Connection conn, int msgNum) {
+	public Message selectMessage(Connection conn, int mNum) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Message message = null;
+		String query = prop.getProperty("selectMessage");
 		
-		
-		return null;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, mNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				message = new Message(rs.getInt("msg_num"),
+									  rs.getString("msg_title"),
+									  rs.getDate("msg_date"),
+									  rs.getString("msg_con"),
+									  rs.getString("ssg_id"),
+									  rs.getString("rsg_id"),
+									  rs.getString("rsg_del"),
+									  rs.getString("ssg_del"),
+									  rs.getString("msg_status"));
+			}
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		 
+		return message;
 	}
 
+	public int deleteMessage(Connection conn, int mNum) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteMessageR");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, mNum);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public Message selectSendMessage(Connection conn, int mNum) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Message message = null;
+		String query = prop.getProperty("selectSendMessage");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, mNum);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				message = new Message(rs.getInt("msg_num"),
+									  rs.getString("msg_title"),
+									  rs.getDate("msg_date"),
+									  rs.getString("msg_con"),
+									  rs.getString("ssg_id"),
+									  rs.getString("rsg_id"),
+									  rs.getString("rsg_del"),
+									  rs.getString("ssg_del"),
+									  rs.getString("msg_status"));
+			}
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		 
+		return message;
+	}
+
+	public ArrayList<Message> selectSendList(Connection conn, int currentPages) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Message> mLists = null;
+
+		int postss = 10; 
+		int startRows = (currentPages -1) * postss + 1; 
+		int endRows = startRows + postss -1;
+		
+		String query = prop.getProperty("selectSendMlist");
+				
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, startRows);
+			pstmt.setInt(2, endRows);
+			//pstmt.setString(3, rsgId);
+			rs = pstmt.executeQuery();
+			mLists = new ArrayList<Message>();
+			while(rs.next()) {
+				Message m = new Message(rs.getInt("msg_num"),
+										rs.getString("msg_title"),
+										rs.getDate("msg_date"),
+										rs.getString("msg_con"),
+										rs.getString("ssg_id"),
+										rs.getString("rsg_id"),
+										rs.getString("rsg_del"),
+										rs.getString("ssg_del"),
+										rs.getString("msg_status"));
+				mLists.add(m);
+
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		
+		return mLists;
+
+	}
+
+
+	public int getListCounts(Connection conn) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("getListCounts");
+		
+		try {
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery(query);
+	
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(stmt);
+		}
+		
+	
+		System.out.println(result);
+		return result;
+	}
 }
