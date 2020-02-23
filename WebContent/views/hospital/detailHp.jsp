@@ -225,6 +225,7 @@
 						<span>내원 시간</span>
 						<div class="select-box">
 							<select name="rsTime" id="rsTime">
+								<option value=404>선택해주세요</option>
 							<%
 								int start = hp.getHpStart();
 								int end = hp.getHpEnd() - 1; // 진료종료시간에 예약할 수 없으니 -1
@@ -234,7 +235,7 @@
 									end = 24;
 								}
 							%>
-							<% for(int i = start; i < end; i++){ %>
+							<% for(int i = start; i <= end; i++){ %>
 								<option value=<%= i %>><%= i %>:00</option>
 							<% } %>
 							</select>
@@ -242,10 +243,15 @@
 						<span>진료 선택</span>
 						<div class="select-box">
 							<select name="hmCate" id="hmCate">
+								<option value=404>선택해주세요</option>
 							<% for(HpMedical hm : hmList){ %>
 								<option value=<%= hm.getHmCate() %>><%= cateMap.get(hm.getHmCate()) %></option>
 							<% } %>
 							</select>
+						</div>
+						<span>예상 진료비</span>
+						<div class="hmFee">
+							
 						</div>
 					</div>
 				</div>
@@ -264,16 +270,40 @@
 				$(this).css('margin-top', marginTop);
 			});
 			
-			$('table.date tr:not(:nth-of-type(1)) > td').click(function(){ // 내원 날짜
-				var year = <%= year %>;
-				var month = <%= month %>;
-				var day = $(this).children().text();
+			var day = $(this).children().text();
+			
+			$('table.date tr:not(:nth-of-type(1)) > td').click(function(){ // 날짜 선택
 				$('table.date td').removeClass('onclick');
 				$(this).addClass('onclick');
 				
 				var rsTime = $('div.rsInfo select#rsTime');
-				console.log(rsTime);
+			});
+			
+			$('select#rsTime').click(function(){
+				var hpId = '<%= hp.getHpId() %>';
+				var year = <%= year %>;
+				var month = <%= month %>;
+				var day = $('table.date tr').find('td.onclick').children('p').text();
 				
+				$.ajax({
+					url: '<%= request.getContextPath() %>/search.rs',
+					type: 'post',
+					data: {hpId: hpId, year: year, month: month, day: day},
+					success: function(data){
+						for(var i in data){
+							console.log(data[i] + "시");
+							var a = $('select#rsTime').children().index($('select#rsTime option').val(data[i]));
+							console.log(a);
+							//$('select#rsTime').val(data[i]).prop('disabled', 'true');
+						}
+					},
+					error: function(data){
+						console.log('no');
+					},
+					complete: function(data){
+						console.log('ok');
+					}
+				});
 			});
 			
 			$('select#hmCate').each(function(){
@@ -309,6 +339,7 @@
 					}
  				}
 			});
+			
 		});
 	</script>
 </body>

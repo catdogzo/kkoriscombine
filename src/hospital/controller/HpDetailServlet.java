@@ -35,8 +35,8 @@ public class HpDetailServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String hpId = request.getParameter("hpId");
-		Hospital hp = new HpService().selectHp(hpId);
-		ArrayList<HpMedical> hmList = new HpService().selectHm(hpId);
+		Hospital hp = new HpService().selectHp(hpId); // 병원 기본정보
+		ArrayList<HpMedical> hmList = new HpService().selectHm(hpId); // 진료하는 과목 리스트
 		
 		// DB의 HM_CATE값의 view 값 매칭한 map 생성
 		HashMap<String, String> cateMap = new HashMap<String, String>();
@@ -70,6 +70,8 @@ public class HpDetailServlet extends HttpServlet {
 		cateMap.put("HZ3", "잠복고환");
 		cateMap.put("HZ4", "기타");
 
+		
+		
 		String page = null;
 		if(hp != null) {
 			request.setAttribute("hp", hp);

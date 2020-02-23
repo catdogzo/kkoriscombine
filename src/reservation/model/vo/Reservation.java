@@ -14,10 +14,9 @@ public class Reservation {
 	
 	public Reservation() {}
 	
-	public Reservation(Timestamp rsDate, String hmCate, String hpId) {
+	public Reservation(Timestamp rsDate, String hpId) {
 		super();
 		this.rsDate = rsDate;
-		this.hmCate = hmCate;
 		this.hpId = hpId;
 	}
 
