@@ -66,4 +66,13 @@ public class HpService {
 		return list;
 	}
 
+	public HpMedical searchFee(String hpId, String cate) {
+		Connection conn = getConnection();
+		
+		HpMedical hm = new HpDAO().searchFee(conn, hpId, cate);
+		
+		close(conn);
+		return hm;
+	}
+
 }

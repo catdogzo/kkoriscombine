@@ -89,6 +89,7 @@
 	table.inner td {font-size: 20; font-weight: 600;}
 	td {vertical-align: middle;}
 	table.date td > p {text-align: center; font-size: 16px; font-weight: 600; margin: 0;}
+	table.date tr:not(:nth-of-type(1)) > td > p {cursor: pointer;}
 	.day {font-weight: 600;}
 	.red {color: #ff4848}
 	.blue {color: #0042ed}
@@ -236,7 +237,11 @@
 								}
 							%>
 							<% for(int i = start; i <= end; i++){ %>
+								<% if(i < 10){ %>
+								<option value=<%= i %>>0<%= i %>:00</option>
+								<% } else{ %>
 								<option value=<%= i %>><%= i %>:00</option>
+								<% } %>
 							<% } %>
 							</select>
 						</div>
@@ -265,12 +270,12 @@
 	</div>
 	<script>
 		$(function(){
+			var hpId = '<%= hp.getHpId() %>';
+			
 			$('div.right-contents').each(function(){ // 병원정보영역 수직중앙으로 위치 조정
 				var marginTop = 200 - $(this).height()/2;
 				$(this).css('margin-top', marginTop);
 			});
-			
-			var day = $(this).children().text();
 			
 			$('table.date tr:not(:nth-of-type(1)) > td').click(function(){ // 날짜 선택
 				$('table.date td').removeClass('onclick');
@@ -279,8 +284,7 @@
 				var rsTime = $('div.rsInfo select#rsTime');
 			});
 			
-			$('select#rsTime').click(function(){
-				var hpId = '<%= hp.getHpId() %>';
+			$('select#rsTime').click(function(){ // 해당 날짜에 예약가능한 시간만 선택할 수 있도록 설정
 				var year = <%= year %>;
 				var month = <%= month %>;
 				var day = $('table.date tr').find('td.onclick').children('p').text();
@@ -291,22 +295,32 @@
 					data: {hpId: hpId, year: year, month: month, day: day},
 					success: function(data){
 						for(var i in data){
-							console.log(data[i] + "시");
-							var a = $('select#rsTime').children().index($('select#rsTime option').val(data[i]));
-							console.log(a);
-							//$('select#rsTime').val(data[i]).prop('disabled', 'true');
+							$('select#rsTime').val(data[i]); // option의 index를 가져오기 위한 일시적 selected
+							var idx = $('select#rsTime option').index($('select#rsTime option:selected'));
+							$('select#rsTime option:eq(' + idx + ')').prop('disabled', 'true');
 						}
-					},
-					error: function(data){
-						console.log('no');
-					},
-					complete: function(data){
-						console.log('ok');
 					}
 				});
 			});
 			
-			$('select#hmCate').each(function(){
+			$('select#hmCate').click(function(){
+				var cate = $(this).val();
+				$.ajax({
+					url: '<%= request.getContextPath()%>/searchfee.hp',
+					type: 'post',
+					data: {hpId: hpId, cate: cate},
+					success: function(data){
+						console.log(data);
+						//console.log(data.hmMin);
+						//console.log(data.hmMax);
+					},
+					complete: function(data){
+						console.log('com');
+					}
+				});
+			});
+			
+			$('select#hmCate').each(function(){ // click 이벤트 함수를 each 이전에 작성해야 함
 				$option1 = $('<option>');
 				$option1.prop('disabled', 'true').text('--진료과목--');
 				$option2 = $('<option>');
@@ -336,10 +350,10 @@
 					} else if(value.includes('HZ')){
 						opList.eq(i).before().before($option5);
  						$option5 = null;
+ 						break;
 					}
  				}
 			});
-			
 		});
 	</script>
 </body>

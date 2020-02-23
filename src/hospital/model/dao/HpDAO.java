@@ -181,4 +181,32 @@ public class HpDAO {
 		}
 		return list;
 	}
+
+	public HpMedical searchFee(Connection conn, String hpId, String cate) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		HpMedical hm = null;
+		
+		String query = prop.getProperty("searchFee");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, hpId);
+			pstmt.setString(2, cate);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				hm = new HpMedical(rs.getString("HM_CATE"),
+								   rs.getInt("HM_MIN"),
+								   rs.getInt("HM_MAX"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return hm;
+	}
+
 }
