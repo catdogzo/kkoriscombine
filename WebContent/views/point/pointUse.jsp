@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	int curPt = Integer.parseInt(request.getParameter("curPt"));
+%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +11,12 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <style>
-	#blogo{margin-left:00px; margin-top: 50px;}
+	#blogo{margin-top: 50px;}
 	#pointView{border-color: #AEDEFC; cursor: default;}
-	#pointBtn{margin-left: 530px; margin-top: 20px;}
-	.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 150px; margin-right: auto; margin-top: auto;}
-	.writeArea{width: 600px; height: 550px; margin-top: 10px; margin-left: 180px; margin-right: auto; padding: 10px; border: 1px solid #AEDEFC;}
-	table{margin-left: 30px; margin-top: 3px; max-width:536px;}
+	#pointBtn{margin-left: 730px; margin-top: 20px; min-width: 400px;}
+	.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 300px; margin-right: auto; margin-top: auto;}
+	.writeArea{width: 800px; height: 600px; margin-top: 10px; margin-left: 180px; margin-right: auto; padding: 10px; border: 1px solid #AEDEFC;}
+	table{margin-left: 100px; margin-top: 3px; max-width:600px;}
 	table, th, td{word-spacing: 3px; padding: 3px;}
 	tr > th{padding-bottom: 10px; padding-top: 5px; font-size: 20pt;}
 	tbody > tr > td{padding-left : 40px; padding-bottom : 10px;}
@@ -32,56 +35,26 @@
 	#donate{background: white;}
 	
     /* The Modal (background) */
-     .modal {
-         display: none;
-         position: fixed; /* Stay in place */
-         z-index: 1; /* Sit on top */
-         left: 0;
-         top: 0;
-         width: 100%; /* Full width */
-         height: 100%; /* Full height */
-         overflow: auto; /* Enable scroll if needed */
-         background-color: rgb(0,0,0); /* Fallback color */
-         background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-     }
- 
+     .modal {display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4);}
      /* Modal Content/Box */
-     .modal-content {
-         background-color: #fefefe;
-         margin: 20% auto; /* 15% from the top and centered */
-         padding: 20px;
-         border: 1px solid #888;
-         width: 50%;
-         height: 50%;                       
-     }
+     .modal-content {background-color: #fefefe; margin: 20% auto; padding: 20px; border: 1px solid #888; width: 50%; height: 50%;}
      /* The Close Button */
-     .close {
-         color: #aaa;
-         float: right;
-         font-size: 28px;
-         font-weight: bold;
-     }
+     .close {color: #aaa; float: right; font-size: 28px; font-weight: bold;}
      .close:hover,
-     .close:focus {
-         color: black;
-         text-decoration: none;
-         cursor: pointer;
-     }
+     .close:focus {color: black; text-decoration: none; cursor: pointer;}
 </style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+<%@ include file="../common/layout.jsp" %> 
 		<div class="outer">
-			<img src="../../images/point.png" id="blogo" style="margin-left: 400px; margin-top: 50px;">
+			<img src="../../images/point.png" id="blogo" style="margin-left: 500px; margin-top: 50px;">
 			<br>
-			<input type="text" id="pointView" style="margin-left: 350px; margin-top: 50px; width: 220px; height: 30px;" placeholder="보유 포인트">
+			<input type="text" id="pointView" style="margin-left: 450px; margin-top: 50px; width: 220px; height: 30px;"  value="<%= curPt %>pt"  placeholder="보유 포인트" disabled>
 		<br>
 		<div id="pointBtn">
-			<input type="submit" id="pHistory" value="포인트 기록">
-			<input type="submit" id="pUsing" value="포인트 사용">
+<!-- 			<input type="submit" id="pUsing" value="포인트 사용"> -->
 		</div>
 		<div class="writeArea">
-			<form action="<%= request.getContextPath() %>/insert.no" method="post">
 				<table>
 					<tbody>
 					<tr>
@@ -116,7 +89,6 @@
 					</tr>
 					</tbody>																																								
 				</table>
-			</form>
 			</div>
 		</div>
 	 
@@ -124,7 +96,7 @@
 	    <div id="cmodal" class="modal">	 
 	      <!-- Modal content -->
 	      <iframe name="post1" id="post1" style="display:none" frame_border="0"></iframe> 
-	      <form action="<%= request.getContextPath() %>/insert.no" method="post" target="post1">
+	      <form action="<%= request.getContextPath() %>/coupon.pt" method="post" target="post1">
 		      <div class="modal-content" style="text-align:center">
 		        <span class="close">&times;</span>                                                               
 		        <p><font style="font-size:25px; font-weight:500;">쿠폰 구매</font></p>
@@ -146,22 +118,12 @@
 		      </div>
 	      </form>	 
 	    </div>
-	    	    <!-- The Modal -->
-	    <div id="pResult" class="modal">	 
-	      <!-- Modal content -->
-	      <div class="modal-content">
-	        <span class="close">&times;</span>                                                               
-	        <p>구매 완료</p>
-	        <p>쿠폰 번호 : </p>
-	      </div>	 
-	    </div>
-
 	    
 	     <!-- The Modal -->
 	    <div id="dmodal" class="modal">	 
 	      <!-- Modal content -->
 	      <iframe name="post2" id="post2" style="display:none" frame_border="0"></iframe> 
-	      <form action="request.getContextPath() %>/insert.no" method="post" target="post2">
+	      <form action="request.getContextPath() %>/dona.pt" method="post" target="post2">
 		      <div class="modal-content" style="text-align:center">
 		        <span class="close">&times;</span>                                                               
 			    <p><font style="font-size:25px; font-weight:500;">기부 하기</font></p>
@@ -169,6 +131,8 @@
 			        <br>
 					<select name="donaPoint">
 						<option>--------</option>
+						<option value="100">100pt</option>
+						<option value="5000">500pt</option>						
 						<option value="1000">1000pt</option>
 						<option value="2000">2000pt</option>
 						<option value="3000">3000pt</option>
