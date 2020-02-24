@@ -95,8 +95,8 @@
 	    <!-- The Modal -->
 	    <div id="cmodal" class="modal">	 
 	      <!-- Modal content -->
-	      <iframe name="post1" id="post1" style="display:none" frame_border="0"></iframe> 
-	      <form action="<%= request.getContextPath() %>/coupon.pt" method="post" target="post1">
+<!-- 	      <iframe name="post1" id="post1" style="display:none" frame_border="0"></iframe>  -->
+	      <form action="<%= request.getContextPath() %>/coupon.pt" method="post">
 		      <div class="modal-content" style="text-align:center">
 		        <span class="close">&times;</span>                                                               
 		        <p><font style="font-size:25px; font-weight:500;">쿠폰 구매</font></p>
@@ -104,9 +104,9 @@
 		        <p>구매할 쿠폰 종류를 선택해주세요</p>
 				<select name="couponcate">
 					<option>--------</option>
-					<option value="fee">진료비 1% 10000pt</option>
-					<option value="beauty">미용비 1% 10000pt</option>
-					<option value="goods">반려동물 용품 구매비 1% 10000pt</option>
+					<option value="진료비">진료비 5000원 10000pt</option>
+					<option value="미용비">미용비 5000원 10000pt</option>
+					<option value="반려동물 용품 구매비">반려동물 용품 구매비 5000원 10000pt</option>
 				</select>	
 				<input type="submit" value="구매" id="cPurchase">
 				<br><br>

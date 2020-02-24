@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import point.model.vo.Point;
+import point.model.vo.PtUse;
 
 public class PtDAO {
 	
@@ -73,8 +74,6 @@ public class PtDAO {
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, usId);
-			pstmt.setInt(2, startRow);
-			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			list = new ArrayList<Point>();
@@ -101,14 +100,55 @@ public class PtDAO {
 	}
 
 
-	public int ptCoupon(Connection conn, String ptcName) {
+	public int ptCoupon(Connection conn, String ptcName, String usId) {
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		String query = prop.getProperty("ptCoupon");
+		String query2 = prop.getProperty("buyCoupon");
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt2 = conn.prepareStatement(query2);
+			pstmt.setString(1, ptcName);
+			pstmt.setString(2, usId);
+			pstmt2.setString(1, usId);
+			pstmt.executeUpdate();
+			result = pstmt2.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	public ArrayList<PtUse> selCoupon(Connection conn, String usId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		
-		String cName = null;
+		String query = prop.getProperty("selCoupon");
+		ArrayList<PtUse> ptu = null;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, usId);
+			rset = pstmt.executeQuery();
+			ptu = new ArrayList<PtUse>();
+			
+			while(rset.next()) {
+				PtUse p = new PtUse(rset.getString("ptc_serial"),
+								rset.getString("ptc_cname"),
+								rset.getString("ptc_use"));
+				ptu.add(p);
+				}
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		return 0;
+		return ptu;
 	}
 
 }

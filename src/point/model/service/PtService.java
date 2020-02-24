@@ -1,13 +1,15 @@
 package point.model.service;
-import static common.CommonTemplate.*;
 import static common.CommonTemplate.close;
+import static common.CommonTemplate.commit;
 import static common.CommonTemplate.getConnection;
+import static common.CommonTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
 import point.model.dao.PtDAO;
 import point.model.vo.Point;
+import point.model.vo.PtUse;
 
 public class PtService {
 
@@ -28,15 +30,23 @@ public class PtService {
 		return list;
 	}
 
-	public int ptCoupon(String ptcName) {
+	public int ptCoupon(String ptcName, String usId) {
 		Connection conn = getConnection();
-		int result = new PtDAO().ptCoupon(conn, ptcName);
+		int result = new PtDAO().ptCoupon(conn, ptcName, usId);
+		
 		if(result > 0) {
 			commit(conn);
 		}else {
 			rollback(conn);
 		}
 		return result;
+	}
+
+	public ArrayList<PtUse> selCoupon(String usId) {
+		Connection conn = getConnection();
+		ArrayList<PtUse> list = new PtDAO().selCoupon(conn, usId);
+		
+		return list;
 	}
 
 }

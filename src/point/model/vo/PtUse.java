@@ -1,30 +1,30 @@
 package point.model.vo;
 
 public class PtUse {
-	private int ptcSerial;
+	private String ptcSerial;
 	private String ptcName;
 	private String ptcUse;
 	
 	public PtUse() {}
 
-	public PtUse(int ptcSerial, String ptcName, String ptcUse) {
+	public PtUse(String ptcSerial, String ptcName, String ptcUse) {
 		super();
 		this.ptcSerial = ptcSerial;
 		this.ptcName = ptcName;
 		this.ptcUse = ptcUse;
 	}
 
-	public PtUse(int ptcSerial, String ptcName) {
+	public PtUse(String ptcSerial, String ptcName) {
 		super();
 		this.ptcSerial = ptcSerial;
 		this.ptcName = ptcName;
 	}
 	
-	public int getPtcSerial() {
+	public String getPtcSerial() {
 		return ptcSerial;
 	}
 
-	public void setPtcSerial(int ptcSerial) {
+	public void setPtcSerial(String ptcSerial) {
 		this.ptcSerial = ptcSerial;
 	}
 

@@ -11,11 +11,11 @@
 <head>
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 지식 공유 글보기</title>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/justcontext.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.ui.position.js"></script>
+<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 	<style>
 		#blogo{margin-left:350px; margin-top: 50px;}
 		.outer{width: 1000px; height: 900px; background: rgba(255, 255, 255, 0.4); margin-left: 350px; margin-right: auto; margin-top: auto;}
@@ -43,6 +43,15 @@
 		#addReply:hover {background: #fb929e; color: #fff;}
 		#reSendBtn{width: 60px; height: 60px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 16px; font-weight: 600; border: none; border-radius: 5px;}
 		#likeBtn:hover{cursor: pointer;}
+		.jctx {display: none; z-index: 1000; position: absolute; overflow: hidden; border: 1px solid #595959; white-space: nowrap; font-family: sans-serif; font-size: 14px; border-radius: 2px; padding: 0; opacity: 0; -webkit-transition:opacity 200ms; -moz-transition:opacity 200ms; -o-transition:opacity 200ms;  -ms-transition:opacity 200ms;}
+		.jctx-white {background: white; color: black;}
+		.jctx-white-shadow {box-shadow: 0 0 15px gray;}
+		.jctx li {padding: 5px 8px; cursor: pointer;}
+		.jctx li.disabled {color: darkgrey; cursor: default;}
+		.jctx-white li:hover {background-color: #fcc6c9;}
+		.jctx-white li.disabled:hover {background-color: lightgrey;}
+		.jctx i {padding-right: 6px;}
+		.jctx hr {background-color: grey; height: 1px; border: 0; margin: 2px 0px;}
 		
 	</style>
 </head>
@@ -63,7 +72,7 @@
 					</tr>				
 					<tr>
 						<td class="aleft" width= "300px">글쓴이&nbsp;&nbsp;
-						<span id="menuBtn" style="font-size:15px; font-weight: 300"><%= kn.getUsNick() %></span>
+						<span class="jctx-host jctx-id-foo" style="font-size:15px; font-weight: 300"><%= kn.getUsNick() %></span>
 						</td>
 						<td class="aleft">날짜&nbsp;&nbsp;
 						<span style="font-size:15px; font-weight: 300"><%= kn.getKnDate() %></span>
@@ -129,11 +138,11 @@
 											var $writerTd = $('<td>').text(data[key].getUsId).css('width', '100px');
 											var $contentTd = $('<td>').text(data[key].KnrCon).css('width', '140px');
 											var $dateTd = $('<td>').text(data[key].KnrDate).css('width', '200px');
-											var $like = '<button>' + '<img src="<%=request.getContextPath() %>/images/like.png" + "style="width: 30px; height: 30px;">'+'</button>';
+										<%-- 	var $like = '<button>' + '<img src="<%=request.getContextPath() %>/images/like.png" + "style="width: 30px; height: 30px;">'+'</button>'; --%>
 											$tr.append($writerTd);
 											$tr.append($contentTd);
 											$tr.append($dateTd);
-											$tr.append($like);
+/* 											$tr.append($like); */
 											$replyTable.append($tr);
 
 										}														
@@ -193,6 +202,9 @@
 		       		});	
 				</script>
 				<% } %>
+				<ul class="jctx jctx-id-foo jctx-white jctx-white-shadow">
+					<li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/insert.ms?nick=<%= kn.getUsNick() %>">쪽지보내기</a></li>
+				</ul>
 	</div>
 	<script>
 		       
@@ -213,10 +225,10 @@
     	            trigger: 'left',
     	            callback: function(key, options) {
     	                var m = "clicked: " + key;
+    	                console.log(m);
     	            },
     	            items: {
     	                "쪽지 보내기":{name: "쪽지 보내기"},
-    	                "작성글 조회":{name: "작성글 조회"},
     	                "닫기": {name: "닫기", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
     	            }
     	        });

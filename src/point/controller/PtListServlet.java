@@ -59,7 +59,7 @@ public class PtListServlet extends HttpServlet {
 			
 			String page = null;
 			if(list != null) {
-				page = "views/point/pointView.jsp";
+				page = "views/point/pointView2.jsp";
 				request.setAttribute("list", list);
 				request.setAttribute("pg", pg);
 			} else {

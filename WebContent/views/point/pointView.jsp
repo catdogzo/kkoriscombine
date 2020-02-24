@@ -93,7 +93,7 @@
 					<tr class="label">
 						<td style="width: 150px;">날짜</td>
 						<td style="width: 200px;">포인트 내역</td>
-						<td style="width: 50px;" class="pt">포인트</td>
+						<td style="width: 100px;" class="pt">포인트</td>
 					</tr>
 					<tbody>				
 					<% if(list.isEmpty()) { %>
