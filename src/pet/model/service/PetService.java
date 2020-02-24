@@ -18,4 +18,12 @@ public class PetService {
 		return petList;
 	}
 
+	public Pet selectPet(int petNum) {
+		Connection conn = getConnection();
+		Pet pet = new PetDAO().selectPet(conn, petNum);
+		
+		close(conn);
+		return pet;
+	}
+
 }

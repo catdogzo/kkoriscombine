@@ -186,6 +186,7 @@ footer {position: fixed; bottom: 10px;}
 	         	<li id="nav-calendar">
 	         		<a href="#"><span>캘린더</span></a>
 	         	</li>
+	         	<% if(loginAu != null){ %>
 	         	<li id="nav-mypage">
 	         		<span>마이페이지</span>
 	         		<ul class="nav2-mypage" id="nav2-mypage">
@@ -195,6 +196,7 @@ footer {position: fixed; bottom: 10px;}
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
 	         		</ul>
 	         	</li>
+	         	<% } %>
 	      	</ul>
 			<dl>
 		    	<dt class="blind">sns</dt>

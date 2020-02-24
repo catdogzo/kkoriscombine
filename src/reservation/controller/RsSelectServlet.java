@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import hospital.model.service.HpService;
+import hospital.model.vo.Hospital;
+import pet.model.service.PetService;
+import pet.model.vo.Pet;
 import reservation.model.service.RsService;
 import reservation.model.vo.Reservation;
 
@@ -32,11 +36,17 @@ public class RsSelectServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int rsNum = Integer.parseInt(request.getParameter("rsNum"));
+		System.out.println(rsNum);
 		Reservation reservation = new RsService().selectRs(rsNum);
 		
 		String page = null;
 		if(reservation != null) {
+			Hospital hp = new HpService().selectHp(reservation.getHpId());
+			Pet pet = new PetService().selectPet(reservation.getPetNum());
+			
 			request.setAttribute("reservation", reservation);
+			request.setAttribute("hp", hp);
+			request.setAttribute("pet", pet);
 			page = "views/hospital/detailRs.jsp";
 		} else {
 			request.setAttribute("msg", "예약 상세조회 실패");

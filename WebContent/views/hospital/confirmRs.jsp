@@ -27,10 +27,12 @@
 	<div class="container">
 		<div class="contents">
 			<h2>예약 완료</h2>
-			<input type="hidden" name="rsNum" value=<%= rs.getPetNum() %>>
-			<div class="rsInfo"><span class="data"><%= rs.getHpId() %></span></div>
-			<div class="rsInfo"><span class="data"><%= date %></span></div>
-			<div class="detailBtn"><a href="<%= request.getContextPath() %>/select.rs">예약 상세 조회</a></div>
+			<form action="<%= request.getContextPath() %>/select.rs" method="post">
+				<input type="hidden" name="rsNum" value=<%= rs.getRsNum() %>>
+				<div class="rsInfo"><span class="data"><%= rs.getHpId() %></span></div>
+				<div class="rsInfo"><span class="data"><%= date %></span></div>
+				<div class="input-submit"><input type="submit" value="예약 상세 조회"></div>
+			</form>
 		</div>
 	</div>
 </body>
