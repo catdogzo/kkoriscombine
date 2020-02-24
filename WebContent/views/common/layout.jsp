@@ -171,7 +171,7 @@ footer {position: fixed; bottom: 10px;}
 	         		<span>병원 예약</span>
          			<ul class="nav2-hospital" id="nav2-hospital">
          				<li><a href="<%= request.getContextPath()%>/views/hospital/searchHp.jsp">병원 검색</a></li>
-	         			<li><a href="#">예약 확인</a></li>
+	         			<li><a href="#">예약 조회</a></li>
 	         			<li><a href="#">병원 후기</a></li>
          			</ul>
 	         	</li>
@@ -191,7 +191,7 @@ footer {position: fixed; bottom: 10px;}
 	         		<span>마이페이지</span>
 	         		<ul class="nav2-mypage" id="nav2-mypage">
 		         		<li><a href="#">내 정보</a></li>
-		         		<li><a href="#">예약 조회</a></li>
+		         		<li><a href="#">예약 내역</a></li>
 		         		<li><a href="#">포인트샵</a></li>
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
 	         		</ul>
@@ -206,6 +206,6 @@ footer {position: fixed; bottom: 10px;}
 			</dl>
 		</nav>
 	</header>
-	<footer></footer>
+	<!-- <footer></footer> -->
 </body>
 </html>

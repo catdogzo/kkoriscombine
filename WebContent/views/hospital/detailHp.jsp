@@ -73,6 +73,8 @@
 	div.hpInfo > div.right > div.right-contents > p.hpName {font-size: 24px; font-weight: 600; margin-bottom: 30px;}
 	div.hpInfo > div.right > div.right-contents > p.hpIntro {font-size: 16px; margin-top: 10px; border-top: 1px solid #dfdfdf; border-bottom: 1px solid #dfdfdf; padding: 10px 0;}
 	p {text-align: center; color: #000;}
+	p.comment {font-size: 14px;}
+	span > span {font-size: 14px; display: inline;}
 	.border {border: 1px solid #000;}
 	
 	form#rsForm > div.left > div.select-box {margin-bottom: 20px;}
@@ -83,7 +85,6 @@
 	form#rsForm > div.left > div.rsInfo > div.select-box {width: 80%;}
 	form#rsForm > div.left > div.rsInfo > div.hmFee {margin-top: 10px;}
 	form#rsForm > div.left > div.rsInfo > div.hmFee > span {font-size: 22px; font-weight: 600; text-align: center;}
-	form#rsForm > div.left > div.rsInfo > div.hmFee > p {font-size: 14px;}
 	form#rsForm > div.right > div.petInfo {padding: 10px 0; height: 70px;}
 	form#rsForm > div.right > div.petInfo > span {display: inline-block; width: 49%; font-size: 16px;}
 	textarea {display: inline; width: 100%; height: 80px; font-size: 16px; outline: none; resize: none; padding: 5px;}
@@ -270,12 +271,12 @@
 						<div class="hmFee">
 							<span id="title"></span>
 							<span id="hmResult"></span>
-							<p id="comment"></p>
+							<p class="comment" id="comment"></p>
 						</div>
 					</div>
 				</div>
 				<div class="right">
-					<span>진료 받을 반려동물</span>
+					<span>진료 받을 반려동물 <span> (등록되어있는 프로필 정보가 그대로 병원에 접수됩니다.)</span></span>
 					<div class="select-box">
 						<select name="pet" id="pet">
 						<% if(loginUser != null){ %>

@@ -44,4 +44,11 @@ public class RsService {
 		return reservation;
 	}
 
+	public int deleteRs(int rsNum) {
+		Connection conn = getConnection();
+		int result = new RsDAO().deleteRs(conn, rsNum);
+		close(conn);
+		return result;
+	}
+
 }
