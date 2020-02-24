@@ -1,7 +1,7 @@
-package hospital.controller;
+package pet.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,22 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
+import com.google.gson.Gson;
 
-import hospital.model.service.HpService;
-import hospital.model.vo.HpMedical;
+import pet.model.service.PetService;
+import pet.model.vo.Pet;
 
 /**
- * Servlet implementation class HpFeeSearchServlet
+ * Servlet implementation class PetListServlet
  */
-@WebServlet("/searchfee.hp")
-public class HpFeeSearchServlet extends HttpServlet {
+@WebServlet("/list.pet")
+public class PetListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HpFeeSearchServlet() {
+    public PetListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,24 +33,11 @@ public class HpFeeSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String hpId = request.getParameter("hpId");
-		String cate = request.getParameter("cate");
-		
-		HpMedical hm = new HpService().searchFee(hpId, cate);
-		
-		JSONObject hmObj = null;
-		if(hm != null) {
-			hmObj = new JSONObject();
-			hmObj.put("hmCate", hm.getHmCate());
-			hmObj.put("hmMin", hm.getHmMin());
-			hmObj.put("hmMax", hm.getHmMax());
-		}
+		String userId = request.getParameter("userId");
+		ArrayList<Pet> petList = new PetService().listPet(userId);
 		
 		response.setContentType("application/json; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println(hmObj);
-		out.flush();
-		out.close();
+		new Gson().toJson(petList, response.getWriter());
 	}
 
 	/**

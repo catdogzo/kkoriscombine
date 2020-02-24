@@ -10,7 +10,8 @@ public class Reservation {
 	private int petNum;
 	private String hmCate;
 	private String hpId;
-	private String rsCan;
+	private String rsVisit;
+	private String rsDel;
 	
 	public Reservation() {}
 	
@@ -19,9 +20,26 @@ public class Reservation {
 		this.rsDate = rsDate;
 		this.hpId = hpId;
 	}
+	
+	public Reservation(int rsNum, Timestamp rsDate, String hmCate, String hpId) {
+		super();
+		this.rsNum = rsNum;
+		this.rsDate = rsDate;
+		this.hmCate = hmCate;
+		this.hpId = hpId;
+	}
+	
+	public Reservation(Timestamp rsDate, String rsMemo, int petNum, String hmCate, String hpId) {
+		super();
+		this.rsDate = rsDate;
+		this.rsMemo = rsMemo;
+		this.petNum = petNum;
+		this.hmCate = hmCate;
+		this.hpId = hpId;
+	}
 
 	public Reservation(int rsNum, Timestamp rsDate, String rsMemo, int petNum, String hmCate, String hpId,
-			String rsCan) {
+			String rsVisit, String rsDel) {
 		super();
 		this.rsNum = rsNum;
 		this.rsDate = rsDate;
@@ -29,7 +47,8 @@ public class Reservation {
 		this.petNum = petNum;
 		this.hmCate = hmCate;
 		this.hpId = hpId;
-		this.rsCan = rsCan;
+		this.rsVisit = rsVisit;
+		this.rsDel = rsDel;
 	}
 
 	public int getRsNum() {
@@ -80,12 +99,20 @@ public class Reservation {
 		this.hpId = hpId;
 	}
 
-	public String getRsCan() {
-		return rsCan;
+	public String getRsVisit() {
+		return rsVisit;
 	}
 
-	public void setRsCan(String rsCan) {
-		this.rsCan = rsCan;
+	public void setRsVisit(String rsVisit) {
+		this.rsVisit = rsVisit;
+	}
+
+	public String getRsDel() {
+		return rsDel;
+	}
+
+	public void setRsDel(String rsDel) {
+		this.rsDel = rsDel;
 	}
 	
 }

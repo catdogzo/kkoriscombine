@@ -19,4 +19,29 @@ public class RsService {
 		return hours;
 	}
 
+	public Reservation insertRs(Reservation rs) {
+		Connection conn = getConnection();
+		RsDAO dao = new RsDAO();
+		Reservation reservation = null;
+		
+		int result= dao.insertRs(conn, rs);
+		if(result > 0) {
+			commit(conn);
+			reservation = dao.currentRs(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		return reservation;
+	}
+
+	public Reservation selectRs(int rsNum) {
+		Connection conn = getConnection();
+		Reservation reservation = new RsDAO().selectRs(conn, rsNum);
+		
+		close(conn);
+		return reservation;
+	}
+
 }

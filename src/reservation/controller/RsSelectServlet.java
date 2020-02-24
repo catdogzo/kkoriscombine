@@ -1,30 +1,28 @@
-package hospital.controller;
+package reservation.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
-
-import hospital.model.service.HpService;
-import hospital.model.vo.HpMedical;
+import reservation.model.service.RsService;
+import reservation.model.vo.Reservation;
 
 /**
- * Servlet implementation class HpFeeSearchServlet
+ * Servlet implementation class RsSelectServlet
  */
-@WebServlet("/searchfee.hp")
-public class HpFeeSearchServlet extends HttpServlet {
+@WebServlet("/select.rs")
+public class RsSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public HpFeeSearchServlet() {
+    public RsSelectServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,24 +31,20 @@ public class HpFeeSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String hpId = request.getParameter("hpId");
-		String cate = request.getParameter("cate");
+		int rsNum = Integer.parseInt(request.getParameter("rsNum"));
+		Reservation reservation = new RsService().selectRs(rsNum);
 		
-		HpMedical hm = new HpService().searchFee(hpId, cate);
-		
-		JSONObject hmObj = null;
-		if(hm != null) {
-			hmObj = new JSONObject();
-			hmObj.put("hmCate", hm.getHmCate());
-			hmObj.put("hmMin", hm.getHmMin());
-			hmObj.put("hmMax", hm.getHmMax());
+		String page = null;
+		if(reservation != null) {
+			request.setAttribute("reservation", reservation);
+			page = "views/hospital/detailRs.jsp";
+		} else {
+			request.setAttribute("msg", "예약 상세조회 실패");
+			page = "views/common/errorPage.jsp";
 		}
 		
-		response.setContentType("application/json; charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println(hmObj);
-		out.flush();
-		out.close();
+		RequestDispatcher view = request.getRequestDispatcher(page);
+		view.forward(request, response);
 	}
 
 	/**

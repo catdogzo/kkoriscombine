@@ -69,8 +69,6 @@ public class HpDetailServlet extends HttpServlet {
 		cateMap.put("HZ2", "암컷");
 		cateMap.put("HZ3", "잠복고환");
 		cateMap.put("HZ4", "기타");
-
-		
 		
 		String page = null;
 		if(hp != null) {

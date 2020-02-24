@@ -65,13 +65,13 @@
 	div.contents {width: 100%; height: 100%;}
 	
 	div.hpInfo, form#rsForm {position: relative; width: 100%; padding: 0 2%; height: 400px; margin-top: 30px;}
+	form#rsForm {height: 300px;}
 	div.hpInfo > div, form#rsForm > div {display:inline-block; width: 45%; height: 100%; vertical-align: middle; margin: 0 2%;}
 	div.hpInfo > div.left.border > p {margin-top: 164px;}
 	div.hpInfo > div.hpImg > img {width: 100%;}
 	div.hpInfo > div.right > div.right-contents > p {font-size: 18px; margin-bottom: 10px;}
 	div.hpInfo > div.right > div.right-contents > p.hpName {font-size: 24px; font-weight: 600; margin-bottom: 30px;}
 	div.hpInfo > div.right > div.right-contents > p.hpIntro {font-size: 16px; margin-top: 10px; border-top: 1px solid #dfdfdf; border-bottom: 1px solid #dfdfdf; padding: 10px 0;}
-	div.right-contents {}
 	p {text-align: center; color: #000;}
 	.border {border: 1px solid #000;}
 	
@@ -79,8 +79,15 @@
 	span {display: block; font-size: 18px;}
 	form#rsForm > div.left > div {display: inline-block; width: 45%; height: 100%; margin: 0 1%; vertical-align: middle;}
 	form#rsForm > div.left > div.calendar {height: 200px; overflow: hidden;}
-	form#rsForm > div.left > div.rsInfo {padding: 10px;}
+	form#rsForm > div.left > div.rsInfo {padding: 50px 20px 0 20px;}
 	form#rsForm > div.left > div.rsInfo > div.select-box {width: 80%;}
+	form#rsForm > div.left > div.rsInfo > div.hmFee {margin-top: 10px;}
+	form#rsForm > div.left > div.rsInfo > div.hmFee > span {font-size: 22px; font-weight: 600; text-align: center;}
+	form#rsForm > div.left > div.rsInfo > div.hmFee > p {font-size: 14px;}
+	form#rsForm > div.right > div.petInfo {padding: 10px 0; height: 70px;}
+	form#rsForm > div.right > div.petInfo > span {display: inline-block; width: 49%; font-size: 16px;}
+	textarea {display: inline; width: 100%; height: 80px; font-size: 16px; outline: none; resize: none; padding: 5px;}
+	select#rsTime > option:disabled {color: #dfdfdf;}
 	
 	/* 캘린더 */
 	table {border: 0; color: #000;}
@@ -111,7 +118,11 @@
 				<div class="right">
 				<div class="right-contents">
 					<p class="hpName"><%= hp.getHpName() %></p>
+					<% if(hp.getHpLoc2() != null){ %>
 					<p>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %> <%=hp.getHpLoc2() %></p>
+					<% } else{ %>
+					<p>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %></p>
+					<% } %>
 					<p><i class="fas fa-phone-alt"></i> <%= hp.getHpPhone() %></p>
 					<p>
 						진료시간: <%= hp.getHpStart() %>:00 ~ <%= hp.getHpEnd() %>:00
@@ -126,6 +137,7 @@
 				</div>
 			</div>
 			<form action="<%= request.getContextPath() %>/complete.rs" method="post" name="rsForm" id="rsForm">
+				<input type="hidden" name="hpId" value="<%= hp.getHpId() %>">
 				<div class="left">
 					<div class="calendar">
 						<table class="cal header"> <!-- 캘린더 헤더 -->
@@ -222,7 +234,7 @@
 						%>
 						</table>
 					</div>
-					<div class="rsInfo">
+					<div class="rsInfo" id="rsInfo">
 						<span>내원 시간</span>
 						<div class="select-box">
 							<select name="rsTime" id="rsTime">
@@ -237,6 +249,7 @@
 								}
 							%>
 							<% for(int i = start; i <= end; i++){ %>
+								<% if(lunch == i) continue; %>
 								<% if(i < 10){ %>
 								<option value=<%= i %>>0<%= i %>:00</option>
 								<% } else{ %>
@@ -245,7 +258,7 @@
 							<% } %>
 							</select>
 						</div>
-						<span>진료 선택</span>
+						<span>진료 내용</span>
 						<div class="select-box">
 							<select name="hmCate" id="hmCate">
 								<option value=404>선택해주세요</option>
@@ -254,23 +267,46 @@
 							<% } %>
 							</select>
 						</div>
-						<span>예상 진료비</span>
 						<div class="hmFee">
-							
+							<span id="title"></span>
+							<span id="hmResult"></span>
+							<p id="comment"></p>
 						</div>
 					</div>
 				</div>
 				<div class="right">
-					
+					<span>진료 받을 반려동물</span>
+					<div class="select-box">
+						<select name="pet" id="pet">
+						<% if(loginUser != null){ %>
+							<option value=404>선택해주세요</option>
+						<% } else{ %>
+							<option value=500>로그인 후 이용 가능합니다</option>
+						<% } %>
+						</select>
+					</div>
+					<div class="petInfo">
+						<span id="petName"></span>
+						<span id="petGender"></span>
+						<span id="petSpec"></span>
+						<span id="petWeight"></span>
+					</div>
+					<span>특이사항</span>
+					<textarea name="rsMemo" placeholder="특이사항 및 추가 접수내용이 있을 경우 작성해주세요"></textarea>
+					<div class="input-submit"><input type="submit" value="예약하기"></div>
 				</div>
-				<% if(loginUser != null){ %>
-				<% } %>
 			</form>
 		</div>
 	</div>
 	<script>
 		$(function(){
 			var hpId = '<%= hp.getHpId() %>';
+			
+			var year = <%= year %>;
+			var month = <%= month %>;
+			if(month < 10)
+				month = "0" + month;
+			var day = $('table.date tr').find('td.onclick').children('p').text();
 			
 			$('div.right-contents').each(function(){ // 병원정보영역 수직중앙으로 위치 조정
 				var marginTop = 200 - $(this).height()/2;
@@ -280,14 +316,13 @@
 			$('table.date tr:not(:nth-of-type(1)) > td').click(function(){ // 날짜 선택
 				$('table.date td').removeClass('onclick');
 				$(this).addClass('onclick');
-				
-				var rsTime = $('div.rsInfo select#rsTime');
 			});
 			
 			$('select#rsTime').click(function(){ // 해당 날짜에 예약가능한 시간만 선택할 수 있도록 설정
-				var year = <%= year %>;
-				var month = <%= month %>;
 				var day = $('table.date tr').find('td.onclick').children('p').text();
+				if(day < 10)
+					day = "0" + day;
+				$(this).find('option').prop('disabled', false); // 초기화
 				
 				$.ajax({
 					url: '<%= request.getContextPath() %>/search.rs',
@@ -295,10 +330,13 @@
 					data: {hpId: hpId, year: year, month: month, day: day},
 					success: function(data){
 						for(var i in data){
-							$('select#rsTime').val(data[i]); // option의 index를 가져오기 위한 일시적 selected
-							var idx = $('select#rsTime option').index($('select#rsTime option:selected'));
-							$('select#rsTime option:eq(' + idx + ')').prop('disabled', 'true');
+							$('select#rsTime').children("[value='" + data[i] + "']").prop('disabled', true);
+							//$('select#rsTime').val(data[i]); // option의 index를 가져오기 위한 일시적 selected
+							//var idx = $('select#rsTime option').index($('select#rsTime option:selected'));
+							//$('select#rsTime option:eq(' + idx + ')').prop('disabled', true);
 						}
+						
+						//$('select#rsTime').val('404');
 					}
 				});
 			});
@@ -310,9 +348,49 @@
 					type: 'post',
 					data: {hpId: hpId, cate: cate},
 					success: function(data){
-						console.log(data);
-						//console.log(data.hmMin);
-						//console.log(data.hmMax);
+						if(data != null){
+							var min = data.hmMin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+							var max = data.hmMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+							$('span#title').text('예상진료비');
+							$('span#hmResult').text(min + "원 ~ " + max + "원");
+							$('p#comment').text('* 진료내용에 따라 추가비용이 발생할 수 있습니다.');
+						} else{
+							$('span#title').text('');
+							$('span#hmResult').text('');
+							$('p#comment').text('');
+						}
+					}
+				});
+			});
+			
+			<% if(loginUser != null){ %> // 일반 회원으로 로그인 했을 경우에만 실행
+			
+			var petList = null;
+			
+			$('select#pet').each(function(){
+				var userId = '<%= loginUser.getUsId() %>';
+				$.ajax({
+					url: '<%= request.getContextPath() %>/list.pet',
+					type: 'post',
+					data: {userId: userId},
+					success: function(data){
+						petList = data;
+						if(data.length != 0){
+							var $select = $('select#pet');
+							
+							for(var i in data){
+								var $option = $('<option>');
+								$option.val(data[i].petNum);
+								$option.text(data[i].petName);
+								$select.append($option);
+							}
+						} else{
+							alert('등록된 반려동물이 없습니다. 등록 후 이용해주세요.');
+						}
+						console.log('ok');
+					},
+					error: function(data){
+						console.log('error');
 					},
 					complete: function(data){
 						console.log('com');
@@ -320,17 +398,63 @@
 				});
 			});
 			
-			$('select#hmCate').each(function(){ // click 이벤트 함수를 each 이전에 작성해야 함
+			$('select#pet').click(function(){
+				var petNum = $(this).val();
+				var idx = 0;
+				if(petNum != 404){
+					for(var i in petList){
+						if(petNum == petList[i].petNum){
+							idx = i;
+							break;
+						}
+					}
+					
+					var petGender = petList[idx].petGender;
+					if(petGender == 'M'){
+						petGender = '♂';
+					} else{
+						petGender = '♀';
+					}
+					$('span#petName').text('이름 : ' + petList[idx].petName);
+					$('span#petGender').text('성별 : ' + petGender);
+					$('span#petSpec').text('품종 : ' + petList[idx].petSpec);
+					$('span#petWeight').text('몸무게 : ' + petList[idx].petWeight + 'kg');
+				} else{
+					$('span#petName').text('');
+					$('span#petGender').text('');
+					$('span#petSpec').text('');
+					$('span#petWeight').text('');
+				}
+			});
+			<% } %>
+			
+			$('form > div.left').click(function(){ // 날짜 변경 시 input값 변경
+				var day = $('table.date tr').find('td.onclick').children('p').text();
+				if(day < 10){
+					day = "0" + day;
+				}
+				var date = year + "-" + month + "-" + day;
+				$('input[name=rsDate]').val(date);
+			});
+			
+			$('form > div.left').each(function(){ // 오늘 날짜 로드되면서 대입
+				var date = year + "-" + month + "-" + day;
+				var $input = $('<input type="hidden" name="rsDate">');
+				$input.val(date);
+				$(this).before($input);
+			});
+			
+			$('select#hmCate').each(function(){
 				$option1 = $('<option>');
-				$option1.prop('disabled', 'true').text('--진료과목--');
+				$option1.prop('disabled', true).text('--진료과목--');
 				$option2 = $('<option>');
-				$option2.prop('disabled', 'true').text('--검사--');
+				$option2.prop('disabled', true).text('--검사--');
 				$option3 = $('<option>');
-				$option3.prop('disabled', 'true').text('--건강검진--');
+				$option3.prop('disabled', true).text('--건강검진--');
 				$option4 = $('<option>');
-				$option4.prop('disabled', 'true').text('--예방접종--');
+				$option4.prop('disabled', true).text('--예방접종--');
 				$option5 = $('<option>');
-				$option5.prop('disabled', 'true').text('--중성화수술--');
+				$option5.prop('disabled', true).text('--중성화수술--');
 				
 				var opList = $(this).children('option');
 				for(var i in opList){

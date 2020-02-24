@@ -36,14 +36,9 @@ public class RsSearchServlet extends HttpServlet {
 		String hpId = request.getParameter("hpId");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
-		if(Integer.parseInt(month) < 10)
-			month = "0" + month;
 		String day = request.getParameter("day");
-		if(Integer.parseInt(day) < 10)
-			day = "0" + day;
 		
 		String date = year + "-" + month + "-" + day;
-		
 		ArrayList<Integer> hours = new RsService().searchRs(hpId, date);
 		
 		response.setContentType("application/json; charset=UTF-8");
