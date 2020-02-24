@@ -46,10 +46,7 @@ public class MessageSendServlet extends HttpServlet {
 
 		if(request.getParameter("currentPages") != null) {
 			currentPages = Integer.parseInt(request.getParameter("currentPages"));
-		} else {
-			System.out.println("여기 메시지 나오면 실패 null111");
-			
-		}
+		} 
 		limits  = 10;
 		maxPages = (int)((double)listCounts/limits + 0.9);
 		

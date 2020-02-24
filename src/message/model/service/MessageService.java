@@ -83,6 +83,24 @@ public class MessageService {
 		return result;
 	}
 
+	public int sendMessage(String rsgId, String title, String con) {
+		Connection conn = getConnection();
+		MessageDAO mDAO = new MessageDAO();
+		
+		int result = mDAO.insertMessage(conn, rsgId, title, con);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);	
+		}
+		
+		
+		
+		return result;
+	}
+
+
 
 
 }

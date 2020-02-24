@@ -52,9 +52,7 @@ public class MessageDAO {
 			close(rset);
 			close(stmt);
 		}
-		
 
-		System.out.println(result);
 		return result;
 	}
 
@@ -97,7 +95,7 @@ public class MessageDAO {
 			close(pstmt);
 		}
 		
-		
+		System.out.println("mList1 + " + mList);
 		return mList;
 	}
 
@@ -186,7 +184,8 @@ public class MessageDAO {
 			close(rs);
 			close(pstmt);
 		}
-		 
+		System.out.println("message " + message);
+
 		return message;
 	}
 
@@ -199,6 +198,9 @@ public class MessageDAO {
 		int startRows = (currentPages -1) * postss + 1; 
 		int endRows = startRows + postss -1;
 		
+		System.out.println("startRows = "+startRows);
+		System.out.println("endRows = "+endRows);
+		System.out.println("currenP + " + currentPages);
 		String query = prop.getProperty("selectSendMlist");
 				
 		try {
@@ -218,6 +220,7 @@ public class MessageDAO {
 										rs.getString("rsg_del"),
 										rs.getString("ssg_del"),
 										rs.getString("msg_status"));
+				System.out.println("가져온메세지"+m.getMsgTitle());
 				mLists.add(m);
 
 			}
@@ -229,7 +232,7 @@ public class MessageDAO {
 			close(pstmt);
 		}
 		
-		
+		System.out.println("mLists제발" + mLists);
 		return mLists;
 
 	}
@@ -257,8 +260,32 @@ public class MessageDAO {
 			close(stmt);
 		}
 		
-	
-		System.out.println(result);
+		System.out.println("ListhCounts " + result);
+		return result;
+	}
+
+	public int insertMessage(Connection conn, String rsgId, String title, String con) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("insertMessage");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, title);
+			pstmt.setString(2, con);
+			pstmt.setString(3, rsgId);
+			
+			System.out.println("title + " + title);
+			System.out.println("con + " + con);
+			System.out.println("rsgId + " + rsgId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
 		return result;
 	}
 }

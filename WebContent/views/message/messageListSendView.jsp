@@ -4,6 +4,7 @@
 <%@ page import = "java.util.ArrayList, message.model.vo.*" %>    
 <%
 	ArrayList<Message> mListS = (ArrayList<Message>)request.getAttribute("mLists");
+	System.out.println("mLists +" + mListS);
 	PageInfo piS = (PageInfo)request.getAttribute("pi"); 
 
 	int listCounts = piS.getListCount();
@@ -235,7 +236,7 @@ div.tableCol {
 				</script>			
 				
 				<!-- 맨 끝으로 -->
-				<button onclick="location.href='<%= request.getContextPath() %>/listSend.ms?currentPage=<%= maxPages %>'">&gt;&gt;</button>			
+				<button onclick="location.href='<%= request.getContextPath() %>/listSend.ms?currentPages=<%= maxPages %>'">&gt;&gt;</button>			
 				<% } %>
 		</div>	
 
@@ -302,7 +303,7 @@ div.tableCol {
 			var mNums = $(this).parent().children().children('.mNums').val();
 					
 			
-			console.log(mNum);
+			console.log(mNums);
 
 			<% if(loginUser != null) { %>
 				location.href='<%= request.getContextPath() %>/detailSend.ms?mNums=' + mNums;

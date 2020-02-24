@@ -5,6 +5,7 @@
 <%
 	ArrayList<Message> mList = (ArrayList<Message>)request.getAttribute("mList");
 	PageInfo pi = (PageInfo)request.getAttribute("pi"); 
+	System.out.println("mList " + mList);
 
 	int listCount = pi.getListCount();
 	int currentPage = pi.getCurrentPage();
@@ -19,11 +20,13 @@
 <style>
 .header{
 	top:0px;}	
+	
 div.tableTitle {
 	   text-align:center; 
 	   align-content:center;
 	   width: 1000px;
-	   margin-left: 320px;
+	   margin-top: 20px;
+	   margin-left: 500px;
 	   margin-right: 50px;
 	   border-top: solid 1px;
 	   border-bottom:solid 2px;
@@ -71,8 +74,8 @@ div.tableCol.sendDate{
 
 }
 
-input#receiveMsgButton {
-	position: fixed;
+input#sendMsgButton {
+	text-align: left;
 	margin-right: 200px;
 	margin-bottom: 20px;
 	margin-left: 30px;
@@ -80,7 +83,7 @@ input#receiveMsgButton {
 }
 
 
-div.input-button {display: block; text-align: center; padding: 20px;}
+div.input-button {display: block; padding: 20px;}
 input[type="button"]{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
 input[type="button"]:hover {background: #fb929e; color: #fff;}
 
@@ -165,7 +168,7 @@ div.tableCol {
 			<div class="messageControll">
 			   	<!-- <input type="text" class="textMsg" size="20">
 			   	<input type="submit" id="searchButton" class="button" value="검색"> -->
-			   	<input type="button" onclick="location.href='<%= request.getContextPath() %>/listSend.ms'"  value=" 보낸쪽지함 " id="receiveMsgButton" class="receiveMsgButton" role="button" aria-disabled="false">
+			   	<input type="button" onclick="location.href='<%= request.getContextPath() %>/listSend.ms'"  value=" 보낸쪽지함 " id="sendMsgButton" class="sendMsgButton" role="button" aria-disabled="false">
 			</div>
 		<div class="tableTitle">
 			<table id="msgArea">
@@ -186,7 +189,7 @@ div.tableCol {
 						for(Message m : mList) {
 				%>
 				<tr>
-					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;"></td>
+					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;" data-mNum="<%= m.getMsgNum() %>" ></td>
 					<td class="rId"><input type="hidden" class="mNum" name="mNum" value='<%= m.getMsgNum() %>'><%= m.getSsgId() %><input type="hidden" value='<%= m.getSsgId() %>'> </td>
 					<td class="mTitle"><%= m.getMsgTitle() %><input type="hidden"  value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
@@ -244,17 +247,16 @@ div.tableCol {
 	<form name="frm" action="location.href='<%= request.getContextPath() %>/delete.ms" method="post"> <!-- 메세지 삭제 누르면 실행 -->
 		<input type="hidden" name="action" value="ssgId">
 		<input type="hidden" name="type" value="many">
-
-	<!-- 쪽지 리스트 출력 부분-->
 	</form>
 	
 	<!-- 버튼 위치 -->
 	<div style="text-align:right"> </div>
-    <!-- 페이징 쪽 번호 생기는 곳 -->
     
     <!-- 삭제버튼  -->
     <div class="delBtn" style="text-align:right">
-    <button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" on`click=> &nbsp;선택쪽지 삭제&nbsp; </button>
+    	<button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" > &nbsp;선택쪽지 삭제&nbsp; </button>
+        <button id="sendButton" class="sendButton" role="button" aria-disabled="false" onclick='location.href="views/message/messageSendView.jsp"'> &nbsp;쪽지 보내기&nbsp; </button>
+        
 	</div>
     
 	
@@ -313,6 +315,28 @@ div.tableCol {
 			<% } %>
 			
 		});
+		
+/* 		$('.deleteButton').click(function(){
+			var checkArr = new Array();
+			
+			if($(('input[class="check"]:checked')){
+				alert("삭제할 쪽지를 선택하세요.");
+			var confirm1 = confirm("정말 삭제하시겠습니까?");
+			
+			if(confirm1){
+				$('input[class="check"]:checked').each(function(){
+					checkArr.push($(this).attr("data-mNum"));
+					
+					console.log(checkArr);
+					
+		
+				
+				});
+			};
+			
+		});
+		}; */
+		
 		
 		
 	</script>

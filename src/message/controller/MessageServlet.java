@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 import message.model.service.MessageService;
 import message.model.vo.Message;
 import message.model.vo.PageInfo;
@@ -51,10 +53,7 @@ public class MessageServlet extends HttpServlet {
 
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		} else {
-			System.out.println("여기 메시지 나오면 실패 null");
-			
-		}
+		} 
 		limit  = 10;
 		maxPage = (int)((double)listCount/limit + 0.9);
 		
@@ -64,7 +63,6 @@ public class MessageServlet extends HttpServlet {
 		if(maxPage < endPage) {
 			endPage = maxPage;
 		}
-		
 		PageInfo pi = new PageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
 		
 		ArrayList<Message> mList = mService.selectList(currentPage);
