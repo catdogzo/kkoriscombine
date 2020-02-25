@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import reservation.model.vo.Reservation;
+import reservation.model.vo.ReservationInfo;
 
 public class RsDAO {
 	private Properties prop = new Properties();
@@ -94,7 +95,7 @@ public class RsDAO {
 				reservation = new Reservation(rs.getInt("RS_NUM"),
 											  rs.getTimestamp("RS_DATE"),
 											  rs.getString("HM_CATE"),
-											  rs.getString("HP_NAME"));
+											  rs.getString("HP_NAME")); // 여기 변경하기
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -152,6 +153,36 @@ public class RsDAO {
 			close(pstmt);
 		}
 		return result;
+	}
+
+	public ArrayList<ReservationInfo> listRs(Connection conn, String usId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<ReservationInfo> riList = null;
+		
+		String query = prop.getProperty("listRs"); // ORDER BY DESC
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, usId);
+			
+			rs = pstmt.executeQuery();
+			riList = new ArrayList<ReservationInfo>();
+			while(rs.next()) {
+				riList.add(new ReservationInfo(rs.getInt("RS_NUM"),
+											   rs.getString("HP_NAME"),
+											   rs.getTimestamp("RS_DATE"),
+											   rs.getString("HM_CATE"),
+											   rs.getString("PET_NAME"),
+											   rs.getString("RS_VISIT"),
+											   rs.getString("RS_DEL")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return riList;
 	}
 	
 	

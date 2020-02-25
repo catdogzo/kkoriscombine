@@ -1,6 +1,7 @@
 package reservation.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -9,25 +10,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import hospital.model.service.HpService;
-import hospital.model.vo.Hospital;
-import pet.model.service.PetService;
-import pet.model.vo.Pet;
 import reservation.model.service.RsService;
-import reservation.model.vo.Reservation;
+import reservation.model.vo.ReservationInfo;
+import user.model.vo.User;
 
 /**
- * Servlet implementation class RsSelectServlet
+ * Servlet implementation class RsListServlet
  */
-@WebServlet("/select.rs")
-public class RsSelectServlet extends HttpServlet {
+@WebServlet("/list.rs")
+public class RsListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RsSelectServlet() {
+    public RsListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,9 +35,8 @@ public class RsSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int rsNum = Integer.parseInt(request.getParameter("rsNum"));
-		System.out.println(rsNum);
-		Reservation reservation = new RsService().selectRs(rsNum);
+		HttpSession session = request.getSession();
+		User loginUser = (User)session.getAttribute("loginUser");
 		
 		// DB의 HM_CATE값의 view 값 매칭한 map 생성
 		HashMap<String, String> cateMap = new HashMap<String, String>();
@@ -72,26 +70,22 @@ public class RsSelectServlet extends HttpServlet {
 		cateMap.put("HZ3", "잠복고환");
 		cateMap.put("HZ4", "기타");
 		
+		ArrayList<ReservationInfo> riList = new RsService().listRs(loginUser.getUsId());
+		
 		String page = null;
-		if(reservation != null) {
-			Hospital hp = new HpService().selectHp(reservation.getHpId());
-			Pet pet = new PetService().selectPet(reservation.getPetNum());
-			
-			HashMap<String, Object> objMap = new HashMap<String, Object>();
-			objMap.put("rs", reservation);
-			objMap.put("hp", hp);
-			objMap.put("pet", pet);
-			objMap.put("cate", cateMap);
-			
-			request.setAttribute("objMap", objMap);
-			page = "views/hospital/detailRs.jsp";
+		if(riList != null) {
+			for(ReservationInfo ri : riList) { // 진료코드 한글데이터로 셋팅
+				ri.setHmCate(cateMap.get(ri.getHmCate()));
+			}
+			request.setAttribute("riList", riList);
+			page = "views/hospital/listRs.jsp";
 		} else {
-			request.setAttribute("msg", "예약 상세조회 실패");
+			request.setAttribute("msg", "예약 내역 조회 실패");
 			page = "views/common/errorPage.jsp";
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher(page);
-		view.forward(request, response);
+		RequestDispatcher out = request.getRequestDispatcher(page);
+		out.forward(request, response);
 	}
 
 	/**

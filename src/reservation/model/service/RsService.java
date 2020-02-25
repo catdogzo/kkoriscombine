@@ -1,12 +1,16 @@
 package reservation.model.service;
 
-import static common.JDBCTemplate.*;
+import static common.JDBCTemplate.close;
+import static common.JDBCTemplate.commit;
+import static common.JDBCTemplate.getConnection;
+import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
 import reservation.model.dao.RsDAO;
 import reservation.model.vo.Reservation;
+import reservation.model.vo.ReservationInfo;
 
 public class RsService {
 
@@ -49,6 +53,13 @@ public class RsService {
 		int result = new RsDAO().deleteRs(conn, rsNum);
 		close(conn);
 		return result;
+	}
+
+	public ArrayList<ReservationInfo> listRs(String usId) {
+		Connection conn = getConnection();
+		ArrayList<ReservationInfo> riList = new RsDAO().listRs(conn, usId);
+		close(conn);
+		return riList;
 	}
 
 }

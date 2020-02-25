@@ -191,7 +191,7 @@ footer {position: fixed; bottom: 10px;}
 	         		<span>마이페이지</span>
 	         		<ul class="nav2-mypage" id="nav2-mypage">
 		         		<li><a href="#">내 정보</a></li>
-		         		<li><a href="#">예약 내역</a></li>
+		         		<li><a href="<%= request.getContextPath() %>/list.rs">예약 내역</a></li>
 		         		<li><a href="#">포인트샵</a></li>
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
 	         		</ul>
