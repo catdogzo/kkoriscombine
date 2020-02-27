@@ -18,9 +18,9 @@
 	.searchArea{margin-top: 50px;}	
 	#searchBtn{line-height: 30px; text-align: center; background-color: #ffe3e4; color:#ff4e59; border: 1px solid #fcc6c9; border-radius: 5px; width: 80px; height: 35px;  position: fixed;}
 </style>
-</head>
+</head>	
 <body>
-	<%@ include file="../common/layout.jsp" %>
+	<%@ include file="../layout.jsp" %>
 		<div class="outer">
 		<br>
 		<!-- <h1>지식 공유게시판</h1> -->

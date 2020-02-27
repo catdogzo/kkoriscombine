@@ -179,25 +179,30 @@ footer {position: fixed; bottom: 10px;}
 	         		<span>커뮤니티</span>
          			<ul class="nav2-community" id="nav2-community">
 	         			<li><a href="#">공지사항</a></li>
-	         			<li><a href="#">후기 모아보기</a></li>
-	         			<li><a href="#">지식 공유</a></li>
+	         			<li><a href="<%= request.getContextPath()%>/list.rv">후기 모아보기</a></li>
+	         			<li><a href="<%= request.getContextPath()%>/list.kn">지식 공유</a></li>
          			</ul>
 	         	</li>
 	         	<li id="nav-calendar">
-	         		<a href="<%=request.getContextPath() %>/cal.li"><span>캘린더</span></a>
+    			    <a href="<%=request.getContextPath() %>/cal.li"><span>캘린더</span></a>
+	         		
 	         	</li>
+
 	         	<li id="nav-mypage">
 	         		<span>마이페이지</span>
 	         		<ul class="nav2-mypage" id="nav2-mypage">
 		         		<li><a href="#">내 정보</a></li>
 		         		<li><a href="#">예약 조회</a></li>
-		         		<li><a href="#">포인트샵</a></li>
+	         <%if(loginAu != null) {%>		         		
+		         		<li><a href="<%= request.getContextPath()%>/list.pt">포인트</a></li>	         		
+		    <%} %>	
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
-    	         		<li><a href="<%= request.getContextPath() %>/list.ms">내 쪽지함</a></li>
+   		    	        <li><a href="<%= request.getContextPath() %>/list.ms">내 쪽지함</a></li>
 		         		
 	         		</ul>
 	         	</li>
 	      	</ul>
+
 			<dl>
 		    	<dt class="blind">sns</dt>
 		        <dd><a href="#"><i class="fab fa-facebook-f"></i></a></dd>

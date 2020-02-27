@@ -1,12 +1,13 @@
+<%@page import="java.util.logging.SimpleFormatter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"	
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 
-<%@ page import = "java.util.ArrayList, message.model.vo.*" %>    
+<%@ page import = "java.util.ArrayList, message.model.vo.*, java.text.SimpleDateFormat" %>    
 <%
 	ArrayList<Message> mList = (ArrayList<Message>)request.getAttribute("mList");
 	PageInfo pi = (PageInfo)request.getAttribute("pi"); 
 	System.out.println("mList " + mList);
-
+	//SimpleDateFormat sf = new SimpleDateFormat("yyyy년 'MM월 dd일 HH:mm");
 	int listCount = pi.getListCount();
 	int currentPage = pi.getCurrentPage();
 	int maxPage = pi.getMaxPage();

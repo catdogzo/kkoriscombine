@@ -1,5 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import = "java.util.*, common.model.vo.Paging, point.model.vo.Point" %>
+<%
+	ArrayList<Point> list = (ArrayList<Point>)request.getAttribute("list");
+	
+	int curPt = 0;
+	int point = 0;
+	String ptHis = null;
+	
+	if(list.isEmpty()){
+		curPt = 0;
+	}else{
+		for(int i = 0; i < list.size(); i++){
+			if(list.get(i).getPtAdd() != 0){
+				curPt += list.get(i).getPtAdd();
+			}else {
+				curPt -= list.get(i).getPtUse();
+			}
+			
+			switch(list.get(i).getPtCate()){
+			case 1 : ptHis = "리뷰 작성"; break;
+			case 2 : ptHis = "댓글 포인트"; break;
+			case 3 : ptHis = "쿠폰 구매"; break;
+			case 4 : ptHis = "포인트 기부"; break;
+			}
+			list.get(i).setPtHis(ptHis);		
+		}
+	}
+	
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,105 +39,66 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <style>
 <style>
-	#blogo{margin-left:00px; margin-top: 50px;}
+	#blogo{margin-top: 50px;}
 	#pointView{border-color: #AEDEFC; cursor: default;}
-	#pointBtn{margin-left: 530px; margin-top: 20px;}
-	.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 150px; margin-right: auto; margin-top: auto;}
-	.writeArea{width: 600px; height: 550px; margin-top: 10px; margin-left: 180px; margin-right: auto; padding: 10px; border: 1px solid #FB929E;}
-	table{margin-left: 30px; margin-top: 3px; max-width:536px;}
-	table, th, td{word-spacing: 3px; padding: 3px;}
-	tr > th{padding-bottom: 50px; padding-top: 20px; font-size: 20pt;}
-	tbody > tr > td{padding-left : 40px; padding-bottom : 10px;}
+	#pointBtn{margin-left: 900px; margin-top: 20px; min-width: 300px;}
+	.outer{width: 100px; height: 800px; background: rgba(255, 255, 255, 0.4); margin-left: 300px; margin-right: auto; margin-top: auto;}
+	.writeArea{width: 800px; height: 600px; margin-top: 10px; margin-left: 180px; margin-right: auto; padding: 10px; border: 1px solid #FB929E;}	
 	.pt{text-align: right;}
 	.input{font-family: inherit; width: 100%; border: 0; outline: 0; background: transparent; transition: border-color 0.2s;}	
 	#page{margin-left: 270px;}
-	#pHistory{font-size: 15px; margin-left: 50px;  text-align: center; background-color: #575756; color: #FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
-	#pHistory:hover {background: #ffe3e4; color: #575756;}
-	#pUsing{font-size: 15px; text-align: center; background-color: #575756; color:#FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
-	#pUsing:hover {background: #ffe3e4; color: #575756;}
+	#pUsing{font-size: 15px; text-align: center; background-color: #575756; color:#FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px; }
+	#pUsing:hover {background: #ffe3e4; color: #575756; cursor: pointer;}
+	#ptHis::-webkit-scrollbar {width: 6px; background-color: #F5F5F5;} 
+	#ptHis::-webkit-scrollbar-thumb {background-color: #FB929E;}
+
 </style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+<%@ include file="../common/layout.jsp" %> 
 		<!-- 포인트 -->	
 		<div class="outer">
-			<img src="../../images/point.png" id="blogo" style="margin-left: 400px; margin-top: 50px;">
+			<img src="<%= request.getContextPath() %>/images/point.png" id="blogo" style="margin-left: 500px; margin-top: 50px;">
 			<br>
-			<input type="text" id="pointView" style="margin-left: 350px; margin-top: 50px; width: 220px; height: 30px;" placeholder="보유 포인트">
+			<form action="views/point/pointUse.jsp" method="post">
+				<input type="text" id="pointView" style="margin-left: 450px; margin-top: 50px; width: 220px; height: 30px;" value="<%= curPt %>pt" placeholder="보유 포인트" disabled>
+				<input type="hidden" name="curPt" value="<%= curPt%>">
 		<br>
 		<div id="pointBtn">
-			<input type="submit" id="pHistory" value="포인트 기록">
 			<input type="submit" id="pUsing" value="포인트 사용">
 		</div>
-		<div class="writeArea">
-			<form action="<%= request.getContextPath() %>/insert.no" method="post">
-				<table>
-					<thead>				
-					<tr>
-						<th colspan="3">포인트 기록
-						</th>			
-					</tr>
-					</thead>
-					<tr>
-						<td style="width: 150px;">날짜</td>
-						<td style="width: 200px;">게시글 등록</td>
-						<td style="width: 50px;" class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>쿠폰 구매</td>
-						<td class="pt">-3000pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>
-					<tr>
-						<td>날짜</td>
-						<td>게시글 등록</td>
-						<td class="pt">100pt</td>
-					</tr>																																								
-				</table>
-				<br><br><br>
-				<span id="page">[1] [2] [3] </span>
 			</form>
+		<div class="writeArea">		
+
+			<div style="text-align:center; font-size: 20pt; font-weight: 700;">포인트 기록<br><br></div>
+			<div id = "ptHis" style="text-align:center; overflow-y:scroll; width: 600px; height: 500px; margin-left: 100px;">
+					<% if(list.isEmpty()) { %>
+					<div></div>
+					<% } else {
+							for(Point pt : list) {	
+					%>			
+						<span style="min-width: 120px;"><%= pt.getPtDate() %><input type="hidden" name ="date" value='<%= pt.getPtDate() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+						<span style="min-width: 120px;"><%= pt.getPtHis() %><input type="hidden" name ="ptHis" value='<%= pt.getPtHis() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+						
+						<span style="min-width: 120px;"><% if(pt.getPtAdd() != 0){ %>
+							<span style="color: blue">+<%= pt.getPtAdd() %><input type="hidden" name ="ptHis" value='<%= pt.getPtAdd() %>'></span>pt					
+							<% } else { %>
+							<span style="color: red">-<%= pt.getPtUse() %><input type="hidden" name ="ptHis" value='<%= pt.getPtUse() %>'></span>pt					
+							<% } %></span><br><br>
+
+	           	    <%       }				               
+                    } %>
+                    </div>	
 			</div>
-		</div>
-									
+		</div>						
 		<script>
-			$(function(){
+/* 			$(function(){
 				$('tbody td').mouseenter(function(){
 					$(this).parent().css({'background':'#ffe3e4', 'cursor':'pointer'});
 				}).mouseout(function(){
 					$(this).parent().css("background", "none");
 				});			
-			});
+			}); */
 		</script>
 </body>
 </html>

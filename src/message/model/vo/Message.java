@@ -15,8 +15,7 @@ public class Message {
 	
 	public Message() {}
 
-	public Message(int msgNum, String msgTitle, Date msgDate, String msgCon, String ssgId, String rsgId, String ssgDel, String rsgDel,
-			String status) {
+	public Message(int msgNum, String msgTitle, Date msgDate, String msgCon, String ssgId, String rsgId, String ssgDel, String rsgDel,	String status) {
 		super();
 		this.msgNum = msgNum;
 		this.msgTitle = msgTitle;
@@ -60,7 +59,7 @@ public class Message {
 	public void setMsgCon(String msgCon) {
 		this.msgCon = msgCon;
 	}
-
+	
 	public String getSsgId() {
 		return ssgId;
 	}

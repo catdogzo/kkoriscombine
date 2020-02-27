@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class KnBoard {
 	private int knNum;
-	private String knTtitle;
+	private String knTitle;
 	private String knCon;
 	private String usNick;
 	private int knView;
@@ -14,11 +14,11 @@ public class KnBoard {
 
 	public KnBoard() {}
 
-	public KnBoard(int knNum, String knTtitle, String knCon, String usNick, int knView, Date knDate, Date knUpdate,
+	public KnBoard(int knNum, String knTitle, String knCon, String usNick, int knView, Date knDate, Date knUpdate,
 			String knDel) {
 		super();
 		this.knNum = knNum;
-		this.knTtitle = knTtitle;
+		this.knTitle = knTitle;
 		this.knCon = knCon;
 		this.usNick = usNick;
 		this.knView = knView;
@@ -27,12 +27,45 @@ public class KnBoard {
 		this.knDel = knDel;
 	}
 
-	public KnBoard(int knNum, String knTtitle, String knCon, Date knUpdate) {
+	public KnBoard(int knNum, String knTitle, String knCon, Date knUpdate) {
 		super();
 		this.knNum = knNum;
-		this.knTtitle = knTtitle;
+		this.knTitle = knTitle;
 		this.knCon = knCon;
 		this.knUpdate = knUpdate;
+	}
+
+	public KnBoard(String knTitle, String knCon, String usNick) {
+		super();
+		this.knTitle = knTitle;
+		this.knCon = knCon;
+		this.usNick = usNick;
+	}
+
+	public KnBoard(int knNum, String knTitle, String knCon, String usNick, int knView, Date knDate) {
+		super();
+		this.knNum = knNum;
+		this.knTitle = knTitle;
+		this.knCon = knCon;
+		this.usNick = usNick;
+		this.knView = knView;
+		this.knDate = knDate;
+	}
+
+	public KnBoard(int knNum, String knTitle, Date knDate, String knCon, String usNick) {
+		super();
+		this.knNum = knNum;
+		this.knTitle = knTitle;
+		this.knCon = knCon;
+		this.usNick = usNick;
+		this.knDate = knDate;
+	}	
+	
+	public KnBoard(int knNum, String knTitle, String knCon) {
+		super();
+		this.knNum = knNum;
+		this.knTitle = knTitle;
+		this.knCon = knCon;
 	}
 
 	public int getKnNum() {
@@ -43,12 +76,12 @@ public class KnBoard {
 		this.knNum = knNum;
 	}
 
-	public String getKnTtitle() {
-		return knTtitle;
+	public String getknTitle() {
+		return knTitle;
 	}
 
-	public void setKnTtitle(String knTtitle) {
-		this.knTtitle = knTtitle;
+	public void setknTitle(String knTitle) {
+		this.knTitle = knTitle;
 	}
 
 	public String getKnCon() {
@@ -98,5 +131,6 @@ public class KnBoard {
 	public void setKnDel(String knDel) {
 		this.knDel = knDel;
 	}
-	
+
+
 }

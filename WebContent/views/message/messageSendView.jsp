@@ -8,7 +8,11 @@
 	String mTitle = m.getMsgTitle();
 	String mCon = m.getMsgCon();
 	Date mDate = m.getMsgDate();
-%>  --%>   
+%>  --%>  
+<%
+	String usNick = request.getParameter("nick");
+
+%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -142,7 +146,7 @@ button[type="submit"]:hover {background: #fb929e; color: #fff;}
 			<div class="tableTitle">
 				<table id="msgArea">
 					<tr>
-						<th>수신자 : <input type="hidden" name="rsgId" value="user02"<%-- <%= rsgId %> --%>">user02<%-- <%= rsgId %> --%></th>
+						<th>수신자 : <input type="hidden" name="rsgId" value="<%= usNick%>"><%= usNick%> <%-- <%= rsgId %> --%></th>
 					</tr>
 					<tr class="title">
 						<th>제목 : <input type="text" size="120" name="title" placeholder="제목을 입력하세요"></th>
