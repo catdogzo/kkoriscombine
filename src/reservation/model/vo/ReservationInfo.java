@@ -13,6 +13,13 @@ public class ReservationInfo {
 	
 	public ReservationInfo() {}
 
+	public ReservationInfo(int rsNum, String hpName, Timestamp rsDate) {
+		super();
+		this.rsNum = rsNum;
+		this.hpName = hpName;
+		this.rsDate = rsDate;
+	}
+
 	public ReservationInfo(int rsNum, String hpName, Timestamp rsDate, String hmCate, String petName) {
 		super();
 		this.rsNum = rsNum;

@@ -42,105 +42,129 @@
 	<div class="container">
 		<div class="contents">
 			<h2>예약 상세 조회</h2>
-			<% if(rs.getRsDel().equals("Y")){ %>
-			<h3 class="no"><i class="fas fa-times"></i> 예약취소</h3>
-			<% } else{ %>
-				<% if(rs.getRsVisit().equals("W")){ %>
-				<h3 class="on"><i class="fas fa-circle"></i> 예약중</h3>
-				<% } else if(rs.getRsVisit().equals("Y")){ %>
-				<h3 class="ok"><i class="fas fa-circle"></i> 진료완료</h3>
+			<form action="<%= request.getContextPath() %>/select.rs" method="post">
+				<% if(rs.getRsDel().equals("Y")){ %>
+				<h3 class="no"><i class="fas fa-times"></i> 예약취소</h3>
 				<% } else{ %>
-				<h3 class="no"><i class="fas fa-times"></i> 미방문</h3>
+					<% if(rs.getRsVisit().equals("W")){ %>
+					<h3 class="on"><i class="fas fa-circle"></i> 예약중</h3>
+					<% } else if(rs.getRsVisit().equals("Y")){ %>
+					<h3 class="ok"><i class="fas fa-circle"></i> 진료완료</h3>
+					<% } else{ %>
+					<h3 class="no"><i class="fas fa-times"></i> 미방문</h3>
+					<% } %>
 				<% } %>
-			<% } %>
-			<div class="info">
-				<p class="title">예약 정보</p>
-				<table class="main">
-					<tr>
-						<td>동물병원</td>
-						<td><%= hp.getHpName() %></td>
-					</tr>
-					<tr>
-						<td>예약일시</td>
-					<%
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
-						String date = sdf.format(rs.getRsDate());
-					%>
-						<td><%= date %></td>
-					</tr>
-					<tr>
-						<td>진료과목</td>
-						<td><%= cate.get(rs.getHmCate()) %></td>
-					</tr>
-					<tr>
-						<td>반려동물</td>
-						<td><%= pet.getPetName() %></td>
-					</tr>
-					<tr>
-						<td>특이사항</td>
-						<% if(rs.getRsMemo() != null){ %>
-						<td><%= rs.getRsMemo() %></td>
-						<% } else{ %>
-						<td>없음</td>
-						<% } %>
-					</tr>
-				</table>
-				<p class="title">병원 정보</p>
-				<table class="add">
-					<tr>
-						<td>위치</td>
-						<% if(hp.getHpLoc2() == null){ %>
-						<td>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %></td>
-						<% } else{ %>
-						<td>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %> <%= hp.getHpLoc2() %></td>
-						<% } %>
-					</tr>
-					<tr>
-						<td>연락처</td>
-						<td><%= hp.getHpPhone() %></td>
-					</tr>
-					<%
-						String start = hp.getHpStart() + ":00";
-						String end = hp.getHpEnd() + ":00";
-						String lunch = hp.getHpLunch() + ":00";
-						
-						if(hp.getHpStart() < 12 || hp.getHpStart() == 24){
-							start = "AM " + start;
-						} else{
-							start = "PM " + start;
-						}
-						
-						if(hp.getHpEnd() < 12 || hp.getHpEnd() == 24){
-							end = "AM " + end;
-						} else{
-							end = "PM " + end;
-						}
-						
-						if(hp.getHpLunch() < 12 || hp.getHpLunch() == 24){
-							lunch = "AM " + lunch;
-						} else{
-							lunch = "PM " + lunch;
-						}
-					%>
-					<tr>
-						<td>진료시간</td>
-						<td><%= start %> ~ <%= end %></td>
-					</tr>
-					<tr>
-						<td>점심시간</td>
-						<td><%= lunch %></td>
-					</tr>
-				</table>
-				<% if(rs.getRsVisit().equals("W")){ %>
-				<div class="button-box"><button id="cancelBtn">예약 취소</button></div>
-				<div class="button-box"><button id="modifyBtn" onclick="location.href='<%= request.getContextPath()%>/views/hospital/updateRs.jsp'">예약 변경</button></div>
-				<% } else{ %>
-				<div class="button-box"><button id="prevBtn" onclick="location.href='<%= request.getContextPath()%>/list.rs'">목록으로</button></div>
-				<% } %>
-			</div>
+				<div class="info">
+					<p class="title">예약 정보</p>
+					<table class="main">
+						<tr>
+							<td>동물병원</td>
+							<td><%= hp.getHpName() %></td>
+						</tr>
+						<tr>
+							<td>예약일시</td>
+						<%
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
+							String date = sdf.format(rs.getRsDate());
+						%>
+							<td><%= date %></td>
+						</tr>
+						<tr>
+							<td>진료과목</td>
+							<td><%= cate.get(rs.getHmCate()) %></td>
+						</tr>
+						<tr>
+							<td>예상진료비</td>
+							<td id="hmResult"></td>
+						</tr>
+						<tr>
+							<td>반려동물</td>
+							<td><%= pet.getPetName() %></td>
+						</tr>
+						<tr>
+							<td>특이사항</td>
+							<% if(rs.getRsMemo() != null){ %>
+							<td><%= rs.getRsMemo() %></td>
+							<% } else{ %>
+							<td>없음</td>
+							<% } %>
+						</tr>
+					</table>
+					<p class="title">병원 정보</p>
+					<table class="hp">
+						<tr>
+							<td>위치</td>
+							<% if(hp.getHpLoc2() == null){ %>
+							<td>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %></td>
+							<% } else{ %>
+							<td>[<%= hp.getHpZip() %>] <%= hp.getHpLoc1() %> <%= hp.getHpLoc2() %></td>
+							<% } %>
+						</tr>
+						<tr>
+							<td>연락처</td>
+							<td><%= hp.getHpPhone() %></td>
+						</tr>
+						<%
+							String start = hp.getHpStart() + ":00";
+							String end = hp.getHpEnd() + ":00";
+							String lunch = hp.getHpLunch() + ":00";
+							
+							if(hp.getHpStart() < 12 || hp.getHpStart() == 24){
+								start = "AM " + start;
+							} else{
+								start = "PM " + start;
+							}
+							
+							if(hp.getHpEnd() < 12 || hp.getHpEnd() == 24){
+								end = "AM " + end;
+							} else{
+								end = "PM " + end;
+							}
+							
+							if(hp.getHpLunch() < 12 || hp.getHpLunch() == 24){
+								lunch = "AM " + lunch;
+							} else{
+								lunch = "PM " + lunch;
+							}
+						%>
+						<tr>
+							<td>진료시간</td>
+							<td><%= start %> ~ <%= end %></td>
+						</tr>
+						<tr>
+							<td>점심시간</td>
+							<td><%= lunch %></td>
+						</tr>
+					</table>
+					<% if(rs.getRsVisit().equals("W")){ %>
+					<div class="button-box"><button id="cancelBtn">예약 취소</button></div>
+					<input type="hidden" name="rsNum" value="<%= rs.getRsNum() %>">
+					<input type="hidden" name="update" value="update">
+					<div class="button-box"><button id="updateBtn">예약 변경</button></div>
+					<!-- <div class="input-submit"><input type="submit" value="예약 변경"></div> -->
+					<% } else{ %>
+					<div class="button-box"><button id="listBtn"">목록으로</button></div>
+					<% } %>
+				</div>
+			</form>
 		</div>
 	</div>
 	<script>
+		$('td#hmResult').each(function(){
+			$.ajax({
+				url: '<%= request.getContextPath()%>/searchfee.hp',
+				type: 'post',
+				data: {hpId: '<%= hp.getHpId() %>', cate: '<%= rs.getHmCate() %>'},
+				success: function(data){
+					if(data != null){
+						var min = data.hmMin.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+						var max = data.hmMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+						$('td#hmResult').text(min + "원 ~ " + max + "원");
+					}
+				}
+			});
+		});
+		
 		$('#cancelBtn').click(function(){
 			var ok = confirm('정말 예약을 취소하시겠습니까?');
 			if(ok){
@@ -160,7 +184,14 @@
 						console.log('error');
 					}
 				});
+			} else{
+				$('form').submit(false);
 			}
+		});
+		
+		$('#listBtn').click(function(){
+			$('form').submit(false);
+			location.href='<%= request.getContextPath() %>/list.rs';
 		});
 	</script>
 </body>

@@ -3,9 +3,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="reservation.model.vo.*" %>
 <%
-	Reservation rs = (Reservation)request.getAttribute("reservation");
+	ReservationInfo ri = (ReservationInfo)request.getAttribute("ri");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시");
-	String date = sdf.format(rs.getRsDate());
+	String date = sdf.format(ri.getRsDate());
 %>
 <!DOCTYPE html>
 <html>
@@ -28,9 +28,9 @@
 		<div class="contents">
 			<h2>예약 완료</h2>
 			<form action="<%= request.getContextPath() %>/select.rs" method="post">
-				<input type="hidden" name="rsNum" value=<%= rs.getRsNum() %>>
-				<div class="rsInfo"><span class="data"><%= rs.getHpId() %></span></div>
-				<div class="rsInfo"><span class="data"><%= date %></span></div>
+				<input type="hidden" name="rsNum" value=<%= ri.getRsNum() %>>
+				<div class="rsInfo"><span class="data"><%= ri.getHpName() %></span></div>
+				<div class="rsInfo"><span class="data"><%= ri.getRsDate() %></span></div>
 				<div class="input-submit"><input type="submit" value="예약 상세 조회"></div>
 			</form>
 		</div>

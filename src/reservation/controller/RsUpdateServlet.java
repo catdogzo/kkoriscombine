@@ -15,19 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import reservation.model.service.RsService;
 import reservation.model.vo.Reservation;
-import reservation.model.vo.ReservationInfo;
 
 /**
- * Servlet implementation class RsCompleteServlet
+ * Servlet implementation class RsUpdateServlet
  */
-@WebServlet("/complete.rs")
-public class RsCompleteServlet extends HttpServlet {
+@WebServlet("/update.rs")
+public class RsUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RsCompleteServlet() {
+    public RsUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,7 +35,7 @@ public class RsCompleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String hpId = request.getParameter("hpId");
+		int rsNum = Integer.parseInt(request.getParameter("rsNum"));
 		
 		String date = request.getParameter("rsDate");
 		String dateArr[] = date.split("-");
@@ -50,19 +49,20 @@ public class RsCompleteServlet extends HttpServlet {
 		String dateFormat = sdf.format(dateDate);		
 		Timestamp rsDate = Timestamp.valueOf(dateFormat); // 타임스탬프로 형변환 끝
 		
-		String hmCate = request.getParameter("hmCate");
 		int petNum = Integer.parseInt(request.getParameter("pet"));
+		String hmCate = request.getParameter("hmCate");
 		String rsMemo = request.getParameter("rsMemo");
 		
-		Reservation rs = new Reservation(rsDate, rsMemo, petNum, hmCate, hpId);
-		ReservationInfo ri = new RsService().insertRs(rs);
+		Reservation rs = new Reservation(rsNum, rsDate, rsMemo, petNum, hmCate);
+		
+		int result = new RsService().updateRs(rs);
 		
 		String page = null;
-		if(ri != null) {
-			request.setAttribute("ri", ri);
-			page = "views/hospital/confirmRs.jsp";
+		if(result > 0) {
+			request.setAttribute("rsNum", rs.getRsNum());
+			page = "select.rs";
 		} else {
-			request.setAttribute("msg", "예약 실패");
+			request.setAttribute("msg", "예약 변경 실패");
 			page = "views/common/errorPage.jsp";
 		}
 		

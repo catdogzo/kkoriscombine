@@ -1,6 +1,7 @@
 package reservation.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import hospital.model.service.HpService;
 import hospital.model.vo.Hospital;
+import hospital.model.vo.HpMedical;
 import pet.model.service.PetService;
 import pet.model.vo.Pet;
 import reservation.model.service.RsService;
@@ -37,8 +39,12 @@ public class RsSelectServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int rsNum = Integer.parseInt(request.getParameter("rsNum"));
-		System.out.println(rsNum);
+		if(rsNum == 0) {
+			rsNum = (int)request.getAttribute("rsNum");
+		}
 		Reservation reservation = new RsService().selectRs(rsNum);
+		
+		String update = request.getParameter("update"); // 예약 수정할 때만 받아오는 파라미터
 		
 		// DB의 HM_CATE값의 view 값 매칭한 map 생성
 		HashMap<String, String> cateMap = new HashMap<String, String>();
@@ -75,16 +81,22 @@ public class RsSelectServlet extends HttpServlet {
 		String page = null;
 		if(reservation != null) {
 			Hospital hp = new HpService().selectHp(reservation.getHpId());
+			ArrayList<HpMedical> hmList = new HpService().selectHm(reservation.getHpId());
 			Pet pet = new PetService().selectPet(reservation.getPetNum());
 			
 			HashMap<String, Object> objMap = new HashMap<String, Object>();
 			objMap.put("rs", reservation);
 			objMap.put("hp", hp);
+			objMap.put("hmList", hmList);
 			objMap.put("pet", pet);
 			objMap.put("cate", cateMap);
-			
 			request.setAttribute("objMap", objMap);
-			page = "views/hospital/detailRs.jsp";
+			
+			if(update != null) { // 예약 수정
+				page = "views/hospital/updateRs.jsp";
+			} else { // 예약 조회
+				page = "views/hospital/detailRs.jsp";
+			}
 		} else {
 			request.setAttribute("msg", "예약 상세조회 실패");
 			page = "views/common/errorPage.jsp";

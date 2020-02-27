@@ -29,6 +29,15 @@ public class Reservation {
 		this.hpId = hpId;
 	}
 	
+	public Reservation(int rsNum, Timestamp rsDate, String rsMemo, int petNum, String hmCate) {
+		super();
+		this.rsNum = rsNum;
+		this.rsDate = rsDate;
+		this.rsMemo = rsMemo;
+		this.petNum = petNum;
+		this.hmCate = hmCate;
+	}
+
 	public Reservation(Timestamp rsDate, String rsMemo, int petNum, String hmCate, String hpId) {
 		super();
 		this.rsDate = rsDate;

@@ -23,21 +23,21 @@ public class RsService {
 		return hours;
 	}
 
-	public Reservation insertRs(Reservation rs) {
+	public ReservationInfo insertRs(Reservation rs) {
 		Connection conn = getConnection();
 		RsDAO dao = new RsDAO();
-		Reservation reservation = null;
+		ReservationInfo ri = null;
 		
 		int result= dao.insertRs(conn, rs);
 		if(result > 0) {
 			commit(conn);
-			reservation = dao.currentRs(conn);
+			ri = dao.currentRs(conn);
 		} else {
 			rollback(conn);
 		}
 		
 		close(conn);
-		return reservation;
+		return ri;
 	}
 
 	public Reservation selectRs(int rsNum) {
@@ -60,6 +60,19 @@ public class RsService {
 		ArrayList<ReservationInfo> riList = new RsDAO().listRs(conn, usId);
 		close(conn);
 		return riList;
+	}
+
+	public int updateRs(Reservation rs) {
+		Connection conn = getConnection();
+		int result = new RsDAO().updateRs(conn, rs);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
 	}
 
 }

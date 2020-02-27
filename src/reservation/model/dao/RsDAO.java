@@ -81,10 +81,10 @@ public class RsDAO {
 		return result;
 	}
 
-	public Reservation currentRs(Connection conn) {
+	public ReservationInfo currentRs(Connection conn) {
 		Statement stmt = null;
 		ResultSet rs = null;
-		Reservation reservation = null;
+		ReservationInfo ri = null;
 		
 		String query = prop.getProperty("currentRs");
 
@@ -92,10 +92,9 @@ public class RsDAO {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query);
 			if(rs.next()) {
-				reservation = new Reservation(rs.getInt("RS_NUM"),
-											  rs.getTimestamp("RS_DATE"),
-											  rs.getString("HM_CATE"),
-											  rs.getString("HP_NAME")); // 여기 변경하기
+				ri = new ReservationInfo(rs.getInt("RS_NUM"),
+											  rs.getString("HP_NAME"),
+											  rs.getTimestamp("RS_DATE"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -103,8 +102,7 @@ public class RsDAO {
 			close(rs);
 			close(stmt);
 		}
-		
-		return reservation;
+		return ri;
 	}
 
 	public Reservation selectRs(Connection conn, int rsNum) {
@@ -183,6 +181,33 @@ public class RsDAO {
 			close(pstmt);
 		}
 		return riList;
+	}
+
+	public int updateRs(Connection conn, Reservation rs) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateRs");
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String rsDate = sdf.format(rs.getRsDate()); // 타임스탬프 포맷에 맞게 String화 시키기
+			
+			pstmt.setString(1, rsDate);
+			pstmt.setString(2, rs.getRsMemo());
+			pstmt.setInt(3, rs.getPetNum());
+			pstmt.setString(4, rs.getHmCate());
+			pstmt.setInt(5, rs.getRsNum());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 	
 	

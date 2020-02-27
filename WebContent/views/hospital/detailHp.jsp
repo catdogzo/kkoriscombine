@@ -388,13 +388,6 @@
 						} else{
 							alert('등록된 반려동물이 없습니다. 등록 후 이용해주세요.');
 						}
-						console.log('ok');
-					},
-					error: function(data){
-						console.log('error');
-					},
-					complete: function(data){
-						console.log('com');
 					}
 				});
 			});
@@ -443,6 +436,36 @@
 				var $input = $('<input type="hidden" name="rsDate">');
 				$input.val(date);
 				$(this).before($input);
+			});
+			
+			var submit = false;
+			$('form').submit(function(){
+				var time = $('select#rsTime').val();
+				var cate = $('select#hmCate').val();
+				var pet = $('select#pet').val();
+				
+				var day = $('table.date tr').find('td.onclick').children('p').text();
+				if(day < 10)
+					day = "0" + day;
+				var today = new Date();
+				var rsDate = new Date(year+"-"+month+"-"+day + " " + $('select#rsTime').val()+":00:00");
+				
+				if(!submit){
+					if(time == 404){
+						alert('내원 시간을 선택해주세요.');
+					} else if(cate == 404){
+						alert('진료 과목을 선택해주세요.');
+					} else if(pet == 404){
+						alert('진료 받을 반려동물을 선택해주세요.');
+					} else if(rsDate - today < 0){
+						alert('오늘 이후 일정으로 예약해주시기 바랍니다.');
+					} else{
+						submit = true;
+					}
+					return false;
+				} else{
+					return true;
+				}
 			});
 			
 			$('select#hmCate').each(function(){
