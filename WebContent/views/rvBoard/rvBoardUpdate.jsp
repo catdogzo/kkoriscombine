@@ -46,7 +46,7 @@
 </style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 		<div class="outer">
 			<img src="../../images/rvb.png" id="blogo">
 		<br>

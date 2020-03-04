@@ -21,8 +21,8 @@
 			switch(list.get(i).getPtCate()){
 			case 1 : ptHis = "리뷰 작성"; break;
 			case 2 : ptHis = "댓글 포인트"; break;
-			case 3 : ptHis = "쿠폰 구매"; break;
-			case 4 : ptHis = "포인트 기부"; break;
+			case 3 : ptHis = "좋아요 포인트"; break;
+			case 4 : ptHis = "쿠폰 구매"; break;
 			}
 			list.get(i).setPtHis(ptHis);		
 		}
@@ -41,13 +41,13 @@
 <style>
 	#blogo{margin-top: 50px;}
 	#pointView{border-color: #AEDEFC; cursor: default;}
-	#pointBtn{margin-left: 900px; margin-top: 20px; min-width: 300px;}
+	#pointBtn{margin-left: 850px; margin-top: 20px; min-width: 300px;}
 	.outer{width: 100px; height: 800px; background: rgba(255, 255, 255, 0.4); margin-left: 300px; margin-right: auto; margin-top: auto;}
 	.writeArea{width: 800px; height: 600px; margin-top: 10px; margin-left: 180px; margin-right: auto; padding: 10px; border: 1px solid #FB929E;}	
 	.pt{text-align: right;}
 	.input{font-family: inherit; width: 100%; border: 0; outline: 0; background: transparent; transition: border-color 0.2s;}	
 	#page{margin-left: 270px;}
-	#pUsing{font-size: 15px; text-align: center; background-color: #575756; color:#FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px; }
+	#pUsing{font-size: 18px; text-align: center; background-color: #575756; color:#FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 120px; height: 40px; }
 	#pUsing:hover {background: #ffe3e4; color: #575756; cursor: pointer;}
 	#ptHis::-webkit-scrollbar {width: 6px; background-color: #F5F5F5;} 
 	#ptHis::-webkit-scrollbar-thumb {background-color: #FB929E;}
@@ -61,7 +61,7 @@
 			<img src="<%= request.getContextPath() %>/images/point.png" id="blogo" style="margin-left: 500px; margin-top: 50px;">
 			<br>
 			<form action="views/point/pointUse.jsp" method="post">
-				<input type="text" id="pointView" style="margin-left: 450px; margin-top: 50px; width: 220px; height: 30px;" value="<%= curPt %>pt" placeholder="보유 포인트" disabled>
+				<input type="text" id="pointView" style="margin-left: 500px; margin-top: 50px; width: 150px; height: 30px; text-align: right;" value="<%= curPt %>pt" disabled>
 				<input type="hidden" name="curPt" value="<%= curPt%>">
 		<br>
 		<div id="pointBtn">
@@ -73,19 +73,19 @@
 			<div style="text-align:center; font-size: 20pt; font-weight: 700;">포인트 기록<br><br></div>
 			<div id = "ptHis" style="text-align:center; overflow-y:scroll; width: 600px; height: 500px; margin-left: 100px;">
 					<% if(list.isEmpty()) { %>
-					<div></div>
+					<div>아직 포인트 기록이 없습니다.</div>
 					<% } else {
 							for(Point pt : list) {	
 					%>			
-						<span style="min-width: 120px;"><%= pt.getPtDate() %><input type="hidden" name ="date" value='<%= pt.getPtDate() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-						<span style="min-width: 120px;"><%= pt.getPtHis() %><input type="hidden" name ="ptHis" value='<%= pt.getPtHis() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-						
-						<span style="min-width: 120px;"><% if(pt.getPtAdd() != 0){ %>
-							<span style="color: blue">+<%= pt.getPtAdd() %><input type="hidden" name ="ptHis" value='<%= pt.getPtAdd() %>'></span>pt					
-							<% } else { %>
-							<span style="color: red">-<%= pt.getPtUse() %><input type="hidden" name ="ptHis" value='<%= pt.getPtUse() %>'></span>pt					
-							<% } %></span><br><br>
-
+							<span style="width: 120px;"><%= pt.getPtDate() %><input type="hidden" name ="date" value='<%= pt.getPtDate() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+							
+							<span style="width: 120px;"><%= pt.getPtHis() %><input type="hidden" name ="ptHis" value='<%= pt.getPtHis() %>'></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+							
+							<span style="width: 120px;"><% if(pt.getPtAdd() != 0){ %>
+								<span style="color: blue; width: 120px;" >+<%= pt.getPtAdd() %><input type="hidden" name ="ptHis" value='<%= pt.getPtAdd() %>'></span>pt					
+								<% } else { %>
+								<span style="color: red; width: 120px;">-<%= pt.getPtUse() %><input type="hidden" name ="ptHis" value='<%= pt.getPtUse() %>'></span>pt					
+								<% } %></span><br><br>
 	           	    <%       }				               
                     } %>
                     </div>	

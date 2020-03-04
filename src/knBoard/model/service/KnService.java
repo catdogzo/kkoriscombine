@@ -1,9 +1,9 @@
 package knBoard.model.service;
 
-import static common.CommonTemplate.close;
-import static common.CommonTemplate.commit;
-import static common.CommonTemplate.getConnection;
-import static common.CommonTemplate.rollback;
+import static common.JDBCTemplate.close;
+import static common.JDBCTemplate.commit;
+import static common.JDBCTemplate.getConnection;
+import static common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -101,21 +101,17 @@ public class KnService {
 		} else {
 			rollback(conn);
 		}
-		
 		return result;
 	}
 
 	public int updateKn(KnBoard kn, ArrayList<Photo> changeFile) {
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
-		
+
 		int result1 = knd.updateKn(conn, kn);
-		int result2 = 0;
-		if(changeFile.get(0).getPhNum() == 0) {
-			result2 = knd.insertPhoto(conn, changeFile);
-		} else {
-			result2 = knd.updatePhoto(conn, changeFile);
-		}
+		int result2 = knd.updatePhoto(conn, changeFile);
+		System.out.println(result1);
+		System.out.println(result2);
 		
 		if(result1 > 0 && result2 > 0) {
 			commit(conn);
@@ -130,10 +126,11 @@ public class KnService {
 	public int updateKn(KnBoard kn, ArrayList<Photo> changeFile, ArrayList<Photo> newInsertFile) {
 		Connection conn = getConnection();
 		KnDAO knd = new KnDAO();
+		int no = kn.getKnNum();
 		
 		int result1 = knd.updateKn(conn, kn);
 		int result2 = knd.updatePhoto(conn, changeFile);
-		int result3 = knd.insertNewPhoto(conn, newInsertFile);
+		int result3 = knd.insertNewPhoto(conn, newInsertFile, no);
 		
 		if(result1 > 0 && result2 > 0 && result3 > 0) {
 			commit(conn);
@@ -189,13 +186,6 @@ public class KnService {
 		return list;
 	}	
 
-
-	public int insertLike(String usId) {
-		Connection conn = getConnection();
-		int result = new KnDAO().insertLike(conn, usId);
-		
-		return result;
-	}
 
 
 	public ArrayList<Photo> selectPhoto(int no) {

@@ -22,9 +22,9 @@ public class PtService {
 		return result;
 	}
 
-	public ArrayList<Point> selectList(int currentPage, String usId) {
+	public ArrayList<Point> selectList(String usId) {
 		Connection conn = getConnection();
-		ArrayList<Point> list = new PtDAO().selectList(conn, currentPage, usId);
+		ArrayList<Point> list = new PtDAO().selectList(conn, usId);
 		close(conn);
 		
 		return list;

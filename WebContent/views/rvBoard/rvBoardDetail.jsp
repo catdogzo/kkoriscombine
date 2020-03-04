@@ -17,7 +17,7 @@
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 후기 게시판 글보기</title>
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.raty.js"></script>
 
 <style>
@@ -35,9 +35,12 @@
 	#rvt{font-size: 25px; font-weight: 900; text-align: center;}
 	#rvcon{align: auto; width: 850px; max-height: 680px; margin-left: 10px; margin-top: 10px; margin-right: 10px; margin-botton: 10px; overflow: auto;}
 	#rvcon > img {width:200px; height:200px;}
-	#writeBtn{font-size: 15px; margin-left: 50px;  text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
-	#cancleBtn{font-size: 15px; text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px;}
+	#deleteBtn{font-size: 15px; text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px; background-color: #AEDEFC;}
+	#deleteBtn:hover{cursor: pointer; background-color: white;}
+	#listBtn{font-size: 15px; text-align: center; border: 1px solid #575756; border-radius: 5px; width: 80px; height: 35px; background-color: #AEDEFC;}
+	#listBtn:hover{cursor: pointer; background-color: white;}	
 	div#photo{position: absolute; left: 224pt;}
+	#likeView{font-weight: 200;}
 	#titleImgArea {width:180px; height:180px; border:1px dashed #AEDEFC; text-align:center; display:table-cell; vertical-align:middle; }
 	#titleImgArea:hover, #contentImgArea1:hover, #contentImgArea2:hover, #contentImgArea3:hover {cursor:pointer;}
 	#contentImgArea1, #contentImgArea2, #contentImgArea3 {width:180px; height:180px; border:1px dashed #AEDEFC; text-align:center; display:table-cell; vertical-align:middle;}
@@ -47,73 +50,69 @@
 </head>
 <body>
 <%@ include file="../common/layout.jsp" %> 
-		<div class="outer">
-		<img src="<%= request.getContextPath() %>/images/rvb.png" id="blogo">
-		<br>
-		<!-- <h1>후기 게시판 글보기</h1> -->
-		<form action="<%= request.getContextPath() %>/rvBoard/rvBoardUpdate.jsp" id="detailForm" method="post">
-			<div class="writeArea">	
-					<table>
-						<tr>
-							<td class="aleft" colspan="2">제목
-								<input type="hidden" value="<%= rv.getRvNum() %>" name="no">
-								<span id="rvt"><input type="text" size="0" name="title" class="input" style="visibility: hidden"><%=rv.getRvTitle() %></span>
-							</td>			
-							<td class="aleft">글쓴이
-								<%= swriter %></td>
-						</tr>
-						<tr>
-							<td class="aleft" style="max-width:300px;">병원명
-								<%= rv.getHpId() %>
-							</td>
-							<td colspan="2" class="aleft">날짜
-								<%= rv.getRvDate() %>
-							</td>
-							<td>
-								 <div id="star" ></div> <!-- 별점 -->
-							</td>							
-						</tr>
-						<tr>
-							<td class="aleft">내용</td>					
-						</tr>
-						<tr>
-							<td colspan="4">
-							<div id = "writeBorder">
-								<div id = "rvcon">
-									<%= rv.getRvCon() %>
-									<br><br>
-									<% if(pList != null) { %>
-										<% for(int i = 0; i < pList.size(); i++){ %>
-											<img id="detailImg" class="detailImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= pList.get(i).getPhChng() %>">
-											<input type="hidden" value="<%= pList.get(i).getPhNum() %>" name="detailImg<%= i %>">
-										<% } %>
-									<% }  %>
-								</div>
-							</div>	
-							</td>
-						</tr>
-						<tfoot>
-						<tr>
-							<% if(loginAu != null && loginUser.getUsId().equals(rv.getUsId())) {%>
-							<th colspan="4" class="rvb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="수정">
-								<input type="button" onclick="deleteRv();" id="cancleBtn" value="삭제">
-							</th>
-							<% } %>
-							<td>							
-							</td>
-						</tr>
-						</tfoot>
-					</table>	
-				<!--  넘길 값 -->				
-				<input type="hidden" value="<%= rv.getRvTitle() %>" name="title">		
-				<input type="hidden" value="<%= rv.getRvCon() %>" name="content">	
-				<input type="hidden" value="<%= rv.getHpId() %>" name="hpName">
-				<input type="hidden" value="<%= rv.getUsId() %>" name="writer">		
-				<input type="hidden" value="<%= rv.getRvStar() %>" name="star">		
-				<input type="hidden" value="<%= rv.getRvDate() %>" name="date">									
-				</div>
-			</form>		
-		</div>
+	<div class="outer">
+	<img src="<%= request.getContextPath() %>/images/rvb.png" id="blogo">
+	<br>
+
+		<div class="writeArea">	
+			<table>
+				<tr>
+					<td class="aleft" colspan="2">제목
+						<input type="hidden" value="<%= rv.getRvNum() %>" name="no">
+						<span id="rvt"><input type="text" size="0" name="title" class="input" style="visibility: hidden"><%=rv.getRvTitle() %></span>
+					</td>			
+					<td class="aleft">글쓴이
+						<%= swriter %></td>
+				</tr>
+				<tr>
+					<td class="aleft" style="max-width:300px;">병원명
+						<%= rv.getHpId() %>
+					</td>
+					<td class="aleft">날짜
+						<%= rv.getRvDate() %>
+					</td>
+					<td>
+						 <div id="star" ></div> <!-- 별점 -->
+					</td>							
+				</tr>
+				<tr>
+					<td class="aleft">내용</td>					
+				</tr>
+				<tr>
+					<td colspan="4">
+					<div id = "writeBorder">
+						<div id = "rvcon">
+							<%= rv.getRvCon() %>
+							<br><br>
+							<% if(pList != null) { %>
+								<% for(int i = 0; i < pList.size(); i++){ %>
+									<img id="detailImg" class="detailImg" src="<%= request.getContextPath() %>/thumbnail_uploadFiles/<%= pList.get(i).getPhChng() %>">
+									<input type="hidden" value="<%= pList.get(i).getPhNum() %>" name="detailImg<%= i %>">
+								<% } %>
+							<% }  %>
+						</div>
+					</div>	
+					</td>
+				</tr>
+				<tfoot>
+				<tr>
+					<th style="padding-top:20px;">
+					<% if(loginAu != null && loginUser.getUsId().equals(rv.getUsId())) {%>
+						<input type="button" onclick="deleteRv();" id="deleteBtn" value="삭제">
+						<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">						
+					<% }else { %>
+						<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">					
+					<% } %>
+					</th>			
+					<th style="padding-top:20px;">	
+						<button id="likeBtn" style="border: 0"><img src="images/like.png" width=50px; height=50px;></button>						
+						<span id="likeView"><%= rv.getRvLike() %></span>
+					</th>
+				</tr>
+				</tfoot>
+			</table>								
+			</div>	
+	</div>
 		<script>
 		// 별점 부분
 			var i = jQuery.noConflict();
@@ -132,10 +131,33 @@
 		      function deleteRv(){
 		         var bool = confirm('정말로 삭제하시겠습니까?');
 		         if(bool){
-		            $('#detailForm').attr('action', '<%= request.getContextPath() %>/delete.rv');
+			        $('#detailForm').attr('action', '<%= request.getContextPath() %>/delete.rv');
 		            $('#detailForm').submit();
 		         }
-		      }   		        
+		      }   
+	    	
+	    	// 좋아요 버튼	    	
+	   			$('#likeBtn').on("click", function(e){	
+		    		var exId = '<%= loginUser.getUsNick() %>';
+		    		var writer = '<%= id %>';
+					var no = <%= rv.getRvNum() %>;
+		    		var like = <%= rv.getRvLike() %> ;
+	
+		    		if(exId != writer ){
+						$.ajax({
+							url: '<%= request.getContextPath() %>/insertlike.rv',	 
+							type: 'post',
+							data: {writer: writer, no: no, like: like},
+							success: function(data){
+								$('#likeView').html(data);
+								console.log('성공');
+								console.log(data);
+							}		
+	    				});		
+		    		}
+	   			});
+	    		
+
 		</script>
 </body>
 </html>

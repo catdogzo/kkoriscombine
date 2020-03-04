@@ -60,15 +60,11 @@ public class PtDAO {
 		return result;
 	}
 
-	public ArrayList<Point> selectList(Connection conn, int currentPage, String usId) {
+	public ArrayList<Point> selectList(Connection conn, String usId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Point> list = null;
-		int posts = 10; // 한 페이지에 보여질 게시글 개수
-		
-		int startRow = (currentPage - 1) * posts + 1;
-		int endRow = startRow + posts - 1;
-		
+
 		String query = prop.getProperty("selectList");
 		
 		try {

@@ -3,8 +3,8 @@
 <% 
 	Message m = ((Message)request.getAttribute("message"));
 	String mNum = request.getParameter("mNum");
-	String ssgId = m.getSsgId();
-	String rsgId = m.getRsgId();
+	String rNick = m.getRNick();
+	String sNick = m.getSNick();
 	String mTitle = m.getMsgTitle();
 	String mCon = m.getMsgCon();
 	Date mDate = m.getMsgDate();
@@ -96,9 +96,9 @@ input[type="button"]:hover {background: #fb929e; color: #fff;}
 				</tr>
 				<tr>
 					<th>발신자</th>
-					<td><input type="hidden" name="ssgId" value="<%= ssgId %>"><%= ssgId %></td>
+					<td><input type="hidden" name="ssgId" value="<%= sNick %>"><%= sNick %></td>
 					<th>수신자</th>
-					<td><input type="hidden" name="rsgId" value="<%= rsgId %>"><%= rsgId %></td>
+					<td><input type="hidden" name="rsgId" value="<%= rNick %>"><%= rNick %></td>
 					<th>발신일</th>
 					<td><input type="hidden" name="date" value="<%= mDate %>"><%= mDate %></td>
 				</tr>

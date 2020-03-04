@@ -113,6 +113,7 @@ public class KnDAO {
 					KnBoard kn = new KnBoard(rset.getInt("kn_num"),
 										rset.getString("kn_title"),
 										rset.getString("kn_con"),
+										rset.getString("us_id"),
 										rset.getString("us_nick"),
 										rset.getInt("kn_view"),
 										rset.getDate("kn_date"),
@@ -166,6 +167,7 @@ public class KnDAO {
 					kn = new KnBoard(rset.getInt("kn_num"),
 									rset.getString("kn_title"),
 									rset.getString("kn_con"),
+									rset.getString("us_id"),
 									rset.getString("us_nick"),
 									rset.getInt("kn_view"),
 									rset.getDate("kn_date"));
@@ -305,6 +307,7 @@ public class KnDAO {
 			}			
 			return result;
 		}
+	
 		
 		public int updateKn(Connection conn, KnBoard kn) {
 			PreparedStatement pstmt = null;
@@ -324,26 +327,25 @@ public class KnDAO {
 			} finally {
 				close(pstmt);
 			}
-			System.out.println(result + "성공");
+			System.out.println(result + "DAO");
 			return result;
 		}
 		
-		public int updatePhoto(Connection conn, ArrayList<Photo> fileList) {
+		public int updatePhoto(Connection conn, ArrayList<Photo> changeFile) {
 			PreparedStatement pstmt = null;
 			int result = 0;
-			Photo p = null;
 			String query = prop.getProperty("updatePhoto");
-			
 			try {
-				for(int i = 0; i < fileList.size(); i++) {
-					p = fileList.get(i);
+				for(int i = 0; i < changeFile.size(); i++) {
 					pstmt = conn.prepareStatement(query);
-					pstmt.setString(1, p.getPhOrig());
-					pstmt.setString(2, p.getPhChng());
-					pstmt.setString(3, p.getPhPath());
-					pstmt.setInt(4, p.getPhNum());
+					pstmt.setString(1, changeFile.get(i).getPhOrig());
+					pstmt.setString(2, changeFile.get(i).getPhChng());
+					pstmt.setInt(3, changeFile.get(i).getPhNum());
 					
 					result += pstmt.executeUpdate();
+					System.out.println(changeFile.get(0).getPhOrig());
+					System.out.println(changeFile.get(0).getPhChng());
+					System.out.println(changeFile.get(0).getPhNum());
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -388,7 +390,7 @@ public class KnDAO {
 			return pList;
 		}
 
-		public int insertNewPhoto(Connection conn, ArrayList<Photo> newInsertFile) {
+		public int insertNewPhoto(Connection conn, ArrayList<Photo> newInsertFile, int no) {
 			PreparedStatement pstmt = null;
 			int result = 0;
 			String query = prop.getProperty("insertNewPhoto");
@@ -401,7 +403,7 @@ public class KnDAO {
 					pstmt.setString(2, p.getPhChng());
 					pstmt.setString(3, p.getPhPath());
 					pstmt.setInt(4, p.getPhFnum());
-					pstmt.setInt(5, p.getKnNum());
+					pstmt.setInt(5, no);
 
 				}	
 					result += pstmt.executeUpdate();
@@ -414,24 +416,6 @@ public class KnDAO {
 			return result;
 		}
 		
-		public int insertLike(Connection conn, String usId) {
-			// 좋아요 포인트 추가
-			PreparedStatement pstmt = null;
-			int result = 0;
-			String query = prop.getProperty("insertLike");
-			
-			try {
-				pstmt = conn.prepareStatement(query);
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-			
-			return result;
-		}
-
 		public ArrayList<KnBoard> knSearchList(Connection conn, int currentPage, String searchCategory, String searchTag) {
 			PreparedStatement pstmt = null;
 			ArrayList<KnBoard> list = new ArrayList<>();
@@ -462,6 +446,7 @@ public class KnDAO {
 							   rset.getInt("kn_num"),
 							   rset.getString("kn_title"),
 							   rset.getString("kn_con"),
+							   rset.getString("us_id"),
 							   rset.getString("us_nick"),
 							   rset.getInt("kn_view"),
 							   rset.getDate("kn_date"));

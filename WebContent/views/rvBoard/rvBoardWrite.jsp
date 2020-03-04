@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%> 
+    pageEncoding="UTF-8"
+    import = "java.sql.Timestamp, java.text.SimpleDateFormat"%> 
+<%
+	String hpName = request.getParameter("hpName");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	String date = sdf.format(request.getParameter("rsDate"));
+%>    
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -8,7 +15,6 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.raty.js"></script>
-
 	<style>
 		#blogo{margin-left:350px; margin-top: 50px;}
 		.outer{width: 800px; height: 650px; background: rgba(255, 255, 255, 0.4); margin-left: 400px; margin-right: auto; margin-top: auto;}
@@ -33,88 +39,86 @@
 </head>
 <body>
 <%@ include file="../common/layout.jsp" %> 
-		<div class="outer">
-			<img src="../../images/rvb.png" id="blogo">
-		<br>
-		<!-- <h1>후기 게시판 글쓰기</h1> -->
-		<form action="<%= request.getContextPath() %>/write.rv" method="post" encType="multipart/form-data">
-			<div class="writeArea">	
-					<table>
-						<tr>
-							<th colspan="3">제목
-								<input type="text" size="50" name="title" class="input">
-							</th>			
-						</tr>
-						<tr>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="aleft">병원명
-								<input type="hidden" name="hospital" value="user04">
-							</td>
-							<td colspan="2" class="aleft">날짜
-								<input type="hidden" name="date" value="2000-02-22">
-							</td>
-							<td class="aleft">
-								 <div id="star" ></div> <!-- 별점 -->
-							</td>							
-						</tr>
-						<tr>
-							<td class="aleft">내용</td>					
-						</tr>
-						<tr>
-							<td colspan="4">
-								<textarea name="content" cols="75" rows="15" style="resize:none;"></textarea>
-							</td>
-						</tr>
-						<tfoot>
-						<tr>
-							<th colspan="4" class="knb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="글쓰기">
-							<button type="button" id="cancleBtn" onclick="location.href='<%= request.getContextPath() %>/list.rv'">취소</button>
-							</th>
-							<td>							
-							</td>
-						</tr>
-						</tfoot>
-					</table>				
-					<br><br>
-					<div id = "photo">
-						<div id="titleImgArea">
-							<figure>
-								<img id="titleImg" width="180" height="180" style= "border:0">
-								<figcaption>사진 첨부</figcaption>
-							</figure>
-						</div>
-						<div id="contentImgArea1">
-							<figure>
-								<img id="contentImg1" width="180" height="180" style= "border:0"> 
-								<figcaption>사진 첨부</figcaption>
-							</figure>
-						</div>
-						<div id="contentImgArea2">
-							<figure>
-								<img id="contentImg2" width="180" height="180" style= "border:0"> 
-								<figcaption>사진 첨부</figcaption>
-							</figure>
-						</div>
-						<div id="contentImgArea3">
-							<figure>
-								<img id="contentImg3" width="180" height="180" style= "border:0"> 
-								<figcaption>사진 첨부</figcaption>
-							</figure>
-						</div>
-						<div id="fileArea">
-							<input type="file" id="thumbnailImg1" multiple="multiple" name="thumbnailImg1" onchange="LoadImg(this,1)">
-							<input type="file" id="thumbnailImg2" multiple="multiple" name="thumbnailImg2" onchange="LoadImg(this,2)">
-							<input type="file" id="thumbnailImg3" multiple="multiple" name="thumbnailImg3" onchange="LoadImg(this,3)">
-							<input type="file" id="thumbnailImg4" multiple="multiple" name="thumbnailImg4" onchange="LoadImg(this,4)">
-						</div>
-					</div>				
+	<div class="outer">
+		<img src="../../images/rvb.png" id="blogo">
+	<br>
+	<!-- <h1>후기 게시판 글쓰기</h1> -->
+	<form action="<%= request.getContextPath() %>/write.rv" method="post" encType="multipart/form-data">
+		<div class="writeArea">	
+			<table>
+				<tr>
+					<th colspan="3">제목
+						<input type="text" size="50" name="title" class="input">
+					</th>			
+				</tr>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="aleft">병원명
+						<input type="hidden" name="hospital" value="<%=hpName%>">
+					</td>
+					<td colspan="2" class="aleft">날짜
+						<input type="hidden" name="date" value="<%= date %>">
+					</td>
+					<td class="aleft">
+						 <div id="star" ></div> <!-- 별점 -->
+					</td>							
+				</tr>
+				<tr>
+					<td class="aleft">내용</td>					
+				</tr>
+				<tr>
+					<td colspan="4">
+						<textarea name="content" cols="75" rows="15" style="resize:none;"></textarea>
+					</td>
+				</tr>
+				<tfoot>
+				<tr>
+					<th colspan="4" class="knb_photo" style="padding-top:20px;"><input type="submit" id="writeBtn" value="글쓰기">
+					<button type="button" id="cancleBtn" onclick="location.href='<%= request.getContextPath() %>/list.rv'">취소</button>
+					</th>
+					<td>							
+					</td>
+				</tr>
+				</tfoot>
+			</table>				
+			<br><br>
+			<div id = "photo">
+				<div id="titleImgArea">
+					<figure>
+						<img id="titleImg" width="180" height="180" style= "border:0">
+						<figcaption>사진 첨부</figcaption>
+					</figure>
 				</div>
-				<!--  보낼 값 -->
-				<input type="hidden" name="bNum" value=2>
-			</form>		
+				<div id="contentImgArea1">
+					<figure>
+						<img id="contentImg1" width="180" height="180" style= "border:0"> 
+						<figcaption>사진 첨부</figcaption>
+					</figure>
+				</div>
+				<div id="contentImgArea2">
+					<figure>
+						<img id="contentImg2" width="180" height="180" style= "border:0"> 
+						<figcaption>사진 첨부</figcaption>
+					</figure>
+				</div>
+				<div id="contentImgArea3">
+					<figure>
+						<img id="contentImg3" width="180" height="180" style= "border:0"> 
+						<figcaption>사진 첨부</figcaption>
+					</figure>
+				</div>
+				<div id="fileArea">
+					<input type="file" id="thumb1" multiple="multiple" name="thumb1" onchange="LoadImg(this,1)">
+					<input type="file" id="thumb2" multiple="multiple" name="thumb2" onchange="LoadImg(this,2)">
+					<input type="file" id="thumb3" multiple="multiple" name="thumb3" onchange="LoadImg(this,3)">
+					<input type="file" id="thumb4" multiple="multiple" name="thumb4" onchange="LoadImg(this,4)">
+				</div>
+			</div>				
 		</div>
+		</form>		
+	</div>
 		<script>
 			// 별점 부분
 			var i = jQuery.noConflict();
@@ -131,25 +135,25 @@
 	            });
 	        });
 		
-			// 내용 작성 부분의 공간을 클릭할 때 파일 첨부 창이 뜨도록 설정하는 함수
+			// 파일 첨부 창
 			$(function(){
 				$("#fileArea").hide();
 				
 				$("#titleImgArea").click(function(){
-					$("#thumbnailImg1").click();
+					$("#thumb1").click();
 				});
 				$("#contentImgArea1").click(function(){
-					$("#thumbnailImg2").click();
+					$("#thumb2").click();
 				});
 				$("#contentImgArea2").click(function(){
-					$("#thumbnailImg3").click();
+					$("#thumb3").click();
 				});
 				$("#contentImgArea3").click(function(){
-					$("#thumbnailImg4").click();
+					$("#thumb4").click();
 				});
 			});
 			
-			// 각각의 영역에 파일을 첨부 했을 경우 미리 보기가 가능하도록 하는 함수
+			// 미리 보기
 			function LoadImg(value, num){
 				if(value.files && value.files[0]){
 					var reader = new FileReader();

@@ -41,20 +41,17 @@ public class PtMailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String usEmail = ((User)session.getAttribute("loginUser")).getUsEmail();
-		
-		// 1. 전달받은 값 인코딩
-		// - 전송할 값은 html이 아닌 다른 프로토콜로 전송할 것이기 때문에
-		// 현재는 별도 인코딩을 하지 않습니다.
-//		request.setCharacterEncoding("UTF-8");
+		String usEmail = ((User)session.getAttribute("loginUser")).getUsEmail();		
  
-		final String sender = "kkoriscombine@naver.com"; // 보내는 사람 ID (Ex: @naver.com 까지..)
-		final String password = "kkoris123!"; // 보내는 사람 Password
+		final String sender = "kkoriscombine@naver.com";
+		final String password = "kkoris123!";
 
-		String receiver = usEmail; // 받는 사용자 (Ex: @naver.com 까지..)
+		String receiver = usEmail;
 		String title = "꼬리스컴바인 쿠폰번호입니다";
-		String coupon = "구매하신 " + request.getParameter("cName") + " 쿠폰의 쿠폰 번호입니다. "+ request.getParameter("coupon");
-		String host = "smtp.naver.com"; // 사용하는 메일
+		String image = "<br><img src='http://drive.google.com/uc?export=view&id=1clIu6Uep4c0qpOsnOjJsmWkWCZf6mi_z' style='width: 150px; height: 150px;'><br>";
+		String comment = "<br>*사용시 해당 쿠폰을 제시해주세요.<br>";
+		String coupon = "구매하신 " + request.getParameter("cName") + " 쿠폰의 쿠폰 번호입니다.<br>" + request.getParameter("coupon") + comment + image;
+		String host = "smtp.naver.com";
 
 
 		// Get the session object
@@ -68,40 +65,30 @@ public class PtMailServlet extends HttpServlet {
 			}
 		});
 
-		// Compose the message
 		try {
 			MimeMessage message = new MimeMessage(session2);
 			message.setFrom(new InternetAddress(sender));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(receiver));
 
-			// sender Email Address
-//			message.setFrom("테스트메일 : <" + sender + ">");
 			message.setFrom(sender);
 
-			// Subject
 			message.setSubject("[꼬리스컴바인] " + title);
 
-			// Text
 			message.setText(coupon, "UTF-8", "html");
 
-			// send the message
 			Transport.send(message);
-			System.out.println("전송 완료!!!!");
+			System.out.println("전송 완료");
 
 		} catch (MessagingException e) {
-			System.out.println("전송 실패!! ㅠㅠ");
+			System.out.println("전송 실패");
 			e.printStackTrace();
 		}
 		response.sendRedirect(request.getContextPath() + "/list.pt");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

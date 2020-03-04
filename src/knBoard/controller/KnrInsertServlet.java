@@ -37,7 +37,6 @@ public class KnrInsertServlet extends HttpServlet {
 		knr.setKnNum(no);
 		
 		ArrayList<KnReply> list = new KnService().insertKnr(knr, usId);
-		System.out.println(list);
 		response.setContentType("application/json; charset=UTF-8");
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		gson.toJson(list, response.getWriter());	

@@ -6,6 +6,7 @@ public class KnBoard {
 	private int knNum;
 	private String knTitle;
 	private String knCon;
+	private String usId;
 	private String usNick;
 	private int knView;
 	private Date knDate;
@@ -14,12 +15,13 @@ public class KnBoard {
 
 	public KnBoard() {}
 
-	public KnBoard(int knNum, String knTitle, String knCon, String usNick, int knView, Date knDate, Date knUpdate,
+	public KnBoard(int knNum, String knTitle, String knCon, String usId, String usNick, int knView, Date knDate, Date knUpdate,
 			String knDel) {
 		super();
 		this.knNum = knNum;
 		this.knTitle = knTitle;
 		this.knCon = knCon;
+		this.usId = usId;
 		this.usNick = usNick;
 		this.knView = knView;
 		this.knDate = knDate;
@@ -42,11 +44,12 @@ public class KnBoard {
 		this.usNick = usNick;
 	}
 
-	public KnBoard(int knNum, String knTitle, String knCon, String usNick, int knView, Date knDate) {
+	public KnBoard(int knNum, String knTitle, String knCon, String usId, String usNick, int knView, Date knDate) {
 		super();
 		this.knNum = knNum;
 		this.knTitle = knTitle;
 		this.knCon = knCon;
+		this.usId = usId;
 		this.usNick = usNick;
 		this.knView = knView;
 		this.knDate = knDate;
@@ -130,6 +133,14 @@ public class KnBoard {
 
 	public void setKnDel(String knDel) {
 		this.knDel = knDel;
+	}
+
+	public String getUsId() {
+		return usId;
+	}
+
+	public void setUsId(String usId) {
+		this.usId = usId;
 	}
 
 

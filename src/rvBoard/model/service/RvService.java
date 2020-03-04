@@ -84,21 +84,6 @@ public class RvService {
 		return list;
 	}
 
-	public int updateRv(RvBoard rv, ArrayList<Photo> fileList) {
-		// 게시글 수정
-		Connection conn = getConnection();
-		RvDAO rvd = new RvDAO();
-		int result1 = rvd.updateRv(conn, rv);			
-		int result2 = rvd.updatePhoto(conn, fileList);
-
-		if(result1 > 0) {
-			commit(conn);
-		}else {
-			rollback(conn);
-		}
-		
-		return result1;
-	}
 
 
 	public int deleteRv(int no) {
@@ -142,6 +127,35 @@ public class RvService {
 		close(conn);
 		
 		return pList;
+	}
+
+	public int insertLike(String writer, int no) {
+		Connection conn = getConnection();
+		
+		int result = new RvDAO().insertLike(conn, writer, no);
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}	
+		close(conn);
+		
+		return result;
+	}
+
+	public int addLikeView(int no, int like) {
+		Connection conn = getConnection();
+		int result = new RvDAO().addLikeView(conn, no);
+		int likeView = 0;
+		if(result > 0) {
+			commit(conn);
+			likeView = new RvDAO().selectLike(conn, no);
+		}else {
+			rollback(conn);
+		}	
+		close(conn);
+	
+		return likeView;
 	}		
 
 }

@@ -32,24 +32,22 @@ public class KnUpdateServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(ServletFileUpload.isMultipartContent(request)) { // enctype이 multipart/form-date로 전송되었는지 확인
-			int maxSize = 1024 * 1024 * 10; // 10Mbtyte : 전송파일 용량 제한
-			String root = request.getSession().getServletContext().getRealPath("/"); // 웹 서버 컨테이너 경로 추출
-			String savePath = root + "thumbnail_uploadFiles/"; // 자신을 thumbnail_uploadFiles에 넣어놓기 위함
+		if(ServletFileUpload.isMultipartContent(request)) { 
+			int maxSize = 1024 * 1024 * 10; 
+			String root = request.getSession().getServletContext().getRealPath("/");
+			String savePath = root + "thumbnail_uploadFiles/"; 
 	
-			MultipartRequest multipartRequest 
-			= new MultipartRequest(request, savePath, maxSize, "UTF-8", new FileRename());
+			MultipartRequest multipartRequest = new MultipartRequest(request, savePath, maxSize, "UTF-8", new FileRename());
 		
-			ArrayList<String> saveFiles = new ArrayList<String>(); // 바뀐 파일의 이름을 저장할 ArrayList
-			ArrayList<String> originFiles = new ArrayList<String>(); // 원본 파일의 이름을 저장할 ArrayList
-		
-			Enumeration<String> files = multipartRequest.getFileNames();	
+			ArrayList<String> saveFiles = new ArrayList<String>(); 
+			ArrayList<String> originFiles = new ArrayList<String>(); 
+
+			Enumeration<String> files = multipartRequest.getFileNames();
 			
 			while(files.hasMoreElements()) {
-				String name = files.nextElement();// 전송 순서의 역순으로 파일을 가져옴
+				String name = files.nextElement();
 				
 				if(multipartRequest.getFilesystemName(name) != null) {
-					// getFilesystemName(name) : MyFileRenamePolicy의 rename메소드에서 작성한 대로 rename된 파일명
 					saveFiles.add(multipartRequest.getFilesystemName(name));
 					originFiles.add(multipartRequest.getOriginalFileName(name));			
 				}			
@@ -59,8 +57,7 @@ public class KnUpdateServlet extends HttpServlet {
 			String title = multipartRequest.getParameter("title");
 			String con = multipartRequest.getParameter("con");		
 			KnBoard kn = new KnBoard(no, title, con);
-						
-	
+			
 			ArrayList<Photo> fileList = new ArrayList<Photo>();
 			for(int i = originFiles.size() - 1; i >= 0; i--) {
 				Photo ph = new Photo();
@@ -77,34 +74,37 @@ public class KnUpdateServlet extends HttpServlet {
 				fileList.add(ph);
 			}
 
-			// 가져온 사진 번호
+
 			ArrayList<String> detailImgId = new ArrayList<String>();
-			for(int i = 0; i < detailImgId.size(); i++) {
+			for(int i = 0; i < 4; i++) {
 				detailImgId.add(multipartRequest.getParameter("detailImgId" + i));
 			}
-				
-			
+			ArrayList<String> changeImg = new ArrayList<String>();
+			for(int i = 0; i < 4; i++) {
+				changeImg.add(multipartRequest.getParameter("cContent" + i));
+			}
+		
 			ArrayList<Photo> changeFile = new ArrayList<Photo>();
 			ArrayList<Photo> newInsertFile = new ArrayList<Photo>();
 			
+			
 			for(int h = 0; h < fileList.size();) {
-				for(int i = 0; i < detailImgId.size(); i++) {
-					if(!detailImgId.get(i).equals("") && detailImgId.get(i).equals("data")) { // 바꾼 파일
-						fileList.get(h).setPhNum((Integer.parseInt(detailImgId.get(i))));
+				for(int i = 0; i < 4; i++) {
+					if(!detailImgId.get(i).equals("") && changeImg.get(i).equals("data")){
+						fileList.get(h).setPhNum(Integer.parseInt(detailImgId.get(i)));
 						changeFile.add(fileList.get(h));
 						h++;
-					} else if(detailImgId.get(i).equals("") && detailImgId.get(i).equals("data")) { // 새로 넣은 파일
+					} else if(detailImgId.get(i).equals("") && changeImg.get(i).equals("data")) {
 						newInsertFile.add(fileList.get(h));
 						h++;
 					}
 				}
 			}
-
+			
+			
 			int result = 0;
-			System.out.println(1);
 			if(changeFile.isEmpty() && newInsertFile.isEmpty()) {
 				result = new KnService().updateKn(kn);
-				System.out.println(3);
 			} else if(!changeFile.isEmpty() && newInsertFile.isEmpty()) {
 				result = new KnService().updateKn(kn, changeFile);
 			} else if(changeFile.isEmpty() && !newInsertFile.isEmpty()) {
@@ -112,9 +112,8 @@ public class KnUpdateServlet extends HttpServlet {
 			} else {
 				result = new KnService().updateKn(kn, changeFile, newInsertFile);
 			}			
-			
-			System.out.println(2);
-			
+
+		
 			String page = "";
 			if(result > 0) {
 				page = "/detail.kn?no=" + no;

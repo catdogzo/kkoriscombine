@@ -170,7 +170,8 @@ public class RvDAO {
 								rset.getInt("rv_star"),
 								rset.getString("rv_con"),
 								rset.getString("hp_name"),
-								rset.getString("us_id"));			
+								rset.getString("us_id"),
+								rset.getInt("rv_like"));			
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -182,25 +183,6 @@ public class RvDAO {
 		return rv;
 	}
 
-	public int updateRv(Connection conn, RvBoard rv) {
-		// 리뷰 게시판 수정
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String query = prop.getProperty("updateRv");
-		
-		try {
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, rv.getRvTitle());
-			pstmt.setString(2, rv.getRvCon());
-			pstmt.setInt(3, rv.getRvNum());
-			
-			result = pstmt.executeUpdate();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
 
 	public int insertPhoto(Connection conn, ArrayList<Photo> fileList) {
 		// 사진 첨부
@@ -263,31 +245,6 @@ public class RvDAO {
 		return pList;
 	}
 	
-	public int updatePhoto(Connection conn, ArrayList<Photo> fileList) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		Photo p = null;
-		String query = prop.getProperty("updatePhoto");
-		
-		try {
-			for(int i = 0; i < fileList.size(); i++) {
-				p = fileList.get(i);
-				pstmt = conn.prepareStatement(query);
-				pstmt.setString(1, p.getPhOrig());
-				pstmt.setString(2, p.getPhChng());
-				pstmt.setString(3, p.getPhPath());
-				pstmt.setInt(4, p.getPhNum());
-				
-				result += pstmt.executeUpdate();
-			}			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		
-		return result;
-	}
 
 	public int deleteRv(Connection conn, int no) {
 		PreparedStatement pstmt = null;
@@ -346,9 +303,9 @@ public class RvDAO {
 		RvBoard rv = null;
 
 		int posts = 15;
-		int startRow = (currentPage -1) * posts + 1;
+		int startRow = (currentPage - 1) * posts + 1;
 		int endRow = startRow + posts-1;
-		
+
 		String query = prop.getProperty("rvsearchList");			
 		switch(searchCategory) {
 		case "병원명": query = prop.getProperty("searchHp"); break;
@@ -365,14 +322,18 @@ public class RvDAO {
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
-				rv = new RvBoard(rset.getString("hp_name"),
-								rset.getInt("rv_num"),
-								rset.getString("rv_title"));
+				rv = new RvBoard(rset.getInt("rv_num"),
+						  rset.getString("rv_title"),
+						  rset.getDate("rv_date"),
+						  rset.getString("rv_con"),
+						  rset.getString("hp_name"),
+						  rset.getString("us_id"),
+						  rset.getInt("rv_star"));
+				list.add(rv);				
 					}
-			list.add(rv);
-				
+
 		} catch (SQLException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		} finally {
 			close(rset);
 			close(pstmt);
@@ -401,10 +362,76 @@ public class RvDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+	
+		return pList;
+	}
+
+	public int insertLike(Connection conn, String writer, int no) {
+		PreparedStatement pstmt = null;
+
+		String query = prop.getProperty("insertLike");
+
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, writer);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+
+		return result;
+	}
+
+	public int addLikeView(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		String query = prop.getProperty("addLikeView");
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}		
+		return result;
+	}
+	
+	public int selectLike(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = prop.getProperty("selLike");
+		int likeView = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likeView = rset.getInt("rv_like");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
 		
 		
-		return pList;
+		return likeView;
 	}
 
 }

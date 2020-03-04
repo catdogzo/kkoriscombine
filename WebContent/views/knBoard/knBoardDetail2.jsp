@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="knBoard.model.vo.*, java.util.ArrayList, java.sql.Date, photo.model.vo.*"%>
+    pageEncoding="UTF-8" import="knBoard.model.vo.*, java.util.ArrayList, java.sql.Date, photo.model.vo.Photo"%>
 <%
 	KnBoard kn = (KnBoard)request.getAttribute("board");
 	ArrayList<KnReply> list = (ArrayList<KnReply>)request.getAttribute("list");

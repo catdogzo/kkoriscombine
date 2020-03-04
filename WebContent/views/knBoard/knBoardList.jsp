@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" 
-    import = "java.util.*, knBoard.model.vo.KnBoard, common.model.vo.Paging" %>
+    import = "java.util.*, knBoard.model.vo.KnBoard, common.model.vo.Paging, java.net.URLEncoder" %>
 <%
 	ArrayList<KnBoard> list = (ArrayList<KnBoard>)request.getAttribute("list");
 	Paging pg = (Paging)request.getAttribute("pg");
@@ -41,15 +41,17 @@
 	thead th{border-bottom: 1px solid  #5d5d5d;; background-color: #fcc6c9; height: 30px; font-weight: 600; text-align: center;}
 	tbody th{font-weight: 600; background-color: #fff6f6; border-bottom: 1px solid #5d5d5d; text-align: center;}
 	tbody td{border-bottom: 1px solid #5d5d5d; font-family: inherit; text-align: center; font-size: 11pt;}
-	#writeBtn{background: #fb929e;  margin-left: 600px; margin-top: 15px; font-size: 15px; border-radius: 5px; width: 80px; height: 35px}
-	.pagingArea{display: inline-block; margin-left: 200px;}
+	#writeBtn{margin-left: 600px; margin-top: 15px; font-size: 15px; border-radius: 5px; width: 80px; height: 35px; font-size: 14px; font-weight: 600; text-align: center; border: 1px solid #575756; border-radius: 5px;background: #ffdfdf; color: #5d5d5d;}
+	#writeBtn:hover{cursor: pointer; ; background: #fb929e; color: #fff;}
+	.pagingArea{display: inline-block; margin-left: 250px; margin-top: 10px;}
 	.pagingArea button{color: black; float: left; padding: 6px 14px; text-decoration: none; transition: background-color .3s; border: 1px solid #ddd; margin: 0 4px; font-size: 15px; font-weight: 700;}	
-	.pagingArea button:hover{color: white; border: 1px solid #fb929e;}
+	.pagingArea button:hover{background-color: white; border: 1px solid #fb929e;}
 	.pagingArea button.disabled{color:gray;}
 	span > #searchBtn{line-height: 30px; text-align: center; background-color: #ffe3e4; border: 1px solid #fcc6c9; border-radius: 5px; border-radius: 5px; width: 80px; height: 35px  position: fixed;}
+	span > #searchBtn:hover{cursor: pointer; ; background: #fb929e; color: #fff;}
 	.searchArea{margin-top: 80px; margin-left: 100px;}
-	sapn > input{width: 200px;}
-	select{font-size: 10pt; width: 100px; padding: .7em .5em; font-family: inherit; background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none; border:1px solid #5d5d5d;}
+	span > input{width: 200px;}
+	div > select{font-size: 10pt; width: 100px; padding: .7em .5em; font-family: inherit; background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none; border:1px solid #5d5d5d;}	
 	.search_input{padding: 12px 24px; font-size: 14px; line-height: 18px; color: #575756; background-size: 18px 18px; border-radius: 50px; border: 1px solid #5d5d5d; backface-visibility: hidden; right:20px; outline:none;}
 	.jctx {display: none; z-index: 1000; position: absolute; overflow: hidden; border: 1px solid #595959; white-space: nowrap; font-family: sans-serif; font-size: 14px; border-radius: 2px; padding: 0; opacity: 0; -webkit-transition:opacity 200ms; -moz-transition:opacity 200ms; -o-transition:opacity 200ms;  -ms-transition:opacity 200ms;}
 	.jctx-white {background: white; color: black;}
@@ -67,7 +69,6 @@
 <%@ include file="../common/layout.jsp" %>
 		<div class="outer">
 			<br>
-			<!-- <h1>지식 공유게시판</h1> -->
 			
 			<img src="<%= request.getContextPath() %>/images/knb.png" id="blogo">
 			<div class="tableArea">
@@ -98,7 +99,16 @@
 						<td style="hidden">	        		
 						
 						<ul class="jctx jctx-id-foo jctx-white jctx-white-shadow">
-	    					<li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?nick=<%= kn.getUsNick() %>">쪽지보내기</a></li>
+	    					<%-- <li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=<%= kn.getUsId() %>">쪽지보내기</a></li> --%>
+	    					<% request.setCharacterEncoding("UTF-8"); %>
+	    					<% String nickname = kn.getUsNick();
+	    						request.getSession().setAttribute("nickname", nickname);
+	    						System.out.println("닉 뭐임 + " + nickname);
+	    			        %>
+	    			        
+	    			        
+	    			        
+	    					<li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=<%= kn.getUsId() %>">쪽지보내기</a></li>
 	    				</ul>
 	    				</td>
 					</tr>
@@ -113,25 +123,19 @@
 				<%} %>
 				<br><br>
 				
-      <!-- 페이징 처리  -->
       <div class='pagingArea' align='center'>
-         <!-- list가 있을 때만 나타나는 영역이다.  -->
          <% if(!list.isEmpty()){ %>      
-         <!-- 맨 처음으로 -->
          <button onclick ="location.href='<%=request.getContextPath() %>/list.kn?currentPage=1'" class="pBtn">&laquo;</button> 
-         
-         
-         <!-- 이전 페이지로 -->
+
          <button onclick="location.href='<%=request.getContextPath() %>/list.kn?currentPage=<%= currentPage -1 %>'" id="beforeBtn" class="pBtn"> &lt;</button>
          <script>
             if(<%= currentPage %> <= 1){
                var before = $('#beforeBtn');
-               before.attr('disabled', 'true'); // 첫번째 페이지면 클릭이 안되게 한다. 
+               before.attr('disabled', 'true');
             }
          
          </script>
-         
-         <!-- 10개의 페이지 목록 -->
+
          <% for(int p = startPage; p <= endPage; p++){ %>
             <% if(p == currentPage) { %>
                <button id="choosen" disabled class="pBtn"><%= p %></button>
@@ -139,7 +143,7 @@
                <button id="numBtn" onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= p %>'" class="pBtn"><%= p %></button>
             <% } %>
          <% } %>
-         <!-- 다음 페이지 -->
+         
          <button onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= currentPage +1 %>'" id="afterBtn" class="pBtn">></button>
          <script>
             if(<%= currentPage %> >= <%= maxPage %>){
@@ -148,7 +152,6 @@
             }
          </script>         
          
-         <!-- 맨 끝으로 -->
          <button onclick="location.href='<%= request.getContextPath() %>/list.kn?currentPage=<%= maxPage %>'">&raquo;</button>           
          <% } %>	               	
 			</div>

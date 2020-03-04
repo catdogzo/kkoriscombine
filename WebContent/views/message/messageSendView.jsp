@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.sql.Date, message.model.vo.Message"%>
+    pageEncoding="UTF-8" import="java.sql.Date, message.model.vo.Message, knBoard.model.vo.KnBoard"%>
 <%-- <% 
 	Message m = ((Message)request.getAttribute("message"));
 	String mNum = request.getParameter("mNum");
@@ -10,8 +10,12 @@
 	Date mDate = m.getMsgDate();
 %>  --%>  
 <%
-	String usNick = request.getParameter("nick");
+	String rsgId = request.getParameter("id");
+	System.out.println("rsgId11 + " + rsgId);
+	String rnick = (String)request.getSession().getAttribute("nickname");
+	System.out.println("msg닉뭐임 + " + rnick);
 
+	String ssgId = ((AllUser)session.getAttribute("loginAu")).getAuId();
 %> 
 <!DOCTYPE html>
 <html>
@@ -129,7 +133,9 @@ div.button {display: block; padding: 20px;}
 button[type="submit"]{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
 button[type="submit"]:hover {background: #fb929e; color: #fff;}
 
-
+div#msgArea:nth-child(1) {padding-bottom: 10px;}
+div#msgArea:nth-child(2) {padding-bottom: 30px;}
+ 
 </style>
 
 <meta charset="UTF-8">
@@ -146,7 +152,7 @@ button[type="submit"]:hover {background: #fb929e; color: #fff;}
 			<div class="tableTitle">
 				<table id="msgArea">
 					<tr>
-						<th>수신자 : <input type="hidden" name="rsgId" value="<%= usNick%>"><%= usNick%> <%-- <%= rsgId %> --%></th>
+						<th>수신자 : <input type="hidden" name="rsgId" value="<%= rsgId %>"><input type="hidden" name="rnick" value="<%= rnick %>"><%= rnick %> </th>
 					</tr>
 					<tr class="title">
 						<th>제목 : <input type="text" size="120" name="title" placeholder="제목을 입력하세요"></th>
@@ -160,7 +166,8 @@ button[type="submit"]:hover {background: #fb929e; color: #fff;}
 				</table>
 			</div>
 					<div class="menu" align="center">
-						<button type="submit" id="insertBtn">&nbsp;등록하기&nbsp;</button> <span onclick="location.href='<%= request.getContextPath() %>/list.ms'" id="menuBtn">취소</span>
+						<button type="submit" id="insertBtn">&nbsp;등록하기&nbsp;</button> 
+						<span onclick="location.href='<%= request.getContextPath() %>/list.ms'" id="menuBtn">취소</span>
 					</div>
 			</form>
 		</div>

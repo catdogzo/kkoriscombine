@@ -5,11 +5,11 @@ import static common.JDBCTemplate.close;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -31,16 +31,18 @@ public class MessageDAO {
  		
 	}
 
-	public int getListCount(Connection conn) {
-		Statement stmt = null;
+	public int getListCount(Connection conn, String rsgId) {
+		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		int result = 0;
 		
 		String query = prop.getProperty("getListCount");
 		
 		try {
-			stmt = conn.createStatement();
-			rset = stmt.executeQuery(query);
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, rsgId);
+			
+			rset = pstmt.executeQuery();
 
 			if(rset.next()) {
 				result = rset.getInt(1);
@@ -50,13 +52,13 @@ public class MessageDAO {
 			e.printStackTrace();
 		} finally {
 			close(rset);
-			close(stmt);
+			close(pstmt);
 		}
 
 		return result;
 	}
 
-	public ArrayList<Message> selectList(Connection conn, int currentPage) {
+	public ArrayList<Message> selectList(Connection conn, int currentPage, String rsgId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Message> mList = null;
@@ -71,7 +73,7 @@ public class MessageDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, startRow);
 			pstmt.setInt(2, endRow);
-			//pstmt.setString(3, rsgId);
+			pstmt.setString(3, rsgId);
 			rs = pstmt.executeQuery();
 			mList = new ArrayList<Message>();
 			while(rs.next()) {
@@ -79,11 +81,8 @@ public class MessageDAO {
 										rs.getString("msg_title"),
 										rs.getDate("msg_date"),
 										rs.getString("msg_con"),
-										rs.getString("ssg_id"),
-										rs.getString("rsg_id"),
-										rs.getString("rsg_del"),
-										rs.getString("ssg_del"),
-										rs.getString("msg_status"));
+										rs.getString("rnick"),
+										rs.getString("snick"));
 				mList.add(m);
 
 			}
@@ -116,8 +115,10 @@ public class MessageDAO {
 									  rs.getString("msg_title"),
 									  rs.getDate("msg_date"),
 									  rs.getString("msg_con"),
-									  rs.getString("ssg_id"),
+									  rs.getString("rnick"),
+									  rs.getString("snick"),
 									  rs.getString("rsg_id"),
+									  rs.getString("ssg_id"),
 									  rs.getString("rsg_del"),
 									  rs.getString("ssg_del"),
 									  rs.getString("msg_status"));
@@ -171,8 +172,10 @@ public class MessageDAO {
 									  rs.getString("msg_title"),
 									  rs.getDate("msg_date"),
 									  rs.getString("msg_con"),
-									  rs.getString("ssg_id"),
+									  rs.getString("rnick"),
+									  rs.getString("snick"),
 									  rs.getString("rsg_id"),
+									  rs.getString("ssg_id"),
 									  rs.getString("rsg_del"),
 									  rs.getString("ssg_del"),
 									  rs.getString("msg_status"));
@@ -189,7 +192,37 @@ public class MessageDAO {
 		return message;
 	}
 
-	public ArrayList<Message> selectSendList(Connection conn, int currentPages) {
+
+	public int getListCounts(Connection conn, String ssgId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		
+		String query = prop.getProperty("getListCounts");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, ssgId);
+			rset = pstmt.executeQuery();
+	
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		System.out.println("ListhCounts " + result);
+		return result;
+	}
+
+	
+	
+	public ArrayList<Message> selectSendList(Connection conn, int currentPages, String ssgId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Message> mLists = null;
@@ -207,7 +240,7 @@ public class MessageDAO {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, startRows);
 			pstmt.setInt(2, endRows);
-			//pstmt.setString(3, rsgId);
+			pstmt.setString(3, ssgId);
 			rs = pstmt.executeQuery();
 			mLists = new ArrayList<Message>();
 			while(rs.next()) {
@@ -215,12 +248,13 @@ public class MessageDAO {
 										rs.getString("msg_title"),
 										rs.getDate("msg_date"),
 										rs.getString("msg_con"),
-										rs.getString("ssg_id"),
+										rs.getString("rnick"),
+										rs.getString("snick"),
 										rs.getString("rsg_id"),
+										rs.getString("ssg_id"),
 										rs.getString("rsg_del"),
 										rs.getString("ssg_del"),
 										rs.getString("msg_status"));
-				System.out.println("가져온메세지"+m.getMsgTitle());
 				mLists.add(m);
 
 			}
@@ -237,34 +271,7 @@ public class MessageDAO {
 
 	}
 
-
-	public int getListCounts(Connection conn) {
-		Statement stmt = null;
-		ResultSet rset = null;
-		int result = 0;
-		
-		String query = prop.getProperty("getListCounts");
-		
-		try {
-			stmt = conn.createStatement();
-			rset = stmt.executeQuery(query);
-	
-			if(rset.next()) {
-				result = rset.getInt(1);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rset);
-			close(stmt);
-		}
-		
-		System.out.println("ListhCounts " + result);
-		return result;
-	}
-
-	public int insertMessage(Connection conn, String rsgId, String title, String con) {
+	public int insertMessage(Connection conn, String rsgId, String ssgId, String title, String con) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -275,10 +282,12 @@ public class MessageDAO {
 			pstmt.setString(1, title);
 			pstmt.setString(2, con);
 			pstmt.setString(3, rsgId);
+			pstmt.setString(4, ssgId);
 			
-			System.out.println("title + " + title);
-			System.out.println("con + " + con);
-			System.out.println("rsgId + " + rsgId);
+			System.out.println("titleDAO + " + title);
+			System.out.println("conDAO + " + con);
+			System.out.println("누가 받지?DAO + " + rsgId);
+			System.out.println("누가 보냈지?DAO + " + ssgId);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

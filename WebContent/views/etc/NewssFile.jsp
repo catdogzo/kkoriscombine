@@ -20,7 +20,7 @@
 </style>
 </head>	
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 		<div class="outer">
 		<br>
 		<!-- <h1>지식 공유게시판</h1> -->

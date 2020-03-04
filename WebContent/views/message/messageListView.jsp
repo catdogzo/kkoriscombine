@@ -5,8 +5,9 @@
 <%@ page import = "java.util.ArrayList, message.model.vo.*, java.text.SimpleDateFormat" %>    
 <%
 	ArrayList<Message> mList = (ArrayList<Message>)request.getAttribute("mList");
+	
+
 	PageInfo pi = (PageInfo)request.getAttribute("pi"); 
-	System.out.println("mList " + mList);
 	//SimpleDateFormat sf = new SimpleDateFormat("yyyy년 'MM월 dd일 HH:mm");
 	int listCount = pi.getListCount();
 	int currentPage = pi.getCurrentPage();
@@ -191,7 +192,7 @@ div.tableCol {
 				%>
 				<tr>
 					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;" data-mNum="<%= m.getMsgNum() %>" ></td>
-					<td class="rId"><input type="hidden" class="mNum" name="mNum" value='<%= m.getMsgNum() %>'><%= m.getSsgId() %><input type="hidden" value='<%= m.getSsgId() %>'> </td>
+					<td class="rId"><input type="hidden" class="mNum" name="mNum" value='<%= m.getMsgNum() %>'><%= m.getSNick() %><input type="hidden" value='<%= m.getSNick() %>'> </td>
 					<td class="mTitle"><%= m.getMsgTitle() %><input type="hidden"  value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
 				</tr>
@@ -245,18 +246,13 @@ div.tableCol {
 
 	</div>
 
-	<form name="frm" action="location.href='<%= request.getContextPath() %>/delete.ms" method="post"> <!-- 메세지 삭제 누르면 실행 -->
-		<input type="hidden" name="action" value="ssgId">
-		<input type="hidden" name="type" value="many">
-	</form>
 	
 	<!-- 버튼 위치 -->
 	<div style="text-align:right"> </div>
     
     <!-- 삭제버튼  -->
     <div class="delBtn" style="text-align:right">
-    	<button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" > &nbsp;선택쪽지 삭제&nbsp; </button>
-        <button id="sendButton" class="sendButton" role="button" aria-disabled="false" onclick='location.href="views/message/messageSendView.jsp"'> &nbsp;쪽지 보내기&nbsp; </button>
+    	<button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" onclick="location.href='<%= request.getContextPath() %>/delete.ms'"> &nbsp;선택쪽지 삭제 &nbsp;</button>
         
 	</div>
     
@@ -303,9 +299,6 @@ div.tableCol {
 		/* 쪽지 가져오기 */
 		$("td.mTitle").click(function(){
 			var mNum = $(this).parent().children().children('.mNum').val();
-					
-			
-			console.log(mNum);
 
 			<% if(loginUser != null) { %>
 				location.href='<%= request.getContextPath() %>/detail.ms?mNum=' + mNum;
@@ -317,26 +310,29 @@ div.tableCol {
 			
 		});
 		
-/* 		$('.deleteButton').click(function(){
+ 		$('.deleteButton').click(function(){
 			var checkArr = new Array();
 			
-			if($(('input[class="check"]:checked')){
-				alert("삭제할 쪽지를 선택하세요.");
+			if(('input[class="check"]:checked')){
+			
 			var confirm1 = confirm("정말 삭제하시겠습니까?");
 			
 			if(confirm1){
 				$('input[class="check"]:checked').each(function(){
-					checkArr.push($(this).attr("data-mNum"));
-					
+					checkArr.push($(this).attr("data-mNum")); //체크한 쪽지 배열로 저장
 					console.log(checkArr);
-					
-		
-				
 				});
 			};
 			
-		});
-		}; */
+			//ajax실행해서 배열로 값넘긴 후에 deleteM실행한 후에 다시 돌아온다. 
+			$.ajax({
+                url         :
+			
+			
+		} else {
+			alert("삭제할 쪽지를 선택하세요.");
+		}
+		}); 
 		
 		
 		

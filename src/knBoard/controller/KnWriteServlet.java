@@ -36,24 +36,23 @@ public class KnWriteServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(ServletFileUpload.isMultipartContent(request)) { // enctype이 multipart/form-date로 전송되었는지 확인
-			int maxSize = 1024 * 1024 * 10; // 10Mbtyte : 전송파일 용량 제한
-			String root = request.getSession().getServletContext().getRealPath("/"); // 웹 서버 컨테이너 경로 추출
-			String savePath = root + "thumbnail_uploadFiles/"; // 자신을 thumbnail_uploadFiles에 넣어놓기 위함
+		if(ServletFileUpload.isMultipartContent(request)) {
+			int maxSize = 1024 * 1024 * 10;
+			String root = request.getSession().getServletContext().getRealPath("/"); 
+			String savePath = root + "thumbnail_uploadFiles/"; 
 	
 			MultipartRequest multipartRequest 
 			= new MultipartRequest(request, savePath, maxSize, "UTF-8", new FileRename());
 		
-			ArrayList<String> saveFiles = new ArrayList<String>(); // 바뀐 파일의 이름을 저장할 ArrayList
-			ArrayList<String> originFiles = new ArrayList<String>(); // 원본 파일의 이름을 저장할 ArrayList
+			ArrayList<String> saveFiles = new ArrayList<String>();
+			ArrayList<String> originFiles = new ArrayList<String>();
 		
 			Enumeration<String> files = multipartRequest.getFileNames();	
 			
 			while(files.hasMoreElements()) {
-				String name = files.nextElement();// 전송 순서의 역순으로 파일을 가져옴
+				String name = files.nextElement();
 				
 				if(multipartRequest.getFilesystemName(name) != null) {
-					// getFilesystemName(name) : MyFileRenamePolicy의 rename메소드에서 작성한 대로 rename된 파일명
 					saveFiles.add(multipartRequest.getFilesystemName(name));
 					originFiles.add(multipartRequest.getOriginalFileName(name));			
 				}			

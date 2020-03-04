@@ -29,26 +29,23 @@ public class KnSearchServlet extends HttpServlet {
 		
 		String searchCategory = request.getParameter("searchCategory");
 		String searchTag = "%"+request.getParameter("searchTag")+"%";
-		// 두개의 서비스를 호출할 것이기 때문에 참조변수로 생성
-	
-		
+			
 		int posts;
-		int listCount = new KnService().getListCount(searchCategory, searchTag);//게시판 리스트 개수
-		int currentPage; 	//현재 페이지 표시
-		int limit;			//한 페이지에 표시된 페이징 수
-		int maxPage;		//전체 페이지 중 가장 마지막 페이지
-		int startPage;		//페이징 된 페이지 중 시작페이지
-		int endPage;		//페이징 된페이지중 마지막 페이지 
+		int listCount = new KnService().getListCount(searchCategory, searchTag);
+		int currentPage;
+		int limit;
+		int maxPage;
+		int startPage;
+		int endPage;
 				
 		currentPage = 1;
 		if(request.getParameter("currentPage") != null) {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-			// 페이지 전환 시 전달 받은 페이지로 currentPage 적용
 		}
 		limit = 10;
 		posts = 15;
 		maxPage = (int)((double)listCount/limit+ 0.9); 
-		startPage = (((int)((double)currentPage/limit + 0.9)) - 1) * limit + 1; // currentPage
+		startPage = (((int)((double)currentPage/limit + 0.9)) - 1) * limit + 1;
 		endPage = startPage + limit - 1;
 		
 		if(listCount%posts != 0) {

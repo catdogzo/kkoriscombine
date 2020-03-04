@@ -45,12 +45,6 @@
 					<tr>
 						<td><input type="text" size="50" name="title" class="input"></td>
 					</tr>					
-<!-- 					<tr>
-						<td class="aleft" width= "380px">글쓴이
-						</td>
-						<td class="aleft">날짜
-						</td>
-					</tr> -->
 					<tr>
 						<td class="aleft">내용</td>
 					</tr>
@@ -95,34 +89,34 @@
 					</figure>
 				</div>
 				<div id="fileArea">
-					<input type="file" id="thumbnailImg1" multiple="multiple" name="thumbnailImg1" onchange="LoadImg(this,1)">
-					<input type="file" id="thumbnailImg2" multiple="multiple" name="thumbnailImg2" onchange="LoadImg(this,2)">
-					<input type="file" id="thumbnailImg3" multiple="multiple" name="thumbnailImg3" onchange="LoadImg(this,3)">
-					<input type="file" id="thumbnailImg4" multiple="multiple" name="thumbnailImg4" onchange="LoadImg(this,4)">
+					<input type="file" id="thumb1" multiple="multiple" name="thumb1" onchange="LoadImg(this,1)">
+					<input type="file" id="thumb2" multiple="multiple" name="thumb2" onchange="LoadImg(this,2)">
+					<input type="file" id="thumb3" multiple="multiple" name="thumb3" onchange="LoadImg(this,3)">
+					<input type="file" id="thumb4" multiple="multiple" name="thumb4" onchange="LoadImg(this,4)">
 				</div>
 			</div>
 		</form>			
 	</div>
 	<script>
-		// 내용 작성 부분의 공간을 클릭할 때 파일 첨부 창이 뜨도록 설정하는 함수
+
 		$(function(){
 			$("#fileArea").hide();
 			
 			$("#titleImgArea").click(function(){
-				$("#thumbnailImg1").click();
+				$("#thumb1").click();
 			});
 			$("#contentImgArea1").click(function(){
-				$("#thumbnailImg2").click();
+				$("#thumb2").click();
 			});
 			$("#contentImgArea2").click(function(){
-				$("#thumbnailImg3").click();
+				$("#thumb3").click();
 			});
 			$("#contentImgArea3").click(function(){
-				$("#thumbnailImg4").click();
+				$("#thumb4").click();
 			});
 		});
 		
-		// 각각의 영역에 파일을 첨부 했을 경우 미리 보기가 가능하도록 하는 함수
+
 		function LoadImg(value, num){
 			if(value.files && value.files[0]){
 				var reader = new FileReader();

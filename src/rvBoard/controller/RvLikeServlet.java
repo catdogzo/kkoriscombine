@@ -1,41 +1,43 @@
-package knBoard.controller;
+package rvBoard.controller;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import knBoard.model.service.KnService;
+import com.google.gson.Gson;
 
-@WebServlet("/delete.kn")
-public class KnDeleteServlet extends HttpServlet {
+import rvBoard.model.service.RvService;
+
+@WebServlet("/insertlike.rv")
+public class RvLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public KnDeleteServlet() {
+    public RvLikeServlet() {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int no = Integer.parseInt(request.getParameter("no"));
-		
-		int result = new KnService().deleteKn(no);
-		
-		if(result > 0) {
 
-			response.sendRedirect(request.getContextPath() + "/list.kn");
-			
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String writer = request.getParameter("writer");
+		int no = Integer.parseInt(request.getParameter("no"));
+		int like = Integer.parseInt(request.getParameter("like"));
+		int likeView = 0;
+		if(like == 0) {
+			new RvService().insertLike(writer, no);	
+			likeView = new RvService().addLikeView(no, like);
 		}else {
-			request.setAttribute("msg", "게시글 삭제에 실패하였습니다.");
-			RequestDispatcher view = request.getRequestDispatcher("views/common/errorPage.jsp");
-			view.forward(request, response);
+			likeView = new RvService().addLikeView(no, like);
 		}
-				
-		
+		if(likeView > 0) {
+			response.setContentType("application/json; charset=UTF-8");
+			new Gson().toJson(likeView, response.getWriter());		
+		}
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

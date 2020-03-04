@@ -50,6 +50,7 @@ public class LoginServlet extends HttpServlet {
 			if(loginAu.getAuKind().equals("USER")) {
 				User loginUser = new UserService().selectUser(loginAu.getAuId());
 				session.setAttribute("loginUser", loginUser);
+				System.out.println("loginUser + " + loginUser);
 			} else if(loginAu.getAuKind().equals("HP")) {
 				Hospital loginHp = new HpService().selectHp(loginAu.getAuId());
 				session.setAttribute("loginHp", loginHp);

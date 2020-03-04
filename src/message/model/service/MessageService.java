@@ -12,19 +12,19 @@ import message.model.vo.Message;
 
 public class MessageService {
 
-	public int getListCount() {
+	public int getListCount(String rsgId) {
 		Connection conn = getConnection();
-		int result = new MessageDAO().getListCount(conn);
+		int result = new MessageDAO().getListCount(conn, rsgId);
 		close(conn);
 		
-		System.out.println(result); //0
+		System.out.println("쪽지 몇개니? + " + result); //0
 		return result;
 	}
 
-	public ArrayList<Message> selectList(int currentPage) {
+	public ArrayList<Message> selectList(int currentPage, String rsgId) {
 		Connection conn = getConnection();
 
-		ArrayList<Message> mList = new MessageDAO().selectList(conn, currentPage);
+		ArrayList<Message> mList = new MessageDAO().selectList(conn, currentPage, rsgId);
 		close(conn);
 		return mList;
 	}
@@ -64,30 +64,30 @@ public class MessageService {
 		return message;
 	}
 
-	public ArrayList<Message> selectSendList(int currentPages) {
+	public ArrayList<Message> selectSendList(int currentPages, String ssgId) {
 		
 		Connection conn = getConnection();
 
-		ArrayList<Message> mLists = new MessageDAO().selectSendList(conn, currentPages);
+		ArrayList<Message> mLists = new MessageDAO().selectSendList(conn, currentPages, ssgId);
 		close(conn);
 		return mLists;
 		
 	}
 
-	public int getListCounts() {
+	public int getListCounts(String ssgId) {
 		Connection conn = getConnection();
-		int result = new MessageDAO().getListCounts(conn);
+		int result = new MessageDAO().getListCounts(conn, ssgId);
 		close(conn);
 		
 		System.out.println(result); 
 		return result;
 	}
 
-	public int sendMessage(String rsgId, String title, String con) {
+	public int sendMessage(String rsgId, String ssgId, String title, String con) {
 		Connection conn = getConnection();
 		MessageDAO mDAO = new MessageDAO();
 		
-		int result = mDAO.insertMessage(conn, rsgId, title, con);
+		int result = mDAO.insertMessage(conn, rsgId, ssgId, title, con);
 		
 		if(result > 0) {
 			commit(conn);

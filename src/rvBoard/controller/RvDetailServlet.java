@@ -29,13 +29,6 @@ public class RvDetailServlet extends HttpServlet {
 		// 사진 불러오기
 		ArrayList<Photo> pList = new RvService().selectPhoto(no);	
 		
-/*		// 아이디 마스킹 처리
-		String writer = rv.getUsId();
-		String swriter = writer.substring(0, 2);
-		for(int i = 0; i < writer.length(); i++) {
-			swriter += "*";
-		}
-		rv.setUsId(swriter);*/
 		
 		String page = null;
 		if(rv != null) {

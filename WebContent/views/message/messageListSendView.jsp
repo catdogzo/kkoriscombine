@@ -188,10 +188,10 @@ div.tableCol {
 				%>
 				<tr>
 					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;"></td>
-					<td class="rId"><input type="hidden" class="mNums" name="mNums" value='<%= m.getMsgNum() %>'><%= m.getRsgId() %><input type="hidden" value='<%= m.getRsgId() %>'> </td>
+					<td class="rId"><input type="hidden" class="mNums" name="mNums" value='<%= m.getMsgNum() %>'><%= m.getRNick() %><input type="hidden" value='<%= m.getRNick() %>'> </td>
 					<td class="mTitle"><%= m.getMsgTitle() %><input type="hidden"  value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
-				</tr>
+				</tr>	
 				
 				<% 		}
 					

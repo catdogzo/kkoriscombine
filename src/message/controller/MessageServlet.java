@@ -9,12 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.sun.media.jfxmedia.logging.Logger;
-
+import allUser.model.vo.AllUser;
 import message.model.service.MessageService;
 import message.model.vo.Message;
 import message.model.vo.PageInfo;
+import user.model.vo.User;
 
 /**
  * Servlet implementation class MessageServlet
@@ -35,13 +36,18 @@ public class MessageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//String rsgId = request.getParameter("rsgId");
+		HttpSession session = request.getSession();
+		String rsgId = ((AllUser)session.getAttribute("loginAu")).getAuId();
 		
+		//String rsgId = request.getParameter("userId");
+		//String rsgId = ((AllUser)request.getSession().getAttribute("loginUser")).getAuId();
+
+		System.out.println("rsgId + " + rsgId);
 		
 		MessageService mService = new MessageService();
 		//쪽지에서 가져 올 것. 리스트 개수
 		
-		int listCount = mService.getListCount(); 
+		int listCount = mService.getListCount(rsgId); 
 		
 		int currentPage;
 		int limit;
@@ -65,7 +71,7 @@ public class MessageServlet extends HttpServlet {
 		}
 		PageInfo pi = new PageInfo(currentPage, listCount, limit, maxPage, startPage, endPage);
 		
-		ArrayList<Message> mList = mService.selectList(currentPage);
+		ArrayList<Message> mList = mService.selectList(currentPage, rsgId);
 		
 		String page = null;
 		
