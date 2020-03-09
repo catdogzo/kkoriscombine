@@ -100,9 +100,12 @@
 					<% if(loginAu != null && loginUser.getUsId().equals(rv.getUsId())) {%>
 						<input type="button" onclick="deleteRv();" id="deleteBtn" value="삭제">
 						<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">						
-					<% }else { %>
+					<% } else if(loginAu != null && loginAu.getAuKind().equals("ADMIN")){ %>
+						<input type="button" onclick="deleteRv();" id="deleteBtn" value="삭제">
 						<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">					
-					<% } %>
+					<% } else { %>
+						<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">
+					<%	} %>
 					</th>			
 					<th style="padding-top:20px;">	
 						<button id="likeBtn" style="border: 0"><img src="images/like.png" width=50px; height=50px;></button>						

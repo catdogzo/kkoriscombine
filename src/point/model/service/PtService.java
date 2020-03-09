@@ -49,4 +49,17 @@ public class PtService {
 		return list;
 	}
 
+	public int couponVal(String coupon) {
+		Connection conn = getConnection();
+		int result = new PtDAO().couponVal(conn, coupon);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		
+		return result;
+	}
+
 }

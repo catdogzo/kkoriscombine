@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" 
-    import = "java.util.*, knBoard.model.vo.KnBoard, common.model.vo.Paging, java.net.URLEncoder" %>
+    import = "java.util.*, knBoard.model.vo.KnBoard, common.model.vo.Paging" %>
 <%
 	ArrayList<KnBoard> list = (ArrayList<KnBoard>)request.getAttribute("list");
 	Paging pg = (Paging)request.getAttribute("pg");
@@ -27,11 +27,11 @@
 <head>
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 지식인 게시판</title>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/justcontext.js"></script>
-
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.contextMenu.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.ui.position.js"></script>
+<link href="<%= request.getContextPath() %>/css/index.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 <style>
 	#blogo{margin-left:300px; margin-top: 50px;}
 	.outer{width: 900px; height: 800px; background: rgba(255, 255, 255, 0.4); margin-left: 400px; margin-right: auto; margin-top: auto;}
@@ -53,15 +53,6 @@
 	span > input{width: 200px;}
 	div > select{font-size: 10pt; width: 100px; padding: .7em .5em; font-family: inherit; background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none; border:1px solid #5d5d5d;}	
 	.search_input{padding: 12px 24px; font-size: 14px; line-height: 18px; color: #575756; background-size: 18px 18px; border-radius: 50px; border: 1px solid #5d5d5d; backface-visibility: hidden; right:20px; outline:none;}
-	.jctx {display: none; z-index: 1000; position: absolute; overflow: hidden; border: 1px solid #595959; white-space: nowrap; font-family: sans-serif; font-size: 14px; border-radius: 2px; padding: 0; opacity: 0; -webkit-transition:opacity 200ms; -moz-transition:opacity 200ms; -o-transition:opacity 200ms;  -ms-transition:opacity 200ms;}
-	.jctx-white {background: white; color: black;}
-	.jctx-white-shadow {box-shadow: 0 0 15px gray;}
-	.jctx li {padding: 5px 8px; cursor: pointer;}
-	.jctx li.disabled {color: darkgrey; cursor: default;}
-	.jctx-white li:hover {background-color: #fcc6c9;}
-	.jctx-white li.disabled:hover {background-color: lightgrey;}
-	.jctx i {padding-right: 6px;}
-	.jctx hr {background-color: grey; height: 1px; border: 0; margin: 2px 0px;}
 	
 </style>
 </head>
@@ -88,29 +79,14 @@
 					<tr>
 					</tr>
 					<% } else {
-							for(KnBoard kn : list) {
+							for(int i = 0; i < list.size(); i++) {
 					%>
 					<tr>
-						<th><%= kn.getKnNum() %><input type="hidden" name ="knNum" value='<%= kn.getKnNum() %>'></th>
-						<td class="title"><%= kn.getknTitle() %><input type="hidden" name ="title" value='<%= kn.getknTitle() %>'></td>
-						<td class="jctx-host jctx-id-foo"><%= kn.getUsNick() %><input type="hidden" name ="nickname" value='<%= kn.getUsNick() %>'></td>
-						<td><%= kn.getKnDate() %><input type="hidden" name ="kndate" value='<%= kn.getKnDate() %>'></td>
-						<td><%= kn.getKnView() %><input type="hidden" name ="knview" value='<%= kn.getKnView() %>'></td>
-						<td style="hidden">	        		
-						
-						<ul class="jctx jctx-id-foo jctx-white jctx-white-shadow">
-	    					<%-- <li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=<%= kn.getUsId() %>">쪽지보내기</a></li> --%>
-	    					<% request.setCharacterEncoding("UTF-8"); %>
-	    					<% String nickname = kn.getUsNick();
-	    						request.getSession().setAttribute("nickname", nickname);
-	    						System.out.println("닉 뭐임 + " + nickname);
-	    			        %>
-	    			        
-	    			        
-	    			        
-	    					<li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=<%= kn.getUsId() %>">쪽지보내기</a></li>
-	    				</ul>
-	    				</td>
+						<th><%= list.get(i).getKnNum() %><input type="hidden" name ="knNum" value='<%= list.get(i).getKnNum() %>'></th>
+						<td class="title"><%= list.get(i).getknTitle() %><input type="hidden" name ="title" value='<%= list.get(i).getknTitle() %>'></td>
+						<td class="id-menu"><%= list.get(i).getUsNick() %><input type="hidden" name ="nickname" value='<%= list.get(i).getUsNick() %>'><input type="hidden" name ="usId" value='<%= list.get(i).getUsId() %>'></td>
+						<td><%= list.get(i).getKnDate() %><input type="hidden" name ="kndate" value='<%= list.get(i).getKnDate() %>'></td>
+						<td><%= list.get(i).getKnView() %><input type="hidden" name ="knview" value='<%= list.get(i).getKnView() %>'></td>
 					</tr>
 	           	    <%       
 							}
@@ -184,13 +160,27 @@
 					location.href='<%= request.getContextPath() %>/detail.kn?no=' + no;
 				});
 			});
-			$('button').mouseenter(function(){
-				$('button').css({'background':'#ffe3e4', 'cursor':'pointer'});
-			}).mouseout(function(){
-				$('button').parent().css("background", "none");
-			});
    
-			
+			// context
+			var i = jQuery.noConflict();
+			i(document).ready(function() {
+		        $.contextMenu({
+		            selector: '.id-menu', 
+		            callback: function(key, options) {
+		                var usId = $(this).parent().children().children('input[name=usId]').val();
+		                var nickname = $(this).parent().children().children('input[name=nickname]').val();
+						location.href='<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=' + usId+'&nickname=' + nickname;
+		            },
+		            items: {
+		                "쪽지보내기": {name: "쪽지보내기"}
+		            }
+		        });
+
+		        $('.context-menu').on('click', function(e){
+		            console.log('clicked', this);
+		        });   
+			});
+
 		</script>
 </body>
 </html>

@@ -184,8 +184,7 @@ footer {position: fixed; bottom: 10px;}
          			</ul>
 	         	</li>
 	         	<li id="nav-calendar">
-    			    <a href="<%=request.getContextPath() %>/cal.li"><span>캘린더</span></a>
-	         		
+	         		<a href="#"><span>캘린더</span></a>
 	         	</li>
 
 	         	<li id="nav-mypage">
@@ -197,8 +196,7 @@ footer {position: fixed; bottom: 10px;}
 		         		<li><a href="<%= request.getContextPath()%>/list.pt">포인트</a></li>	         		
 		    <%} %>	
 		         		<li><a href="#">내가 쓴 글 조회</a></li>
-   		    	        <li><a href="<%= request.getContextPath() %>/list.ms">내 쪽지함</a></li>
-		         		
+		         		<li><a href="<%= request.getContextPath() %>/list.ms">내 쪽지함</a></li>
 	         		</ul>
 	         	</li>
 	      	</ul>

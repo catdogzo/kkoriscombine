@@ -142,9 +142,49 @@ public class PtDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
 		}
 		
 		return ptu;
+	}
+
+
+	public int couponVal(Connection conn, String coupon) {
+		PreparedStatement pstmt = null;		
+		PreparedStatement pstmt2 = null;
+		String query = prop.getProperty("couponSel");
+		String query2 = prop.getProperty("couponVal");
+		String val = null;
+		ResultSet rset = null;		
+		int result = 0;
+
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, coupon);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				val = rset.getString("ptc_use");
+			}
+			
+			if(val.equals("Y")) {
+				result = 0;
+			}else {
+				pstmt2 = conn.prepareStatement(query2);
+				result = pstmt2.executeUpdate();				
+			}
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+			close(pstmt2);
+		}
+		return result;
 	}
 
 }

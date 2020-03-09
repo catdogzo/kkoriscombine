@@ -5,7 +5,6 @@ import static common.JDBCTemplate.close;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,6 +57,7 @@ public class MessageDAO {
 		return result;
 	}
 
+	// 받은 쪽지 리스트
 	public ArrayList<Message> selectList(Connection conn, int currentPage, String rsgId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -97,7 +97,8 @@ public class MessageDAO {
 		System.out.println("mList1 + " + mList);
 		return mList;
 	}
-
+	
+	// 쪽지 상세보기
 	public Message selectMessage(Connection conn, int mNum) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -133,7 +134,9 @@ public class MessageDAO {
 		 
 		return message;
 	}
-
+	
+	
+	// 상세보기 쪽지 삭제
 	public int deleteMessage(Connection conn, int mNum) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -154,7 +157,9 @@ public class MessageDAO {
 		
 		return result;
 	}
-
+	
+	
+	// 보낸쪽지 상세보기
 	public Message selectSendMessage(Connection conn, int mNum) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -192,7 +197,7 @@ public class MessageDAO {
 		return message;
 	}
 
-
+	
 	public int getListCounts(Connection conn, String ssgId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -221,7 +226,7 @@ public class MessageDAO {
 	}
 
 	
-	
+	// 보낸 쪽지 리스트 보기
 	public ArrayList<Message> selectSendList(Connection conn, int currentPages, String ssgId) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -271,9 +276,13 @@ public class MessageDAO {
 
 	}
 
+	
+	// 쪽지 보내기
 	public int insertMessage(Connection conn, String rsgId, String ssgId, String title, String con) {
 		PreparedStatement pstmt = null;
 		int result = 0;
+		System.out.println("가져온 rsgId + " + rsgId);
+		System.out.println("가져온 ssgId + " + ssgId);
 		
 		String query = prop.getProperty("insertMessage");
 		
@@ -296,5 +305,82 @@ public class MessageDAO {
 		}
 		
 		return result;
+	}
+
+	public int deleteM(Connection conn, int[] checkArrInt) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteM");
+		
+		for(int i = 0; i < checkArrInt.length; i++) {
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, checkArrInt[i]);
+				System.out.println("뭐뭐 삭제됨? + " + checkArrInt[i]);
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+		
+		}
+		return result;
+	}
+
+	public int deleteSM(Connection conn, int[] checkArrInt) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteSM");
+		
+		for(int i = 0; i < checkArrInt.length; i++) {
+			
+			try {
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, checkArrInt[i]);
+				System.out.println("뭐뭐 삭제됨? + " + checkArrInt[i]);
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+		
+		}
+		return result;
+	}
+
+	public int reSendMessage(Connection conn, String rsgId, String ssgId, String title, String con) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reSendMessage");
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, title);
+			pstmt.setString(2, con);
+			pstmt.setString(3, rsgId);
+			pstmt.setString(4, ssgId);
+			
+			System.out.println("reTitle + " + title);
+			System.out.println("reCon + " + con);
+			System.out.println("re rsgId + " + rsgId);
+			System.out.println("re ssgId + " + ssgId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+		
 	}
 }

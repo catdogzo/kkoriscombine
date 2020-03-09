@@ -94,9 +94,50 @@ public class MessageService {
 		} else {
 			rollback(conn);	
 		}
+		return result;
+	}
+
+	public int deleteM(int[] checkArrInt) {
+		Connection conn = getConnection();
+		MessageDAO mDAO = new MessageDAO();
 		
+		int result = mDAO.deleteM(conn, checkArrInt);
 		
+		if(result > 0 ) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
 		
+		return result;
+	}
+
+	public int deleteSM(int[] checkArrInt) {
+		Connection conn = getConnection();
+		MessageDAO mDAO = new MessageDAO();
+		
+		int result = mDAO.deleteSM(conn, checkArrInt);
+		
+		if(result > 0 ) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		return result;
+	}
+
+	public int reSendMessage(String rsgId, String ssgId, String title, String con) {
+		Connection conn = getConnection();
+		MessageDAO mDAO = new MessageDAO();
+		
+		int result = mDAO.reSendMessage(conn, rsgId, ssgId, title, con);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);	
+		}
 		return result;
 	}
 

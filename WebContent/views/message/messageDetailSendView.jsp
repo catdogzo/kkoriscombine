@@ -16,22 +16,21 @@
 .header{
 	top:0px;}	
 div.tableTitle {
-	   text-align:center; 
-	   align-content:center;
-	   width: 1000px;
-	   margin-left: 320px;
-	   margin-right: 50px;
-	   border-top: solid 1px;
-	   border-bottom:solid 2px;
-	   height:35px ;
-	   clear:both ;
-	   background-color:#fb929e ;
-	   font-weight:bold ;
+	text-align: center;
+	align-content: center;
+	width:999px;
+	margin-top: 20px;
+	margin-left: 500px;
+	margin-right: 50px;
+	border-top: solid 0px;
+	border-bottom: solid 0px;
+	height: 35px;
+	clear: both;
 }
 
 div.inContentTitle{
-	margin-left: 300px;
-	width: 200px;
+	margin-left: 880px;
+
 }
 
 
@@ -43,7 +42,7 @@ span.messageControll {
 
 
 input#deleteNoBtn {
-	margin-top :500px;
+	margin-top :10px;
 	margin-left: 700px;
 	min-width: 50px; 
 	height: 30px; 
@@ -56,16 +55,52 @@ input#deleteNoBtn {
 }
 
 input#receiveMsgButton{
-	text-align: left;
-	margin-left: 10px;
+	text-align: center;
 }
 
+span.messageControll {
+	margin-left: 500px;
 
-input#deleteNoBtn:hover {background: #fb929e; color: #fff;}
+}
+input#deleteNoBtn {
+	margin-top :10px;
+	margin-left :10px;
+	min-width: 50px; 
+	height: 30px; 
+	cursor: pointer; 
+	background: #aedefc; color: #5d5d5d; 
+	font-size: 14px; 
+	font-weight: 600; 
+	border: none; 
+	border-radius: 5px;
+}
+input#sendMsgButton {
+	text-align: center;
+	margin-left:10px;
+	
+	margin-bottom:  0px;
+}
 
-div.input-button {display: block; text-align: center; padding: 15px;}
-input[type="button"] {min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
-input[type="button"]:hover {background: #fb929e; color: #fff;}
+input[type="button"] {
+	width: 90px; 
+	height: 36px; 
+	background: #ffdfdf;
+	color: #5d5d5d;
+	font-size: 14px;
+	font-weight: 600;
+	border: none;
+	border-radius: 5px;
+}
+
+input[type="button"]:hover {
+	background: #fb929e;
+	color: #fff;
+}
+
+#msgArea tr:nth-child(1){border-bottom: 1px solid #5d5d5d; background-color: #fcc6c9; font-weight: bold;}
+#msgArea th{padding:5px;} 
+#msgArea td{padding:5px; } 
+#msgArea textArea{border: 1px solid #fcc6c9;}
 
 </style>
 
@@ -82,8 +117,8 @@ input[type="button"]:hover {background: #fb929e; color: #fff;}
 		<form action="<%= request.getContextPath() %>/views/message/messageReplyForm.jsp" id="detailForm" method="post"> 
 			<span class="messageControll">
 			   	<!-- <input type="text" class="textMsg" size="20" name="msgNum" > -->
-			   	<input type="button" value=" 보낸쪽지함 " id="sendMsgButton" class="sendMsgButton" role="button" onclick="location.href='<%= request.getContextPath() %>/listSend.ms'">
 			   	<input type="button" value=" 받은쪽지함 " id="receiveMsgButton" class="receiveMsgButton" role="button" onclick="location.href='<%= request.getContextPath() %>/list.ms'">
+			   	<input type="button" value=" 보낸쪽지함 " id="sendMsgButton" class="sendMsgButton" role="button" onclick="location.href='<%= request.getContextPath() %>/listSend.ms'">
 			</span> 
 		<div class="tableTitle">
 			<table id="msgArea">
@@ -110,12 +145,12 @@ input[type="button"]:hover {background: #fb929e; color: #fff;}
 				</tr>
 				
 			</table>
+				<input type="button" onclick="deleteNo();" id="deleteNoBtn" value="삭제">	
 		</div>
 		</form>
 			</div>
 	</div>
 
-	<input type="button" onclick="deleteNo();" id="deleteNoBtn" value="삭제">	
 	<script>
 		function deleteNo(){
 			var bool = confirm('정말로 삭제하시겠습니까?');

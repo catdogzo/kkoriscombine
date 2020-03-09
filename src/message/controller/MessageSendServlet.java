@@ -1,9 +1,8 @@
 package message.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,12 +13,11 @@ import javax.servlet.http.HttpSession;
 import allUser.model.vo.AllUser;
 import message.model.service.MessageService;
 import message.model.vo.Message;
-import message.model.vo.PageInfo;
 
 /**
- * Servlet implementation class MessageSendServlet
+ * Servlet implementation class MessageInsertServlet
  */
-@WebServlet("/listSend.ms")
+@WebServlet("/insert.ms")
 public class MessageSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -36,51 +34,53 @@ public class MessageSendServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
+
+		String rsgId = request.getParameter("rsgId");
 		String ssgId = ((AllUser)session.getAttribute("loginAu")).getAuId();
+		String title = request.getParameter("title");
+		String con = request.getParameter("con");
 		
+		rsgId = rsgId.trim();
+		ssgId = ssgId.trim();
+		
+		System.out.println("titleS서블릿 + " + title);
+		System.out.println("conS서블릿 + " + con);
+		System.out.println("rsgId서블릿 + " + rsgId);
 		System.out.println("ssgId서블릿 + " + ssgId);
-
 		
-		MessageService mService = new MessageService();
-		int listCounts = mService.getListCounts(ssgId); 
+		Message message = new Message();
 		
-		int currentPages;
-		int limits;
-		int maxPages;
-		int startPages;
-		int endPages;
+		message.setRsgId(rsgId);
+		message.setRsgId(ssgId);
+		message.setMsgTitle(title);
+		message.setMsgCon(con);
 		
-		currentPages = 1; //첫 번째 보여질 페이지 1
-
-		if(request.getParameter("currentPages") != null) {
-			currentPages = Integer.parseInt(request.getParameter("currentPages"));
-		} 
-		limits  = 10;
-		maxPages = (int)((double)listCounts/limits + 0.9);
+		int result = new MessageService().sendMessage(rsgId, ssgId, title, con);
+		PrintWriter out = response.getWriter();
 		
-		startPages = ((int)((double)currentPages/limits + 0.9) -1) * 10 + 1;
-		endPages = startPages + limits -1;
-		
-		if(maxPages < endPages) {
-			endPages = maxPages;
-		}
-		
-		PageInfo pi = new PageInfo(currentPages, listCounts, limits, maxPages, startPages, endPages);
-		
-		ArrayList<Message> mLists = mService.selectSendList(currentPages, ssgId);
-		
-		String page = null;
-		
-		if(mLists != null) {
-			page = "views/message/messageListSendView.jsp";
-			request.setAttribute("mLists", mLists);
-			request.setAttribute("pi", pi);
+		if(result > 0) {
+			out.println("<script>alert('쪽지를 전송했습니다.'); history.go(-2);</script>");
+			out.flush();
+			
+			
 		} else {
-			page ="views/common/errorPage.jsp";
-			request.setAttribute("msg", "쪽지 조회에 실패했다냥");
+			out.println("<script>alert('쪽지를 실패했습니다.'); history.go(-2);</script>");
+			out.flush();
 		}
-		RequestDispatcher view = request.getRequestDispatcher(page);
-		view.forward(request, response);
+		
+		
+		
+		
+		/*
+		 * if(result > 0) { response.sendRedirect("list.ms"); } else { RequestDispatcher
+		 * view = request.getRequestDispatcher("views/common/errorPage.jsp");
+		 * request.setAttribute("msg", "쪽지 전송 실패했습니다."); view.forward(request,
+		 * response);
+		 * 
+		 * }
+		 */
+	
+	
 	
 	
 	}

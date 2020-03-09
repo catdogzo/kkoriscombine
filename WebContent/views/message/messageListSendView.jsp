@@ -4,7 +4,6 @@
 <%@ page import = "java.util.ArrayList, message.model.vo.*" %>    
 <%
 	ArrayList<Message> mListS = (ArrayList<Message>)request.getAttribute("mLists");
-	System.out.println("mLists +" + mListS);
 	PageInfo piS = (PageInfo)request.getAttribute("pi"); 
 
 	int listCounts = piS.getListCount();
@@ -21,17 +20,16 @@
 .header{
 	top:0px;}	
 div.tableTitle {
-	   text-align:center; 
-	   align-content:center;
-	   width: 1000px;
-	   margin-left: 320px;
-	   margin-right: 50px;
-	   border-top: solid 1px;
-	   border-bottom:solid 2px;
-	   height:35px ;
-	   clear:both ;
-	   background-color:#fb929e ;
-	   font-weight:bold ;
+	text-align: center;
+	align-content: center;
+	width:999px;
+	margin-top: 20px;
+	margin-left: 500px;
+	margin-right: 50px;
+	border-top: solid 0px;
+	border-bottom: solid 0px;
+	height: 35px;
+	clear: both;
 }
 
 div.messageOuter{
@@ -40,51 +38,60 @@ div.messageOuter{
 }
 
 div.inContentTitle{
-	margin-left: 300px;
-
+	margin-left: 920px;
 }
 
 
-div.pagingArea {
-	margin-top: 400px;	
-}
-
-div.tableCol.checkBox{
+div.tableCol.checkBox {
+ 	width: 20px; 
+ 	height: 20px;
 	margin-left: 40px;
 	margin-right: 40px;
 }
 
-div.tableCol.receiver{
+input#aCheck{
+ 	width: 20px; 
+ 	height: 20px;
+}
+
+div.tableCol.receiver {
+	width: 45px;
 	margin-left: 40px;
 	margin-right: 40px;
-
 }
-div.tableCol.subject{
+
+div.tableCol.subject {
+	width: 45px;
 	margin-left: 250px;
 	margin-right: 250px;
-
-
 }
-div.tableCol.sendDate{
+
+div.tableCol.sendDate {
+	width: 45px;
 	margin-left: 70px;
 	margin-right: 70px;
-
-
 }
 
 input#receiveMsgButton {
-	text-align: left;
-	margin-right: 200px;
-	margin-bottom: 20px;
-	margin-left: 30px;
+	text-align: center;
 	
 }
 
+input[type="button"] {
+	width: 90px; 
+	height: 36px; 
+	background: #ffdfdf;
+	color: #5d5d5d;
+	font-size: 14px;
+	font-weight: 600;
+	border: none;
+	border-radius: 5px;
+}
 
-div.input-button {display: block; padding: 20px;}
-input[type="button"]{min-width: 50px; height: 30px; cursor: pointer; text-align:left; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
-input[type="button"]:hover {background: #fb929e; color: #fff;}
-
+input[type="button"]:hover {
+	background: #fb929e;
+	color: #fff;
+}
 input#searchButton {
 	margin-bottom: 20px;
 	width: 20px;
@@ -97,40 +104,33 @@ input.textMsg{
 
 }
 
-button#deleteButton{
-	margin-left: 700px;
-	margin-right: 200px;
-	margin-bottom: 20px;
-	min-width: 60px; 
-	height: 30px; 
-	cursor: pointer; 
-	background: #aedefc; color: #5d5d5d; 
-	font-size: 14px; 
-	font-weight: 600; 
-	border: none; 
+.messageControll > #deleteButton {
+	display: inline-block;
+	margin-left: 10px;
+	background: #aedefc;
+	font-size: 14px;
+	font-weight: 600;
+	color: #5d5d5d;
+	width: 100px; 
+	height: 36px; 
+	border:none;
 	border-radius: 5px;
 
 }
 
-button#deleteButton:hover{background: #0774b7; color:white; }
-div.messageControll{
-	margin-left: 330px;
-	align-content: left;
-	margin-right: 200px; 
-}	
-
-div.pagingArea{margin-left: 70px;}
-div.pagingArea button {
-	min-width: 60px; 
-	height: 30px; 
-	cursor: pointer; 
-	background: #ffdfdf; color: #5d5d5d; 
-	font-size: 14px; 
-	font-weight: 600; 
-	border: none; 
-	border-radius: 5px;
+input#deleteButton:hover {
+	background: #0774b7;
+	color: white;
 }
-div.pagingArea button:hover {background: #fb929e; color: #fff;}
+
+.messageControll {
+	display: inline;
+	margin-left: 500px;
+	width: 90px; 
+	height: 36px; 
+
+}
+
 
 
 /* div.tableRow {
@@ -149,6 +149,20 @@ div.tableCol {
 	
 
 
+input.check{width:20px; height: 20px;}
+
+#msgArea th{border-bottom: 1px solid #5d5d5d; background-color: #fcc6c9; font-weight: bold;}
+#msgArea th{padding:5px;} 
+#msgArea td{padding:5px; border-bottom: 1px solid #5d5d5d; } 
+
+
+
+.pagingArea {margin-top: 10px;}
+.pagingArea{display: inline-block; margin-left: 30px; margin-top: 20px;}
+.pagingArea button{color: black; float: left; padding: 6px 14px; text-decoration: none; transition: background-color .3s; border: 1px solid #ddd; margin: 0 4px; font-size: 15px; font-weight: 700;}	
+.pagingArea button:hover{background-color: white; border: 1px solid #fb929e;}
+.pagingArea button.disabled{color:gray;}
+
 </style>
 <meta charset="UTF-8">
 <title>메세지 보관함</title>
@@ -166,15 +180,17 @@ div.tableCol {
 			<div class="messageControll">
 			   	<!-- <input type="text" class="textMsg" size="20">
 			   	<input type="submit" id="searchButton" class="button" value="검색"> -->
-			   	<input type="button" value=" 받은쪽지함 " id="sendMsgButton" class="sendMsgButton" role="button" aria-disabled="false" onclick="location.href='<%= request.getContextPath() %>/list.ms'">
+			   	<input type="button" value=" 받은쪽지함 " id="sendMsgButton" class="sendMsgButton" onclick="location.href='<%= request.getContextPath() %>/list.ms'"> 
+				<input type="button" id="deleteButton" class="deleteButton" role="button" aria-disabled="false" value="선택쪽지 삭제">
 			</div>
+			
 		<div class="tableTitle">
 			<table id="msgArea">
 				<tr>
-				   	<th><div class="tableCol checkBox"><input type="checkbox" name="check" id="aCheck" style="width:20px; height: 20px;" onclick="allCheck(this);"></div></th>
-				  	<th><div class="tableCol receiver" style="padding:5px;">수신자</div></th>
-				  	<th><div class="tableCol subject" style="padding:5px;">제목</div></th>
-				  	<th><div class="tableCol sendDate" style="padding:5px;">발신일</div></th>
+				   	<th><div class="tableCol checkBox"><input type="checkbox" name="check" id="aCheck" onclick="allCheck(this);"></div></th>
+				  	<th><div class="tableCol receiver" >수신자</div></th>
+				  	<th><div class="tableCol subject">제목</div></th>
+				  	<th><div class="tableCol sendDate" >발신일</div></th>
 				</tr>
 				
 				<!-- 이따가 조회 리스트 추가 -->
@@ -187,7 +203,7 @@ div.tableCol {
 						for(Message m : mListS) {
 				%>
 				<tr>
-					<td><input type="checkbox" name="check" class="check" style="width:20px; height: 20px;"></td>
+					<td><input type="checkbox" name="check" class="check"  data-mNum='<%= m.getMsgNum() %>'></td>
 					<td class="rId"><input type="hidden" class="mNums" name="mNums" value='<%= m.getMsgNum() %>'><%= m.getRNick() %><input type="hidden" value='<%= m.getRNick() %>'> </td>
 					<td class="mTitle"><%= m.getMsgTitle() %><input type="hidden"  value='<%= m.getMsgTitle() %>'></td>
 					<td><%= m.getMsgDate() %><input type="hidden" value='<%= m.getMsgDate() %>'></td>
@@ -197,11 +213,8 @@ div.tableCol {
 					
 					}%>
 			</table>
-		</div>
-		</form>
-			</div>
-		
-			<!-- 하단에 페이징 번호 -->
+			
+						<!-- 하단에 페이징 번호 -->
 		<div class="pagingArea" align="center">
 			<% if(!mListS.isEmpty()){ %>	
 			<button onclick ="location.href='<%=request.getContextPath() %>/listSend.ms?currentPages=1'">&lt;&lt;</button>
@@ -239,6 +252,11 @@ div.tableCol {
 				<button onclick="location.href='<%= request.getContextPath() %>/listSend.ms?currentPages=<%= maxPages %>'">&gt;&gt;</button>			
 				<% } %>
 		</div>	
+		</div>
+		</form>
+			</div>
+		
+
 
 	</div>
 
@@ -253,10 +271,7 @@ div.tableCol {
 	<div style="text-align:right"> </div>
     <!-- 페이징 쪽 번호 생기는 곳 -->
     
-    <!-- 삭제버튼  -->
-    <div class="delBtn" style="text-align:right">
-    <button id="deleteButton" class="deleteButton" role="button" aria-disabled="false" onclick=> &nbsp;선택쪽지 삭제&nbsp; </button>
-	</div>
+
     
 	
 	
@@ -314,6 +329,42 @@ div.tableCol {
 			<% } %>
 			
 		});
+		
+
+ 		$('.deleteButton').click(function(){
+			var checkArr = new Array();
+			
+			if(('input[class="check"]:checked')){
+			
+			var confirm1 = confirm("정말 삭제하시겠습니까?");
+			
+			if(confirm1){
+				$('input[class="check"]:checked').each(function(){
+					checkArr.push($(this).attr("data-mNum")); //체크한 쪽지 배열로 저장
+					console.log(checkArr);
+				});
+			};
+			
+			
+			jQuery.ajaxSettings.traditional = true;
+			
+
+			//ajax실행해서 배열로 값넘긴 후에 deleteM실행한 후에 다시 돌아온다. 
+			$.ajax({
+                url:'deleteSM.ms',
+                type: 'post',
+				data:{checkArr:checkArr}, //쉼표로 구분
+				success: function(data){
+					alert(data); 
+					window.location.href='listSend.ms';
+					
+				}
+				
+			});
+		} else {
+			alert("삭제할 쪽지를 선택하세요.");
+		}
+		}); 
 		
 		
 	</script>

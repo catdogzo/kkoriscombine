@@ -12,10 +12,25 @@
 <%
 	String rsgId = request.getParameter("id");
 	System.out.println("rsgId11 + " + rsgId);
-	String rnick = request.getParameter("nickname");
-	System.out.println("msg닉뭐임 + " + rnick);
+	String rnick = request.getParameter("sNick");
+	System.out.println("받는이 msg닉뭐임 + " + rnick);
+	String ssgId = ((AllUser)session.getAttribute("loginAu")).getAuId();
+	
+	
+/* 	String rsgId = request.getParameter("id");
+	System.out.println("rsgId11 + " + rsgId);
+	String rnick = (String)request.getSession().getAttribute("nickname");
+	System.out.println("받는이 msg닉뭐임 + " + rnick);
 
 	String ssgId = ((AllUser)session.getAttribute("loginAu")).getAuId();
+	 */
+	/* Message m = ((Message)request.getAttribute("message"));
+	 
+	 System.out.println("답장확인 + " + m.getMsgTitle() + m.getMsgCon() + m.getSNick() + m.getSsgId());
+ */
+ 
+ 
+ 
 %> 
 <!DOCTYPE html>
 <html>
@@ -37,18 +52,38 @@ div.tableTitle {
 	clear: both;
 }
 
-
 div.inContentTitle{
 	margin-left: 870px;
 
 }
 
+input#sendMsgButton {
+	text-align: left;
+	margin-right: 200px;
+	margin-bottom: 20px;
+	margin-left: 30px;
+	
+}
 
 textarea.con{
 	margin-top:20px;
-	
-}	
+}
 
+div.input-button {display: block; padding: 20px;}
+input[type="button"]{min-width: 50px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
+input[type="button"]:hover {background: #fb929e; color: #fff;}
+
+input#searchButton {
+	margin-bottom: 20px;
+	width: 20px;
+	
+
+}
+
+input.text{
+	margin-bottom: 20px;
+
+}
 
 
 span.messageControll{
@@ -108,6 +143,11 @@ div.pagingArea button:hover {background: #fb929e; color: #fff;}
 
 
 
+div.menu{
+	margin-top:600px;
+	
+}
+
 table#msgArea {	
 	border-spacing: 5px;
 	text-align: left;
@@ -120,7 +160,6 @@ div.title{
 	padding-bottom: 20px;
 	margin-top:100px;
 }
-
 
 
 #msgArea tr:nth-child(1){border-bottom: 1px solid #5d5d5d; background-color: #fcc6c9; font-weight: bold;}
@@ -139,19 +178,30 @@ div.title{
 	
 	<div class="outer">
 		<div class="messageOuter">
-			<div class="inContentTitle"><img src="<%= request.getContextPath() %>/images/sendM.png" width="190px" height="200px"></div>
+			<div class="inContentTitle">쪽지 보내기<img src="<%= request.getContextPath() %>/images/sendM.png" width="190px" height="200px"></div>
 			<form action="" id="sendForm" method="post"> 
 			<div class="tableTitle">
 				<table id="msgArea">
-					<tr>			
-						<th>수신자 : <input type="hidden" name="ssgId" value="<%= ssgId %>"><input type="hidden" name="rsgId" value="<%= rsgId %>"><input type="hidden" name="rnick" value="<%= rnick %>"><%= rnick %></th>
+					<tr>
+					
+						<th>수신자 : <input type="hidden" name="rsgId" value="<%= request.getParameter("ssgId") %>"><input type="hidden" name="rNick" value="<%= request.getParameter("sNick") %>"><%= request.getParameter("sNick") %> </th>
 					</tr>
 					<tr class="title">
-						<th>제목 : <input type="text" size="120" name="title" placeholder="제목을 입력하세요"></th>
+						<th>제목 : <input type="text" size="120" name="title" value="Re: <%= request.getParameter("mTitle") %>"></th>
 					</tr>
 					<tr>
 						<td>
-							<textarea class="con" name="con" cols="130" rows="25" style="resize:none;"></textarea>
+							<textarea class="con" name="con" cols="130" rows="25" style="resize:none;" > 
+  
+	   ------ 원문 -------------------------------------------------------------------------- 
+		
+							
+	   <%= request.getParameter("mCon") %>
+		
+		
+	   --------------------------------------------------------------------------------------
+							
+							</textarea>
 						</td>
 					</tr>
 					
@@ -164,8 +214,7 @@ div.title{
 			</form>
 		</div>
 	</div>
-	
-	<script>
+		<script>
 		$("#insertBtn").click(function(){
 			var bool = confirm("정말 보내시겠습니까?");
 			

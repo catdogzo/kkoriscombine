@@ -11,9 +11,11 @@
 <head>
 <meta charset="UTF-8">
 <title>꼬리스컴바인 : 지식 공유 글보기</title>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script type="text/javascript" src="<%= request.getContextPath() %>/js/justcontext.js"></script>
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.contextMenu.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/js/jquery.ui.position.js"></script>
+<link href="<%= request.getContextPath() %>/css/index.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
 	<style>
 		#blogo{margin-left:350px; margin-top: 50px;}
 		.outer{width: 1000px; height: 900px; background: rgba(255, 255, 255, 0.4); margin-left: 350px; margin-right: auto; margin-top: auto;}
@@ -41,16 +43,6 @@
 		#RreplyBtn{min-width: 100px; height: 30px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 14px; font-weight: 600; border: none; border-radius: 5px;}
 		#RreplyBtn:hover {background: #fb929e; color: #fff;}
 		#reSendBtn{width: 60px; height: 60px; cursor: pointer; background: #ffdfdf; color: #5d5d5d; font-size: 16px; font-weight: 600; border: none; border-radius: 5px;}
-		#likeBtn:hover{cursor: pointer;}
-		.jctx {display: none; z-index: 1000; position: absolute; overflow: hidden; border: 1px solid #595959; white-space: nowrap; font-family: sans-serif; font-size: 14px; border-radius: 2px; padding: 0; opacity: 0; -webkit-transition:opacity 200ms; -moz-transition:opacity 200ms; -o-transition:opacity 200ms;  -ms-transition:opacity 200ms;}
-		.jctx-white {background: white; color: black;}
-		.jctx-white-shadow {box-shadow: 0 0 15px gray;}
-		.jctx li {padding: 5px 8px; cursor: pointer;}
-		.jctx li.disabled {color: darkgrey; cursor: default;}
-		.jctx-white li:hover {background-color: #fcc6c9;}
-		.jctx-white li.disabled:hover {background-color: lightgrey;}
-		.jctx i {padding-right: 6px;}
-		.jctx hr {background-color: grey; height: 1px; border: 0; margin: 2px 0px;}
 		
 	</style>
 </head>
@@ -70,7 +62,7 @@
 				</tr>				
 				<tr>
 					<td class="aleft" width= "300px">글쓴이&nbsp;&nbsp;
-						<span class="jctx-host jctx-id-foo" style="font-size:15px; font-weight: 300"><%= kn.getUsNick() %></span>
+						<span id="id-menu"><input type="hidden" name="usId" value="<%= kn.getUsId()%>" ><input type="hidden" name="nickname" value="<%= kn.getUsNick()%>" ><%= kn.getUsNick() %></span>
 					</td>
 					<td class="aleft">날짜&nbsp;&nbsp;
 						<span style="font-size:15px; font-weight: 300"><%= kn.getKnDate() %></span>
@@ -105,9 +97,13 @@
 							<input type="submit" id="updateBtn" value="수정">
 							<input type="button" onclick="deleteKn();" id="deleteBtn" value="삭제">
 							<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로">												
-						<% } else { %>
+						<% } else if(loginAu != null && loginAu.getAuKind().equals("ADMIN")){ %>
+							<input type="submit" id="updateBtn" value="수정">
 							<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로"
 							style= "margin-left: 400px; margin-top: 30px;">									
+						<% }else{ %>	
+							<input type="button" onclick="location.href='javascript:history.back();'" id="listBtn" value="목록으로"
+							style= "margin-left: 400px; margin-top: 30px;">		
 						<% } %>							
 						</td>					
 					</tr>
@@ -180,10 +176,6 @@
 				});			
 			</script>
 			<% } %>
-			<ul class="jctx jctx-id-foo jctx-white jctx-white-shadow">
-				<li data-action="쪽지보내기"><a href="<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=<%= kn.getUsId() %>">쪽지보내기</a></li>
-				
-			</ul>
 	</div>
 	<script>
 		       
@@ -195,8 +187,29 @@
 	            $('#detailForm').submit();
 	         }
 	      }    	
-	       	    				    		
-		</script>
+
+			// context
+			var i = jQuery.noConflict();
+			i(document).ready(function() {
+		        $.contextMenu({
+		            selector: '#id-menu', 
+		            callback: function(key, options) {
+		            	var usId = $(this).parent().children().children('input[name=usId]').val();
+		                var nickname = $(this).parent().children().children('input[name=nickname]').val();
+						location.href='<%= request.getContextPath() %>/views/message/messageSendView.jsp?id=' + usId+'&nickname=' + nickname;
+		            },
+		            items: {
+		                "쪽지보내기": {name: "쪽지보내기"}
+		            }
+		        });
+
+		        $('.context-menu').on('click', function(e){
+		            console.log('clicked', this);
+		        });   
+			});    	
+    	
+    	
+	</script>
     	    
 </body>
 </html>

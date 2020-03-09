@@ -21,14 +21,14 @@ import message.model.vo.PageInfo;
 /**
  * Servlet implementation class MessageMultiDeleteServlet
  */
-@WebServlet("/deleteM.ms")
-public class MessageMultiDeleteServlet extends HttpServlet {
+@WebServlet("/deleteSM.ms")
+public class MessageMultiSendDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MessageMultiDeleteServlet() {
+    public MessageMultiSendDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,7 +45,7 @@ public class MessageMultiDeleteServlet extends HttpServlet {
 		} 
 		
 		//이 값에 따라서 성공여부 출력
-		int result = new MessageService().deleteM(checkArrInt);
+		int result = new MessageService().deleteSM(checkArrInt);
 		
 		
 		

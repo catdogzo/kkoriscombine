@@ -15,16 +15,16 @@ import message.model.service.MessageService;
 import message.model.vo.Message;
 
 /**
- * Servlet implementation class MessageInsertServlet
+ * Servlet implementation class MessageReSendServlet
  */
-@WebServlet("/insert.ms")
-public class MessageInsertServlet extends HttpServlet {
+@WebServlet("/reSend.ms")
+public class MessageReSendServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MessageInsertServlet() {
+    public MessageReSendServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -52,7 +52,7 @@ public class MessageInsertServlet extends HttpServlet {
 		message.setMsgTitle(title);
 		message.setMsgCon(con);
 		
-		int result = new MessageService().sendMessage(rsgId, ssgId, title, con);
+		int result = new MessageService().reSendMessage(rsgId, ssgId, title, con);
 		
 		if(result > 0) {
 			response.sendRedirect("list.ms");

@@ -27,6 +27,8 @@
 	#page{margin-left: 270px;}
 	#pHistory{font-size: 18px; text-align: center; background-color: #575756; color:#FFF6F6; border: 1px solid #575756; border-radius: 5px; width: 120px; height: 40px; font-weight: 600; }
 	#pHistory:hover {background: #ffe3e4; color: #575756; cursor: pointer;}
+	#cPurchase{font-size: 13px; text-align: center; background-color: #ffe3e4; color:#575756; border: 1px solid #575756; border-radius: 5px; width: 100px; height: 30px; font-weight: 600; }
+	#cPurchase:hover {background: white; color: #575756; cursor: pointer;}	
 	#hList{display:none;}
 	.modal-content > input[type="button"]{border: none; background-color: white; cursor: pointer; -webkit-appearance: none; -moz-appearance: none; appearance: none; outline:none;}
 	#coupon{background: white;}
@@ -71,8 +73,7 @@
 	    <!-- The Modal -->
 	    <div id="cmodal" class="modal">	 
 	      <!-- Modal content -->
-<!-- 	      <iframe name="post1" id="post1" style="display:none" frame_border="0"></iframe>  -->
-	      <form action="<%= request.getContextPath() %>/coupon.pt" method="post">
+	      <form action="<%= request.getContextPath() %>/coupon.pt" id="cForm" method="post">
 		      <div class="modal-content" style="text-align:center">
 		        <span class="close">&times;</span>                                                               
 		        <p><font style="font-size:25px; font-weight:500;">쿠폰 구매</font></p>
@@ -84,10 +85,9 @@
 					<option value="미용비">미용비 3000원 10000pt</option>
 					<option value="물품 구매비">물품 구매비 3000원 10000pt</option>
 				</select>	
-				<input type="submit" value="구매" id="cPurchase">
+				<input type="button" value="구매" id="cPurchase">
 				<br><br>
-					<span>본 사이트에서 예약 가능한 모든 병원에서 사용 가능합니다.</span><br>
-   
+					<span>본 사이트에서 예약 가능한 모든 병원에서 사용 가능합니다.</span><br>   
 		      </div>
 	      </form>	 
 	    </div>
@@ -108,7 +108,20 @@
 		        modal.style.display = "none";
 		    }
 		}
-
+		
+		$('#cPurchase').click(function(){
+			var pt = <%=curPt%>;
+			if(pt < 10000){
+				alert('포인트가 부족합니다.');
+			}else{
+	            $('#cForm').attr('action', '<%= request.getContextPath() %>/coupon.pt');
+	            $('#cForm').submit();
+			}
+			
+			
+		});
+		
+		
 	</script>
 </body>
 </html>
