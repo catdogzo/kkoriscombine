@@ -1,7 +1,5 @@
 package common;
 
-import static common.JDBCTemplate.*;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,6 +11,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class JDBCTemplate {
+	
 	private JDBCTemplate() {}
 	
 	public static Connection getConnection() {
@@ -24,11 +23,13 @@ public class JDBCTemplate {
 		try {
 			prop = new Properties();
 			prop.load(new FileReader(fileName));
+			
 			Class.forName(prop.getProperty("driver"));
-			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("user"), prop.getProperty("password"));
+			conn = DriverManager.getConnection(prop.getProperty("url"),
+												prop.getProperty("user"),
+												prop.getProperty("password"));
 			
-			conn.setAutoCommit(false);
-			
+			conn.setAutoCommit(false); // 웹 애플리케이션에서 작업할 수 있도록 만들어주는 것
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -42,7 +43,6 @@ public class JDBCTemplate {
 		return conn;
 	}
 	
-	
 	public static void close(Connection conn) {
 		try {
 			if(conn != null && !conn.isClosed()) {
@@ -53,25 +53,43 @@ public class JDBCTemplate {
 		}
 	}
 	
-	public static void commit(ResultSet rset) {
-		try {
-			if(rset != null && !rset.isClosed()) {
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	 
-	}
-	
 	public static void close(Statement stmt) {
 		try {
-			if(stmt != null && stmt.isClosed()) {
+			if(stmt != null && !stmt.isClosed()) {
 				stmt.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void close(ResultSet rset) {
+		try {
+			if(rset != null && !rset.isClosed()) {
+				rset.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void commit(Connection conn) {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.commit();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void rollback(Connection conn) {
+		try {
+			if(conn != null && !conn.isClosed()) {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

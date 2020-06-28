@@ -6,25 +6,43 @@ public class Message {
 	private int msgNum;
 	private String msgTitle;
 	private Date msgDate;
-	private String ssgId;
+	private String msgCon;
+	private String rNick;
+	private String sNick;
 	private String rsgId;
+	private String ssgId;
 	private String ssgDel;
 	private String rsgDel;
 	private String status;
 	
 	public Message() {}
 
-	public Message(int msgNum, String msgTitle, Date msgDate, String ssgId, String rsgId, String ssgDel, String rsgDel,
-			String status) {
+	public Message(int msgNum, String msgTitle, Date msgDate, String msgCon, String rNick, String sNick, String rsgId,  String ssgId, String ssgDel, String rsgDel,	String status) {
 		super();
 		this.msgNum = msgNum;
 		this.msgTitle = msgTitle;
 		this.msgDate = msgDate;
-		this.ssgId = ssgId;
+		this.msgCon = msgCon;
+		this.rNick = rNick;
+		this.sNick = sNick;
 		this.rsgId = rsgId;
+		this.ssgId = ssgId;
 		this.ssgDel = ssgDel;
 		this.rsgDel = rsgDel;
 		this.status = status;
+	}
+
+	
+	
+	
+	public Message(int msgNum, String msgTitle, Date msgDate, String msgCon, String rNick, String sNick) {
+		super();
+		this.msgNum = msgNum;
+		this.msgTitle = msgTitle;
+		this.msgDate = msgDate;
+		this.msgCon = msgCon;
+		this.rNick = rNick;
+		this.sNick = sNick;
 	}
 
 	public int getMsgNum() {
@@ -50,7 +68,39 @@ public class Message {
 	public void setMsgDate(Date msgDate) {
 		this.msgDate = msgDate;
 	}
-
+	
+	public String getMsgCon() {
+		return msgCon;
+	}
+	
+	public void setMsgCon(String msgCon) {
+		this.msgCon = msgCon;
+	}
+	
+	public String getRNick() {
+		return rNick;
+	}
+	
+	public void setRNick(String rNick) {
+		this.rNick = rNick;
+	}
+	
+	public String getSNick() {
+		return sNick;
+	}
+	
+	public void setSNick(String sNick) {
+		this.sNick = sNick;
+	}
+	
+	public String getRsgId() {
+		return rsgId;
+	}
+	
+	public void setRsgId(String rsgId) {
+		this.rsgId = rsgId;
+	}
+	
 	public String getSsgId() {
 		return ssgId;
 	}
@@ -59,13 +109,6 @@ public class Message {
 		this.ssgId = ssgId;
 	}
 
-	public String getRsgId() {
-		return rsgId;
-	}
-
-	public void setRsgId(String rsgId) {
-		this.rsgId = rsgId;
-	}
 
 	public String getSsgDel() {
 		return ssgDel;

@@ -90,7 +90,7 @@
 </style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 		<div class="outer">
 			<img src="../../images/point.png" id="blogo" style="margin-left: 400px; margin-top: 50px;">
 			<br>

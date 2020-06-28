@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/index.css"/>
 </head>
 <body>
-	<%@ include file="views/layout.jsp" %>
+	<%@ include file="views/common/layout.jsp" %>
 	
 	<div class="container">
     	<section class="main">

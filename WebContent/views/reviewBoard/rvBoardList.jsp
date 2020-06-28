@@ -27,7 +27,7 @@
 </style>
 </head>
 <body>
-	<%@ include file="../layout.jsp" %>
+	<%@ include file="../common/layout.jsp" %>
 		<div class="outer">
 		<br>
 		<!-- <h1>후기 게시판</h1> -->

@@ -1,130 +1,223 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html;charset=euc-kr" %>
+<%@ page import="java.util.*, java.text.*" %>
+
+<%
+ 	String year = null;
+ 	String month = null;
+ 	String day = "01";
+
+ 	Calendar cal = Calendar.getInstance();
+ 	java.text.DateFormat df = null;
+
+	 if ((year = request.getParameter("year")) == null){
+		 df = new SimpleDateFormat("yyyy");
+ 		 year = df.format(cal.getTime());
+	 }
+
+	 if ((month = request.getParameter("month")) == null){
+  		df = new SimpleDateFormat("MM");
+ 		 month = df.format(cal.getTime());
+	 }
+
+ 	df = new SimpleDateFormat("yyyyMM");
+ 
+	if (df.format(cal.getTime()).equals(year + month)){
+ 		df = new SimpleDateFormat("dd");
+ 		day = df.format(cal.getTime());
+	}
+	
+	String prev = null;
+	String next = null;
+
+ 	if (Integer.parseInt(month) == 1){
+  		prev = "calendar.jsp?year=" + (Integer.parseInt(year) - 1) + "&month=12";
+ 	}
+ 	else{
+  		String prevMonth = "0" + (Integer.parseInt(month) - 1);
+  
+  			if (prevMonth.length() == 3){
+	  			prevMonth = prevMonth.substring(1);
+  			}
+  		prev = "calendar.jsp?year=" + year + "&month=" + prevMonth;
+ 	}
+
+ 	if (Integer.parseInt(month) == 12){
+  		next = "calendar.jsp?year=" + (Integer.parseInt(year) + 1) + "&month=01";
+ 	} else {
+  		String nextMonth = "0" + (Integer.parseInt(month) + 1);
+  		if (nextMonth.length() == 3){
+   			nextMonth = nextMonth.substring(1);
+  		}
+  		next = "calendar.jsp?year=" + year + "&month=" + nextMonth;
+ 	}
+%>
+
 <html>
 <head>
-<meta charset="UTF-8">
-<title>캘린더</title>
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/18fd811fa1.js" crossorigin="anonymous"></script> <!-- sns아이콘 -->
-<link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/layout.css"/> <!-- 작성할 css를 연결 -->
-<style>
-	section{text-align:center;}
-	.calendar{
-        border:2px solid #BDBDBD;
-        text-align:right;
-        width: 100%;
-        margin-left: 400px;
-    }
-</style>
-</head>
-<body onload="build();">
-	<%@ include file="../layout.jsp" %>
+<title>Calendar</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-	<section>
-	<h1>캘린더</h1>
-	<div class="calendar">
-    <table>
-        <tr>
-            <td><font size=1%; color="#B3B6B3"><label onclick="beforem()" id="before" ></label></font></td>
-            <td colspan="5" align="center" id="yearmonth"></td>
-            <td><font size=1%; color="#B3B6B3"><label onclick="nextm()" id="next"></label></font></td>
-        </tr>
-        <tr>
-            <td align="center"> <font color="#FF9090">일</font></td>
-            <td align="center"> 월 </td>
-            <td align="center"> 화 </td>
-            <td align="center"> 수 </td>
-            <td align="center"> 목 </td>
-            <td align="center"> 금 </td>
-            <td align="center"><font color=#7ED5E4>토</font></td>
-        </tr>
-    </table>
-	</div>	
-	
-	</section>
-	<footer>
-	
-	
-	</footer>
-	
-	<script>
-    var today = new Date(); // 오늘 날짜
-    var date = new Date();
+<style>
+A:link {color: #1f3174; text-decoration: none}
+A:active {color: #1f3174; text-decoration: none}
+A:visited {color: #1f3174; text-decoration: none}
+A:hover {color: #3366cc; text-decoration: underline}
+
+.verdana_b { font-family:verdana, arial; font-size: 9px; font-weight: bold}
+.cal_red { font-family:verdana, arial; font-size: 9px; color: #CC0000 }
+.cal_blue { font-family:verdana, arial; font-size: 9px; color: #6666CC }
+.cal_black { font-family:verdana, arial; font-size: 9px; color: #333333 }
+</style>
+
+</head>
+
+<body bgcolor=#FFFFFF text=#000000 leftmargin=20 topmargin=20 marginwidth=20 marginheight=20>
+
+	<table width=580 border=0 cellspacing=0 cellpadding=0>
+ 		<tr>
+  			<td>
+		 		<table width=580 border=0 cellspacing=0 cellpadding=0>
+		    		<tr>
+		     			<td align=center valign=middle height=25 background=http://img.cyworld.com/img/icon/popup_back_gray.gif>
+		      				<a href=<%=prev%>><font color=#FFFFFF>��</font></a>
+		     				<font color=#FFFFFF><font face=Verdana, Arial, Helvetica, sans-serif><b>
+		      				<%=year%>    <%=month%></b></font>  </font>
+		      				<a href=<%=next%>><font color=#FFFFFF>��</font></a>
+		     			</td>
+		    		</tr>
+		   		</table>
+ 	 		</td>
+ 		</tr>
+	</table>
+<!-- Ķ���� HEAD -->
+
+<!-- �޷� ���� -->
+<table width=580 border=0 cellspacing=1 cellpadding=3 bgcolor=#999999>
+ <tr bgcolor=#FCFCF3 align=center>
+  <td width=82 class=verdana_b><font color=#CC0000>Sun</font></td>
+  <td width=82 class=verdana_b><font color=#666666>Mon</font></td>
+  <td width=82 class=verdana_b><font color=#666666>Tue</font></td>
+  <td width=82 class=verdana_b><font color=#666666>Wed</font></td>
+  <td width=82 class=verdana_b><font color=#666666>Thu</font></td>
+  <td width=82 class=verdana_b><font color=#666666>Fri</font></td>
+  <td width=82 class=verdana_b><font color=#6666CC>Sat</font></td>
+ </tr>
+
+<%
+	cal.set(Integer.parseInt(year), Integer.parseInt(month) - 1 , 1);
+	int indent = cal.get(Calendar.DAY_OF_WEEK);
+	cal.add(Calendar.MONTH, 1);
+ 	cal.add(Calendar.DATE, -1);
+ 	int numberOfDays = cal.get(Calendar.DATE);
+
+ 	for (int i = 1; i < indent; i++){
+  		if (i == 1){
+   			out.println("<tr bgcolor='#FFFFFF' valign='top' height='85'>");
+  		}
+  		out.println("<td width='82'></td>");
+ 	}	
+
+ 	Calendar today = Calendar.getInstance();
+ 	df = new SimpleDateFormat("yyyyMMdd");
  
-    function beforem() //이전 달을 today에 값을 저장
-    { 
-        today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-        build(); //만들기
+ 	for (int i = 1; i <= numberOfDays; i++){
+  		String cssClass = "cal_black";
+  		String dayDescript = "";
+ 		day = "0" + i;
+
+  		if (day.length() == 3){
+   			day = day.substring(1);
+  		}
+
+  		if (((indent + i) - 1) % 7 == 1){  // �Ͽ���
+   			out.println("<tr bgcolor='#FFFFFF' valign='top' height='85'>");
+   			cssClass = "cal_red";
+  		}
+  		else if (((indent + i) - 1) % 7 == 0){
+   			cssClass = "cal_blue";
+  		}
+
+  		if (df.format(today.getTime()).equals(year + month + day)){
+   			out.println("<td width='82' bgcolor='#F2F112'>");
+  		} else {
+   			out.println("<td width='82'>");
+  		}
+
+  		out.println("<span class=" + cssClass + ">" + i + "</span>");
+  		out.println(dayDescript);
+  		out.println("</td>");
+  
+  		if (((indent + i) - 1) % 7 == 0){
+   			out.println("</tr>"); //�����
+  		}
+ 	}
+
+
+ 	if(((indent == 6) && (numberOfDays > 30) ) || ( (indent == 7) && (numberOfDays > 29) ) ){
+  		if (41-numberOfDays-indent > 0){
+   			for (int i = 43 - numberOfDays - indent; i > 0; i--){
+    			out.println("<td> </td>");
+   			}
+  		}
+  		out.println("</tr>");
+ 	} else if ( (numberOfDays != 28) || (indent > 1) ){
+  		if (36-numberOfDays-indent > 0){
+   			for (int i = 36 - numberOfDays - indent; i > 0; i--){
+    			out.println("<td> </td>");
+   			}
+  		}
+  		out.println("</tr>");
+ 	}
+%>	
+</table>
+
+<!-- ���� ��� �κ� -->
+	<div class="event">
+		<p>
+			���� ��¥ : <span class="calT"></span>
+			���� �Է� : <input type="text" name="eventT" class="eventT">
+			<button class="eventBtn">�߰�</button>
+		</p>
+			<!-- ���� -->
+			<div class="eventDiv"></div>
+	</div>
+
+<script>
+$(function(){
+	var cal;
+	
+	$('tr:gt(2) td').click(function(){
+	
+    var day = $(this).children().eq(0).html();
+    var year = <%=year%>;
+    var date =  "<%=year%>�� " + "<%=month%>" + "�� " + day + "��";
+    $('.eventT').text(date);
+    
+    if(day == undefined) {
+    	day = "";
+    	alert("�ٸ� ��¥�� �����ϼ���.");
+    	date = "";
     }
     
-    function nextm()  //다음 달을 today에 저장
-    {
-        today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-        build();
-    }
+    	cal =  $('.calT').text(date);
+
+
     
-    function build()
-    {
-        var nMonth = new Date(today.getFullYear(), today.getMonth(), 1); //현재달의 첫째 날
-        var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); //현재 달의 마지막 날
-        var tbcal = document.getElementById("calendar"); // 테이블 달력을 만들 테이블
-        var yearmonth = document.getElementById("yearmonth"); //  년도와 월 출력할곳
-        yearmonth.innerHTML = today.getFullYear() + "년 "+ (today.getMonth() + 1) + "월"; //년도와 월 출력
-        
-        if(today.getMonth()+1==12) //  눌렀을 때 월이 넘어가는 곳
-        {
-            before.innerHTML=(today.getMonth())+"월";
-            next.innerHTML="1월";
-        }
-        else if(today.getMonth()+1==1) //  1월 일 때
-        {
-        before.innerHTML="12월";
-        next.innerHTML=(today.getMonth()+2)+"월";
-        }
-        else //   12월 일 때
-        {
-            before.innerHTML=(today.getMonth())+"월";
-            next.innerHTML=(today.getMonth()+2)+"월";
-        }
-        
-       
-        // 남은 테이블 줄 삭제
-        while (tbcal.rows.length > 2) 
-        {
-            tbcal.deleteRow(tbcal.rows.length - 1);
-        }
-        var row = null;
-        row = tbcal.insertRow();
-        var cnt = 0;
- 
-        // 1일 시작칸 찾기
-        for (i = 0; i < nMonth.getDay(); i++) 
-        {
-            cell = row.insertCell();
-            cnt = cnt + 1;
-        }
- 
-        // 달력 출력
-        for (i = 1; i <= lastDate.getDate(); i++) // 1일부터 마지막 일까지
-        { 
-            cell = row.insertCell();
-            cell.innerHTML = i;
-            cnt = cnt + 1;
-            if (cnt % 7 == 1) {//일요일 계산
-                cell.innerHTML = "<font color=#FF9090>" + i//일요일에 색
-            }
-            if (cnt % 7 == 0) { // 1주일이 7일 이므로 토요일 계산
-                cell.innerHTML = "<font color=#7ED5E4>" + i//토요일에 색
-                row = calendar.insertRow();// 줄 추가
-            }
-            if(today.getFullYear()==date.getFullYear()&&today.getMonth()==date.getMonth()&&i==date.getDate()) 
-            {
-                cell.bgColor = "#BCF1B1"; //오늘날짜배경색
-            }
-        }
- 
-    }
-	</script>
+    $('.eventBtn').click(function(){
+		var et = $('.eventT').val();
+		console.log(et); /* ����ڰ� �Է��ϴ� �� */
+		console.log(date); /* ����ڰ� ������ ��¥ */
+		$('.eventDiv').text($('.eventDiv').text()+date + " " + et);
+		
+	});
+});
+	
+	
+	});
+
+
+</script>
+
+
 </body>
 </html>

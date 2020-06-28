@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@ include file="layout.jsp" %>
+	<%@ include file="common/layout.jsp" %>
 	<div class="container">
     	<section class="main">
 			<article class="quickMenu">
